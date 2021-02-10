@@ -9,10 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helpers;
+using API.Middleware;
+using API.Services;
 using Microsoft.EntityFrameworkCore;
-using MinuRaha.Helpers;
-using MinuRaha.Middleware;
-using MinuRaha.Services;
 
 namespace API
 {

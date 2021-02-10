@@ -1,6 +1,6 @@
 using System;
 
-namespace MinuRaha.Models.Accounts
+namespace API.Models.Account
 {
     public class AccountResponse
     {

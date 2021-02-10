@@ -1,7 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 
-namespace MinuRaha.Models.Accounts
+namespace API.Models.Account
 {
     public class AuthenticateResponse
     {

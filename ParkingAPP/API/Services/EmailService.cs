@@ -1,11 +1,11 @@
+using API.Helpers;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
-using MinuRaha.Helpers;
 
-namespace MinuRaha.Services
+namespace API.Services
 {
     public interface IEmailService
     {

@@ -1,14 +1,14 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using API.Helpers;
+using API.Models.Account;
+using API.Models.Entities;
+using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using MinuRaha.Controllers;
-using MinuRaha.Entities;
-using MinuRaha.Models.Accounts;
-using MinuRaha.Services;
 
-namespace MinuRaha.Controllers
+namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

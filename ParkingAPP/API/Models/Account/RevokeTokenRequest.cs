@@ -1,4 +1,4 @@
-namespace MinuRaha.Models.Accounts
+namespace API.Models.Account
 {
     public class RevokeTokenRequest
     {

@@ -1,8 +1,8 @@
+using API.Models.Account;
+using API.Models.Entities;
 using AutoMapper;
-using MinuRaha.Entities;
-using MinuRaha.Models.Accounts;
 
-namespace MinuRaha.Helpers
+namespace API.Helpers
 {
     public class AutoMapperProfile : Profile
     {

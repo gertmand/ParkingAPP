@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MinuRaha.Models.Accounts
+namespace API.Models.Account
 {
     public class ValidateResetTokenRequest
     {

@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
-namespace MinuRaha.Entities
+namespace API.Models.Entities
 {
     [Owned]
     public class RefreshToken

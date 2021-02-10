@@ -1,7 +1,3 @@
-using AutoMapper;
-using BC = BCrypt.Net.BCrypt;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,13 +5,15 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using MinuRaha.Entities;
-using MinuRaha.Helpers;
-using MinuRaha.Models.Accounts;
+using API.Helpers;
+using API.Models.Account;
+using API.Models.Entities;
+using AutoMapper;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using BC = BCrypt.Net.BCrypt;
 
-namespace MinuRaha.Services
+namespace API.Services
 {
     public interface IAccountService
     {

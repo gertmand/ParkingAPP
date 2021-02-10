@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using API.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
-using MinuRaha.Entities;
 
-namespace MinuRaha.Controllers
+namespace API.Controllers
 {
     [Controller]
     public abstract class BaseController : ControllerBase

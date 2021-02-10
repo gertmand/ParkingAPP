@@ -1,4 +1,4 @@
-namespace MinuRaha.Entities
+namespace API.Models.Entities
 {
     public enum Role
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace MinuRaha.Entities
+namespace API.Models.Entities
 {
     public class Account
     {

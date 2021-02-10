@@ -1,4 +1,4 @@
-namespace MinuRaha.Helpers
+namespace API.Helpers
 {
     public class AppSettings
     {

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using MinuRaha.Entities;
+using API.Models.Entities;
 
-namespace MinuRaha.Models.Accounts
+namespace API.Models.Account
 {
     public class CreateRequest
     {

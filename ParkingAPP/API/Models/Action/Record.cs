@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace MinuRaha.Models.Action
+namespace API.Models.Action
 {
     public class Record
     {

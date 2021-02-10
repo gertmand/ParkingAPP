@@ -1,8 +1,7 @@
+using API.Models.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using MinuRaha.Entities;
 
-namespace MinuRaha.Helpers
+namespace API.Helpers
 {
     public class DataContext : DbContext
     {
