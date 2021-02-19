@@ -28,8 +28,8 @@ const LoginPage = (props: any) => {
       authenticateUser({email: email, password: password})
       .then((result) => {
         localStorage.setItem('token', result.jwtToken)
-        //window.location.reload(false);
-        //props.history.push('/');
+        window.location.reload(false);
+        // props.history.push('/');
         setSubmit(false);
       })
       .catch(err => {

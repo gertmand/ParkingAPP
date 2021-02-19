@@ -13,7 +13,7 @@ const RenderView = () => {
     const hasError = useSelector<AppState, boolean>(state => state.user.userFetchError);
 
     if (!fetchingUserData && !hasError /*&& !fetchingParkingSpaceData && !fetchingCarData*/) {
-        if (!localStorage.getItem('email')) {
+        if (!localStorage.getItem('token')) {
         return (
             <>
                 <Routes />
