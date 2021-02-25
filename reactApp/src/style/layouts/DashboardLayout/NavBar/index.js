@@ -84,7 +84,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const NavBar = ({ onMobileClose, openMobile }, props) => {
-  // const userData = useSelector(state => state.user.userData);
+  const userData = useSelector(state => state.user.userData);
   // const userAdmin = useSelector(state => state.user.userAdmin);
   const classes = useStyles();
   const location = useLocation();
@@ -101,10 +101,10 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
         <Avatar className={classes.avatar} component={RouterLink} src={user.avatar} to="/userDetails"/>
         <Typography className={classes.name} color="textPrimary" variant="h5">
-          {/* {userData.firstName} {userData.lastName} */} Justin Case
+          {userData.firstName} {userData.lastName}
         </Typography>
         <Typography color="textSecondary" variant="body2">
-          {/* {userData.email} */} justincase@i.am
+          {userData.email}
         </Typography>
       </Box>
       <Divider />

@@ -2,8 +2,9 @@ import { Box, Button, Container, makeStyles, TextField, Typography } from '@mate
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { authenticateUser } from '../../services/queries/userQueries';
 import Page from '../../style/Page';
+import { User } from '../../store/types/userType';
+import { login } from '../../store/queries/userQueries';
 
 const LoginPage = (props: any) => {
   const classes = useStyles();
@@ -14,33 +15,21 @@ const LoginPage = (props: any) => {
   const [isSubmitting, setSubmit] = useState(false);
 
   const handleLogin = () => {
-      setSubmit(true);
-      // getUserData(email).then((result) => {
-      //     //localStorage.setItem('email', email);
-      //     //localStorage.setItem('currentUser', JSON.stringify(result));
-      //     setSubmit(false);
-      //     //window.location.reload(false);
-      //   }).catch((error) => {
-      //     setSubmit(false);
-      //     setError("E-posti aadress on vale või puudulik!");
-      // });
-
-      authenticateUser({email: email, password: password})
-      .then((result) => {
+    setSubmit(true);
+    login({email: email, password: password})
+      .then((result: User) => {
+        console.log(result);
         localStorage.setItem('token', result.jwtToken)
+        props.history.push('/');
         window.location.reload(false);
-        // props.history.push('/');
         setSubmit(false);
-      })
-      .catch(err => {
+      }).catch(err => {
         setSubmit(false);
         if(err.response !== undefined) {
           setError(err.response.data.message);
-        } else console.log(err)
-      })
-      
-      //window.location.reload(false);
-  }
+        } else setError("Something went wrong!")
+    })
+}
 
   const onEmailChange = (e: any) => {
       setEmail(e);
@@ -60,7 +49,7 @@ const LoginPage = (props: any) => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: 'tootaja@rik.ee',
+              email: 'test@test.ee',
               password: ''
             }}
             validationSchema={Yup.object().shape({
@@ -71,7 +60,7 @@ const LoginPage = (props: any) => {
             })}
             //onSubmit={() => {navigate('/app/dashboard', { replace: true });}}>
             onSubmit={() => {handleLogin()}}>
-            {({ errors, handleBlur, handleChange, handleSubmit, touched, values
+            {({ errors, handleBlur, handleSubmit, touched
             }) => (
               <form onSubmit={handleSubmit}>
                 <Box mb={2}>

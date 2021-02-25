@@ -98,6 +98,18 @@ namespace API.Controllers
             return Ok(new { message = "Password reset successful, you can now login" });
         }
 
+        [HttpGet("data")]
+        public ActionResult<IEnumerable<AccountResponse>> GetUserData()
+        {
+            if (Account != null)
+            {
+                var response = _mapper.Map<AuthenticateResponse>(Account);
+                return Ok(response);
+            }
+
+            return BadRequest();
+        }
+
         [Authorize(Role.Admin)]
         [HttpGet]
         public ActionResult<IEnumerable<AccountResponse>> GetAll()

@@ -14,9 +14,10 @@ const PrivateRoutes = () => {
         <GlobalStyles />
         <DashboardLayoutW>
             <Switch>
-                <PrivateRoute exact path='/home' component={HomePage} />
-                <PrivateRoute exact path='/settings' component={SettingsView} />
-                <PrivateRoute exact path='/test' component={ProductList} />
+                <PrivateRoute exact path='/' component={HomePage} />
+                <PrivateRoute path='/settings' component={SettingsView} />
+                <PrivateRoute path='/test' component={ProductList} />
+                <Redirect from ="*" to="/" />
             </Switch>
         </DashboardLayoutW>
     </>

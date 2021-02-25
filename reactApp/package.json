@@ -1,5 +1,5 @@
 {
-  "name": "rik-parkimisrakendus",
+  "name": "parking-apl-gkt",
   "author": "DeviasIO, Gert Mänd, Kevin Kiil, Taavi Meier",
   "licence": "MIT",
   "version": "1.0.0",
@@ -49,6 +49,7 @@
     "clsx": "^1.1.1",
     "formik": "^2.1.5",
     "history": "^5.0.0",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "nprogress": "^0.2.0",

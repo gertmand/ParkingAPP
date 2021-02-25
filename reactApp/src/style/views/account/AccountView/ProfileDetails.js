@@ -17,7 +17,7 @@ import {UserCar} from '../../../../store/types/userType';
 import { stringify } from 'querystring';
 import { User } from 'react-feather';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { apiUrl } from '../../../../services/apiUrl';
+import { apiUrl } from '../../../../_helpers/apiUrl';
 
 // const useStyles = makeStyles(() => ({
 //   root: {}
