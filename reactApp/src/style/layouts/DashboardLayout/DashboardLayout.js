@@ -33,7 +33,7 @@ const styles = theme => ({
   }
 });
 
-class DashboardLayoutW extends Component {
+class DashboardLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -63,8 +63,8 @@ class DashboardLayoutW extends Component {
   }
 };
 
-DashboardLayoutW.propTypes= {
+DashboardLayout.propTypes= {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DashboardLayoutW);
+export default withStyles(styles)(DashboardLayout);

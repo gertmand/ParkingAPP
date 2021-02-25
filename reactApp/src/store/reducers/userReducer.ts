@@ -1,5 +1,7 @@
 // import { Reservation } from "../types/reservationType";
 
+import { User } from "../types/userType";
+
 type Action = {
     type: any;
     payload: any;
@@ -7,11 +9,13 @@ type Action = {
 
 type UserReducerType = {
     userData: any,
+    enterpriseData: any
     error: any,
 };
 
 const initialState: UserReducerType = {
     userData: {},
+    enterpriseData: {},
     error: false
 };
 

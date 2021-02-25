@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
 
 const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const classes = useStyles();
-  const [notifications] = useState([]);
+  const [notifications] = useState(["asd", "asd"]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -49,8 +49,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
           <IconButton color="inherit">
             <Badge
               badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
+              color="error"
             >
               <NotificationsIcon />
             </Badge>

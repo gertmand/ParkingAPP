@@ -4,7 +4,6 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 import RenderView from './services/settings/RenderView';
 import './style/mixins/chartjs';
 import theme from './style/theme';
-import jwt_decode from "jwt-decode";
 import { getUserData } from './store/queries/userQueries';
 import { useDispatch } from 'react-redux';
 import { ADD_USER_DATA } from './store/userActions';
@@ -18,15 +17,11 @@ const App = (props: any) => {
 
     if(token != null) {
       getUserData().then((result:any) => {
-        console.log(result)
         dispatch(ADD_USER_DATA(result));
-      }).catch((err) => {
+      }).catch(() => {
         localStorage.clear()
         window.location.reload(false);
-      }
-      )
-    }
-  }, [])
+      })}}, [localStorage.getItem('token')])
 
   return (
       <ThemeProvider theme={theme}>

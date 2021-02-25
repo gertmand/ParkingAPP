@@ -3,18 +3,18 @@ import { Switch, Route, Redirect } from "react-router"
 import LoginPage from "../../pages/auth/LoginPage"
 import HomePage from "../../pages/HomePage"
 import GlobalStyles from "../../style/GlobalStyles"
-import MainLayoutW from "../../style/layouts/MainLayout/MainLayoutW"
+import MainLayout from "../../style/layouts/MainLayout/MainLayout"
 
 const Routes = () => {
     return(
         <>
         <GlobalStyles />
-          <MainLayoutW>
+          <MainLayout>
             <Switch>
               <Route path='/login' component={LoginPage} />
               <Redirect to='/login'/>
             </Switch>
-          </MainLayoutW>
+          </MainLayout>
         </>
     )
 }

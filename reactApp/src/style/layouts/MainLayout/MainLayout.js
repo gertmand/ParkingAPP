@@ -28,7 +28,7 @@ const styles = theme => ({
   }
 });
 
-class MainLayoutW extends Component {
+class MainLayout extends Component {
   render () {
     const { classes } = this.props; 
     return (
@@ -46,4 +46,4 @@ class MainLayoutW extends Component {
   }
 }
 
-export default withStyles(styles)(MainLayoutW);
+export default withStyles(styles)(MainLayout);
