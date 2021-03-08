@@ -1,4 +1,4 @@
-namespace API.Models.Entities
+namespace API.Models.AccountDtos
 {
     public enum Role
     {

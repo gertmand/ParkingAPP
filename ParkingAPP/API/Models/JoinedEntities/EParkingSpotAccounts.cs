@@ -1,4 +1,6 @@
-﻿namespace API.Models.Entities
+﻿using API.Models.Entities;
+
+namespace API.Models.JoinedEntities
 {
     public class EParkingSpotAccounts
     {

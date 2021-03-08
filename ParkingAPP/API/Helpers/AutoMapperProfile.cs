@@ -1,4 +1,5 @@
 using API.Models.AccountDtos;
+using API.Models.EnterpriseDtos;
 using API.Models.Entities;
 using AutoMapper;
 
@@ -31,6 +32,10 @@ namespace API.Helpers
                         return true;
                     }
                 ));
+
+            CreateMap<Enterprise, EnterpriseResponse>();
+
+            CreateMap<EnterpriseCreateRequest, Enterprise>();
         }
     }
 }

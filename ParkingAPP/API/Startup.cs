@@ -41,6 +41,7 @@ namespace API
             // configure DI for application services
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IEnterpriseService, EnterpriseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
