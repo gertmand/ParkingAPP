@@ -1,14 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Models.Account
+namespace API.Models.AccountDtos
 {
-    public class AuthenticateRequest
+    public class ForgotPasswordRequest
     {
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
-        [Required]
-        public string Password { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using API.Models.JoinedEntities;
 
 namespace API.Models.Entities
 {
@@ -27,5 +28,7 @@ namespace API.Models.Entities
         {
             return this.RefreshTokens?.Find(x => x.Token == token) != null;
         }
+
+        public ICollection<EnterpriseAccount> EnterpriseAccounts { get; set; }
     }
 }

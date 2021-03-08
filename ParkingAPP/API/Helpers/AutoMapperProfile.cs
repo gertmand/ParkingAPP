@@ -1,4 +1,4 @@
-using API.Models.Account;
+using API.Models.AccountDtos;
 using API.Models.Entities;
 using AutoMapper;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using API.Helpers;
-using API.Models.Account;
+using API.Models.AccountDtos;
 using API.Models.Entities;
 using API.Services;
 using AutoMapper;

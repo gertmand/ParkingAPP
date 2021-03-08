@@ -1,4 +1,4 @@
-namespace API.Models.Account
+namespace API.Models.AccountDtos
 {
     public class RevokeTokenRequest
     {

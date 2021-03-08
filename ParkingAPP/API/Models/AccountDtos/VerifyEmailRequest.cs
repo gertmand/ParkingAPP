@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Models.Account
+namespace API.Models.AccountDtos
 {
-    public class ValidateResetTokenRequest
+    public class VerifyEmailRequest
     {
         [Required]
         public string Token { get; set; }

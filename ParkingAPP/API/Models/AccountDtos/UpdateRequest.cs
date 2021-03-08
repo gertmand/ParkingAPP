@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using API.Models.Entities;
 
-namespace API.Models.Account
+namespace API.Models.AccountDtos
 {
     public class UpdateRequest
     {

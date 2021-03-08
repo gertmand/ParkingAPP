@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using API.Helpers;
-using API.Models.Account;
+using API.Models.AccountDtos;
 using API.Models.Entities;
 using AutoMapper;
 using Microsoft.Extensions.Options;
