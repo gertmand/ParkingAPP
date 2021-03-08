@@ -73,12 +73,22 @@ namespace API.Helpers
                     Active = true,
                     Created = new DateTime(2021, 02, 01),
                     Type = EnterpriseType.Business
+                },
+                new Enterprise
+                {
+                    Id = 2,
+                    Name = "RIK Parkimine",
+                    Description = "Parkimine",
+                    Active = true,
+                    Created = new DateTime(2021, 02, 01),
+                    Type = EnterpriseType.Business
                 });
 
             modelBuilder.Entity<EnterpriseAccount>().HasData(
                 new List<EnterpriseAccount>
                 {
                     new EnterpriseAccount {AccountId = 1, EnterpriseId = 1},
+                    new EnterpriseAccount {AccountId = 1, EnterpriseId = 2},
                     new EnterpriseAccount {AccountId = 2, EnterpriseId = 1},
                     new EnterpriseAccount {AccountId = 3, EnterpriseId = 1}
                 });

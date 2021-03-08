@@ -4,12 +4,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Models.EnterpriseDtos;
+using API.Services;
+using AutoMapper;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EnterprisesController : ControllerBase
+    public class EnterprisesController : BaseController
     {
+        private readonly IEnterpriseService _enterpriseService;
+        private readonly IMapper _mapper;
+
+        public EnterprisesController(IEnterpriseService enterpriseService, IMapper mapper)
+        {
+            _enterpriseService = enterpriseService;
+            _mapper = mapper;
+        }
+
+        [HttpGet("{userId}")]
+        public ActionResult<IEnumerable<EnterpriseResponse>> GetUserEnterprises(int userId)
+        {
+            if (Account == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(_enterpriseService.GetAllByAccountId(userId));
+        }
     }
 }
