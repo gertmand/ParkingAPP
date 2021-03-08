@@ -23,15 +23,15 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{userId}")]
-        public ActionResult<IEnumerable<EnterpriseResponse>> GetUserEnterprises(int userId)
+        [HttpGet("user")]
+        public ActionResult<IEnumerable<EnterpriseResponse>> GetUserEnterprises()
         {
             if (Account == null)
             {
                 return BadRequest();
             }
 
-            return Ok(_enterpriseService.GetAllByAccountId(userId));
+            return Ok(_enterpriseService.GetAllByAccountId(Account.Id));
         }
     }
 }
