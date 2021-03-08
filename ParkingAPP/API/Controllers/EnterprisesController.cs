@@ -23,6 +23,22 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("{id}")]
+        public ActionResult<EnterpriseResponse> GetEnterprise(int id)
+        {
+            if (Account == null)
+            {
+                return BadRequest();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, id))
+            {
+                return BadRequest(new {message = "Not authorized"});
+            }
+
+            return Ok(_enterpriseService.GetById(id));
+        }
+
         [HttpGet("user")]
         public ActionResult<IEnumerable<EnterpriseResponse>> GetUserEnterprises()
         {

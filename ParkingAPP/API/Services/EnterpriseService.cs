@@ -6,7 +6,9 @@ using API.Helpers;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace API.Services
 {
@@ -16,6 +18,7 @@ namespace API.Services
         EnterpriseResponse Create(EnterpriseCreateRequest model);
         IEnumerable<EnterpriseResponse> GetAll();
         IEnumerable<EnterpriseResponse> GetAllByAccountId(int userId);
+        bool CheckUserEnterprise(int userId, int enterpriseId);
     }
 
 
@@ -52,6 +55,17 @@ namespace API.Services
         public EnterpriseResponse Create(EnterpriseCreateRequest model)
         {
             throw new NotImplementedException();
+        }
+
+        public bool CheckUserEnterprise(int userId, int enterpriseId)
+        {
+            var enterprises = getEnterprisesByUserId(userId);
+
+            if (enterprises.Any(x => x.Id == enterpriseId))
+            {
+                return true;
+            }
+            return false;
         }
 
         // helper methods
