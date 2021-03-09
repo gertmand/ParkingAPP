@@ -14,6 +14,9 @@ namespace API.Helpers
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Enterprise> Enterprises { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<ParkingSpot> ParkingSpots { get; set; }
+        public DbSet<ReleasedSpot> ReleasedSpots { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +24,9 @@ namespace API.Helpers
 
             modelBuilder.Entity<EnterpriseAccount>().ToTable("EnterpriseAccounts")
                 .HasKey(key => new {key.AccountId, key.EnterpriseId});
+            modelBuilder.Entity<ParkingSpotAccounts>().ToTable("ParkingSpotAccounts")
+                .HasKey(key => new {key.AccountId, key.ParkingSpotId});
+
             modelBuilder.Entity<Account>().Property(i => i.Id).HasIdentityOptions(startValue: 4);
 
             modelBuilder.Entity<Account>().HasData(
@@ -92,6 +98,27 @@ namespace API.Helpers
                     new EnterpriseAccount {AccountId = 2, EnterpriseId = 1},
                     new EnterpriseAccount {AccountId = 3, EnterpriseId = 1}
                 });
+
+            for (var i = 1; i <= 32; i++)
+            {
+                modelBuilder.Entity<ParkingSpot>().HasData(
+                    new ParkingSpot { Id = i, Number = i, EnterpriseId = 1, Created = new DateTime(2021, 01, 01), Updated = new DateTime(2021, 01, 01)}
+                );
+            }
+
+            modelBuilder.Entity<ParkingSpotAccounts>().HasData(
+                new List<ParkingSpotAccounts>
+                {
+                    new ParkingSpotAccounts {AccountId = 1, ParkingSpotId = 1},
+                });
+
+            modelBuilder.Entity<ReleasedSpot>().HasData(
+                new ReleasedSpot { Id = 1, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 02, 01)}
+            );
+
+            modelBuilder.Entity<Reservation>().HasData(
+                new Reservation {Id = 1, SpotAccountId = 1, ReserverAccountId = 2, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 02, 01) }
+            );
         }
     }
 }

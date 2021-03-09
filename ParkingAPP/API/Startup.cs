@@ -42,6 +42,7 @@ namespace API
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IEnterpriseService, EnterpriseService>();
+            services.AddScoped<IParkingSpotService, ParkingSpotService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

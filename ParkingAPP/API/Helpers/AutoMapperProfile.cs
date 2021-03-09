@@ -1,6 +1,8 @@
 using API.Models.AccountDtos;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
+using API.Models.ParkingSpotDtos;
+using API.Services;
 using AutoMapper;
 
 namespace API.Helpers
@@ -10,6 +12,8 @@ namespace API.Helpers
         // mappings between model and entity objects
         public AutoMapperProfile()
         {
+            AllowNullDestinationValues = false;
+
             CreateMap<Account, AccountResponse>();
 
             CreateMap<Account, AuthenticateResponse>();
@@ -34,6 +38,10 @@ namespace API.Helpers
                 ));
 
             CreateMap<Enterprise, EnterpriseResponse>();
+
+            CreateMap<ParkingSpot, ParkingSpotResponse>();
+
+            CreateMap<Reservation, ReservationResponse>();
 
             CreateMap<EnterpriseCreateRequest, Enterprise>();
         }

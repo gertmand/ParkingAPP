@@ -18,6 +18,7 @@ namespace API.Services
         EnterpriseResponse Create(EnterpriseCreateRequest model);
         IEnumerable<EnterpriseResponse> GetAll();
         IEnumerable<EnterpriseResponse> GetAllByAccountId(int userId);
+        IEnumerable<Reservation> GetReservations();
         bool CheckUserEnterprise(int userId, int enterpriseId);
     }
 
@@ -57,6 +58,11 @@ namespace API.Services
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Reservation> GetReservations()
+        {
+            return _context.Reservations.Include(x => x.SpotAccount).Include(x => x.ReserverAccount).ToList();
+        }
+
         public bool CheckUserEnterprise(int userId, int enterpriseId)
         {
             var enterprises = getEnterprisesByUserId(userId);
@@ -73,6 +79,7 @@ namespace API.Services
         private Enterprise getEnterprise(int id)
         {
             var enterprise = _context.Enterprises.Find(id);
+            // var enterprises = enterpriseRepo.get(id);
             if(enterprise == null) throw new KeyNotFoundException("Enterprise not found");
             return enterprise;
         }
