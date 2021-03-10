@@ -7,7 +7,6 @@ namespace API.Models.EnterpriseDtos
 {
     public class EnterpriseUserDataResponse
     {
-        //public ReservationResponse[]? Reservation { get; set; }
         public ParkingSpotResponse? ParkingSpot { get; set; }
         public IEnumerable<ReservationResponse>? Reservations { get; set; }
     }

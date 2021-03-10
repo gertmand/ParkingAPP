@@ -99,7 +99,7 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
-        <Avatar className={classes.avatar} component={RouterLink} src={user.avatar} to="/userDetails"/>
+        <Avatar className={classes.avatar} component={RouterLink} src={user.avatar} to="/profile"/>
         <Typography className={classes.name} color="textPrimary" variant="h5">
           {userData.firstName} {userData.lastName}
         </Typography>
