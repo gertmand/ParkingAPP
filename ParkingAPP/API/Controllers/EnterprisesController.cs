@@ -64,6 +64,11 @@ namespace API.Controllers
                 return Unauthorized();
             }
 
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
             var reservations = _parkingSpotService.GetUserReservations(enterpriseId, Account.Id);
             var parkingSpot = _parkingSpotService.GetUserParkingSpot(enterpriseId, Account.Id);
 

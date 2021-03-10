@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import PropTypes, { checkPropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   Box,
   Button,
@@ -12,19 +12,44 @@ import {
   TextField,
   makeStyles
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import {UserCar} from '../../../../store/types/userType';
-import { stringify } from 'querystring';
-import { User } from 'react-feather';
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { apiUrl } from '../../../../_helpers/apiUrl';
+
+const states = [
+  {
+    value: 'alabama',
+    label: 'Alabama'
+  },
+  {
+    value: 'new-york',
+    label: 'New York'
+  },
+  {
+    value: 'san-francisco',
+    label: 'San Francisco'
+  }
+];
 
 const useStyles = makeStyles(() => ({
   root: {}
 }));
 
 const ProfileDetails = ({ className, ...rest }) => {
-  
+  const classes = useStyles();
+  const [values, setValues] = useState({
+    firstName: 'Katarina',
+    lastName: 'Smith',
+    email: 'demo@devias.io',
+    phone: '',
+    state: 'Alabama',
+    country: 'USA'
+  });
+
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
+  };
+
   return (
     <form
       autoComplete="off"
@@ -34,8 +59,8 @@ const ProfileDetails = ({ className, ...rest }) => {
     >
       <Card>
         <CardHeader
-          subheader=""
-          title="Sinu sõiduk"
+          subheader="The information can be edited"
+          title="Profile"
         />
         <Divider />
         <CardContent>
@@ -50,12 +75,12 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                helperText=""
+                helperText="Please specify the first name"
                 label="First name"
                 name="firstName"
                 onChange={handleChange}
                 required
-                value={userData.firstName}
+                value={values.firstName}
                 variant="outlined"
               />
             </Grid>
@@ -70,7 +95,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="lastName"
                 onChange={handleChange}
                 required
-                value={userData.lastName}
+                value={values.lastName}
                 variant="outlined"
               />
             </Grid>
@@ -85,7 +110,7 @@ const ProfileDetails = ({ className, ...rest }) => {
                 name="email"
                 onChange={handleChange}
                 required
-                value={userData.email}
+                value={values.email}
                 variant="outlined"
               />
             </Grid>
@@ -96,10 +121,11 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Numbrimärk"
-                name="regNr"
+                label="Phone Number"
+                name="phone"
                 onChange={handleChange}
-                value={car.regNr}
+                type="number"
+                value={values.phone}
                 variant="outlined"
               />
             </Grid>
@@ -155,9 +181,8 @@ const ProfileDetails = ({ className, ...rest }) => {
           <Button
             color="primary"
             variant="contained"
-            onClick={ConfirmCar}
           >
-            Salvesta
+            Save details
           </Button>
         </Box>
       </Card>
