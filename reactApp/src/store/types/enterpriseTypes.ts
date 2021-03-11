@@ -24,14 +24,24 @@ export type Reservation = {
     deletionDate?: Date
     spotAccountId: number,
     reserverAccountId: number,
+    releasedSpotId: number,
     parkingSpotId: number,
-    releasedSpotId: number
+    parkingSpaceNumber?: number,
+    parkingSpaceOwner?: string
+}
+
+export type ReservationRequest = {
+    startDate: Date,
+    endDate: Date,
+    userId: number,
+    parkingSpotId: number
 }
 
 export type ParkingSpot = {
     id: number,
     created: Date,
     updated: Date,
-    deletionDate?: Date
-    number: Number
+    deletionDate?: Date,
+    number: Number,
+    status: string
 }

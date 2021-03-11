@@ -9,3 +9,11 @@ export type User = {
     role: string,
     title: string
 }
+
+export type SelectedUser = {
+    id: number,
+    userId: number,
+    firstName: string,
+    lastName: string,
+    email: string
+}

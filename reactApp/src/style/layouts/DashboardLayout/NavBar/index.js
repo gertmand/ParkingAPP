@@ -24,6 +24,21 @@ const items = [
     icon: BarChartIcon,
     title: 'Esileht'
   },
+  {
+    href: '/home',
+    icon: BarChartIcon,
+    title: 'Parkimiskoht'
+  },
+  {
+    href: '/home',
+    icon: BarChartIcon,
+    title: 'Broneeringud'
+  },
+  {
+    href: '/profile',
+    icon: BarChartIcon,
+    title: 'Profiil'
+  },
   // {
   //   href: '/userDetails',
   //   icon: UserIcon,

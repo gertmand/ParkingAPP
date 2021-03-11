@@ -3,8 +3,7 @@ import LocalParkingIcon from '@material-ui/icons/LocalParking'
 import clsx from 'clsx'
 import React, { FC, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { AppState } from '../../store'
-import { ParkingSpot } from '../../store/types/enterpriseTypes'
+import { ParkingSpot } from '../../../store/types/enterpriseTypes'
 
 type Props = {
     spot: ParkingSpot,
@@ -17,7 +16,6 @@ const SpotData:FC<Props> = ({spot, giveSpotModal, handleGiveSpot, updateSpotData
     const classes = useStyles();
     // const spotStatus = useSelector<AppState, string>(state => state.parkingSpace.spotStatus);
     const [spotStatus, setSpotStatus] = useState("active");
-    //const cars = useSelector<AppState, Car[]>(state => state.car.carData);
     const [releaseModal, setReleaseModal] = useState(false);
 
     const handleRelease = (e: any) => {
@@ -35,9 +33,9 @@ const SpotData:FC<Props> = ({spot, giveSpotModal, handleGiveSpot, updateSpotData
                 </Typography>
                 
                 <Typography color="textPrimary" style={{marginTop: 7}} variant="h4">STAATUS: 
-                {spotStatus === "active" ? <p style={{display:"inline", color:"green"}}> AKTIIVNE!</p> : ""}
-                {spotStatus === "reserved" ? <p style={{display:"inline", color:"red"}}> BRONEERITUD!</p> : ""}
-                {spotStatus === "released" ? <p style={{display:"inline", color:"#a25900"}}> VABASTATUD!</p> : ""}
+                {spot.status.toLowerCase() === "active" ? <p style={{display:"inline", color:"green"}}> AKTIIVNE!</p> : ""}
+                {spot.status.toLowerCase() === "reserved" ? <p style={{display:"inline", color:"red"}}> BRONEERITUD!</p> : ""}
+                {spot.status.toLowerCase() === "released" ? <p style={{display:"inline", color:"#a25900"}}> VABASTATUD!</p> : ""}
                 </Typography>
                 {/* <Typography style={{marginTop: 7, display: 'inline-block'}} color="textPrimary" variant="h4">
                     AUTO NUMBER: {cars.map(car => (

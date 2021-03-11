@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import ErrorAlert from '../components/common/errorAlert';
 import { SiteAlert } from '../components/common/siteTypes';
 import SuccessAlert from '../components/common/successAlert';
-import ParkingData from '../components/enterprise/parkingData';
+import ParkingData from '../components/enterprise/Parking/parkingData';
 import { AppState } from '../store';
 import { ParkingSpot } from '../store/types/enterpriseTypes';
 import Page from '../style/Page';

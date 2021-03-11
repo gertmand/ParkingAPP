@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { withStyles } from '@material-ui/core';
+import { withStyles, AppBar, Container, Toolbar, Typography } from '@material-ui/core';
 import NavBar from './NavBar';
 import TopBar from './TopBar';
 import PropTypes from 'prop-types'

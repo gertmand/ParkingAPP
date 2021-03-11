@@ -72,6 +72,11 @@ namespace API.Controllers
             var reservations = _parkingSpotService.GetUserReservations(enterpriseId, Account.Id);
             var parkingSpot = _parkingSpotService.GetUserParkingSpot(enterpriseId, Account.Id);
 
+            if(parkingSpot != null)
+                parkingSpot.Status = _parkingSpotService.GetParkingSpotStatus(parkingSpot.Id);
+
+            //_logService.AddLog("algatajaId", "secondaryUserId?" "type/enum", "desc", "changes: EMAIL1 -> EMAIL2", "CreatedAt")
+
             var userData = new EnterpriseUserDataResponse
             {
                 ParkingSpot = parkingSpot,
@@ -87,6 +92,22 @@ namespace API.Controllers
         public ActionResult<IEnumerable<Reservation>> GetReservations()
         {
             return Ok(_enterpriseService.GetReservations());
+        }
+
+        [HttpPost("release")]
+        public ActionResult<ReleasedResponse> ReleaseSpot(ReleaseRequest request)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, request.EnterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            return _parkingSpotService.ReleaseParkingSpot(request);
         }
 
         //[HttpGet("{enterpriseId}/user")]

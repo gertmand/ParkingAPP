@@ -113,11 +113,11 @@ namespace API.Helpers
                 });
 
             modelBuilder.Entity<ReleasedSpot>().HasData(
-                new ReleasedSpot { Id = 1, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 02, 01)}
+                new ReleasedSpot { Id = 1, ParkingSpotId = 2, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 05, 01)}
             );
 
             modelBuilder.Entity<Reservation>().HasData(
-                new Reservation {Id = 1, SpotAccountId = 1, ReserverAccountId = 2, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 02, 01) }
+                new Reservation {Id = 1, SpotAccountId = 1, ReserverAccountId = 2, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 05, 01) }
             );
         }
     }

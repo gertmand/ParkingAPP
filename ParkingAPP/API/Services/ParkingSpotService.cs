@@ -8,6 +8,7 @@ using API.Models.ParkingSpotDtos;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Math.EC.Rfc7748;
+using RIK_parkimise_rakendus.Helpers;
 
 namespace API.Services
 {
@@ -17,6 +18,8 @@ namespace API.Services
         IEnumerable<ParkingSpotResponse> GetAll();
         IEnumerable<ReservationResponse> GetUserReservations(int enterpriseId, int userId);
         ParkingSpotResponse GetUserParkingSpot(int enterpriseId, int userId);
+        ParkingSpotStatusType GetParkingSpotStatus(int id);
+        ReleasedResponse ReleaseParkingSpot(ReleaseRequest request);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -52,6 +55,64 @@ namespace API.Services
             var parkingSpot = getParkingSpotByUserId(enterpriseId, userId);
 
             return _mapper.Map<ParkingSpotResponse>(parkingSpot);
+        }
+
+
+        public ParkingSpotStatusType GetParkingSpotStatus(int id)
+        {
+            var spot = _context.ParkingSpots.Find(id);
+
+            if (spot == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            DateTime today = DateTime.Today.Date;
+
+            var reservations = _context.Reservations.Where(x => x.ParkingSpotId == id && x.StartDate.Date <= today && x.EndDate.Date >= today).ToList();
+            var released = _context.ReleasedSpots.Where(x => x.ParkingSpotId == id && x.StartDate.Date <= today && x.EndDate.Date >= today).ToList();
+
+            released = DateUtil<ReleasedSpot>.RemoveDeletedDates(released);
+            reservations = DateUtil<Reservation>.RemoveDeletedDates(reservations);
+
+            if (reservations.Count > 0)
+                return ParkingSpotStatusType.Reserved;
+            if (released.Count > 0)
+                return ParkingSpotStatusType.Released;
+
+            return ParkingSpotStatusType.Active;
+        }
+
+        public ReleasedResponse ReleaseParkingSpot(ReleaseRequest request)
+        {
+            var spot = _context.ParkingSpots.Where(x => x.Id == request.ParkingSpaceId).FirstOrDefault();
+
+            if (spot == null)
+            {
+                throw new KeyNotFoundException("Spot not found");
+            }
+
+            var releases = _context.ReleasedSpots.Where(x => x.ParkingSpotId == request.ParkingSpaceId && x.EndDate >= DateTime.Today.Date).ToList();
+            var reservations = _context.Reservations.Where(x => x.ParkingSpotId == request.ParkingSpaceId && x.EndDate >= DateTime.Today.Date).ToList();
+
+            releases = DateUtil<ReleasedSpot>.RemoveDeletedDates(releases);
+            reservations = DateUtil<Reservation>.RemoveDeletedDates(reservations);
+
+            if (!DateUtil<ReleasedSpot>.CheckDates(request.StartDate, request.EndDate, releases))
+            {
+                throw new AppException("Parkimiskoht kattub juba vabastatud kuupäevadega!");
+            }
+            if (!DateUtil<Reservation>.CheckDates(request.StartDate, request.EndDate, reservations))
+            {
+                throw new AppException("Aktiivne broneering kattub kuupäevadega!");
+            }
+
+            ReleasedSpot releasedSpot = new ReleasedSpot() { ParkingSpotId = request.ParkingSpaceId, StartDate = request.StartDate, EndDate = request.EndDate };
+
+            _context.ReleasedSpots.Add(releasedSpot);
+            _context.SaveChanges();
+
+            return _mapper.Map<ReleasedResponse>(releasedSpot);
         }
 
         // helper methods
