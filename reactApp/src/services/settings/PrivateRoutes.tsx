@@ -18,6 +18,7 @@ const PrivateRoutes = () => {
                 <PrivateRoute exact path='/profile' component={ProfileDetails} />
                 <PrivateRoute path='/settings' component={SettingsView} />
                 <PrivateRoute path='/test' component={ProductList} />
+                <PrivateRoute path='/profile' component={ProfileDetails} />
                 <Redirect from ="*" to="/" />
             </Switch>
         </DashboardLayout>
