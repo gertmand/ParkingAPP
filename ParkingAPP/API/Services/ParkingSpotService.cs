@@ -20,6 +20,7 @@ namespace API.Services
         ParkingSpotResponse GetUserParkingSpot(int enterpriseId, int userId);
         ParkingSpotStatusType GetParkingSpotStatus(int id);
         ReleasedResponse ReleaseParkingSpot(ReleaseRequest request);
+        ReservationResponse ReserveParkingSpot(ReservationRequest request);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -113,6 +114,67 @@ namespace API.Services
             _context.SaveChanges();
 
             return _mapper.Map<ReleasedResponse>(releasedSpot);
+        }
+
+        public ReservationResponse ReserveParkingSpot(ReservationRequest request)
+        {
+            var userReservations = _context.Reservations.Where(x => x.ReserverAccountId == request.ReserverAccountId).ToList();
+            var spotReservations = _context.Reservations.Where(x => x.ParkingSpotId == request.ParkingSpotId).ToList();
+
+            var spotAccount = _context.ParkingSpotAccounts
+                .Include(x => x.Account)
+                .Include(x => x.ParkingSpot)
+                .FirstOrDefault(x => x.ParkingSpotId == request.ParkingSpotId);
+
+            var requestedSpot = _context.ParkingSpots
+                .Include(x => x.ParkingSpotAccounts)
+                .ThenInclude(x => x.Account)
+                .FirstOrDefault(x => x.Id == request.ParkingSpotId);
+
+            if (!DateUtil<Reservation>.CheckDates(request.StartDate, request.EndDate, userReservations))
+            {
+                throw new AppException("Broneeringu kuupäevad kattuvad isikul olemasoleva broneeringuga" );
+            }
+            if (!DateUtil<Reservation>.CheckDates(request.StartDate, request.EndDate, spotReservations))
+            {
+                throw new AppException("Broneeringu kuupäevad kattuvad parkimiskohal olemasoleva broneeringuga" );
+            }
+            if (spotAccount?.AccountId == request.ReserverAccountId)
+            {
+                throw new AppException("Isikliku parkimiskohale pole võimalik broneeringut lisada!");
+            }
+
+            var bookingTargetUser = _context.Accounts.Find(request.ReserverAccountId);
+
+            if (bookingTargetUser == null)
+            {
+                throw new AppException();
+            }
+
+            var reservationDto = new Reservation()
+            {
+                ParkingSpotId = request.ParkingSpotId,
+                ReserverAccountId = request.ReserverAccountId,
+                SpotAccountId = spotAccount?.AccountId,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+            };
+
+            _context.Reservations.Add(reservationDto);
+            _context.SaveChanges();
+
+            var response = new ReservationResponse
+            {
+                ParkingSpotId = request.ParkingSpotId,
+                ReserverAccountId = request.ReserverAccountId,
+                SpotAccountId = spotAccount?.AccountId,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                ParkingSpotNumber = requestedSpot.Number,
+                ParkingSpotOwner = spotAccount == null ? "-" : spotAccount.Account?.FirstName + " " + spotAccount.Account?.LastName
+            };
+
+            return response;
         }
 
         // helper methods

@@ -56,6 +56,16 @@ namespace API.Controllers
             return Ok(_enterpriseService.GetAllByAccountId(Account.Id));
         }
 
+        [HttpGet("{enterpriseId}/users")]
+        public async Task<List<EnterpriseAccountsResponse>> GetUsersWithoutParkingSpace(int enterpriseId)
+        {
+            CheckUser(enterpriseId);
+
+            var regularUsers = _enterpriseService.GetEnterpriseAccounts(enterpriseId);
+
+            return regularUsers.ToList();
+        }
+
         [HttpGet("{enterpriseId}/user")]
         public ActionResult<EnterpriseUserDataResponse> GetEnterpriseUserData(int enterpriseId)
         {
@@ -110,15 +120,29 @@ namespace API.Controllers
             return _parkingSpotService.ReleaseParkingSpot(request);
         }
 
-        //[HttpGet("{enterpriseId}/user")]
-        //public ActionResult<IEnumerable<ReservationResponse>> GetUserReservations(int enterpriseId)
-        //{
-        //    if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
-        //    {
-        //        return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
-        //    }
+        [HttpPost("reservation")]
+        public ActionResult<ReservationResponse> PostReservation(ReservationRequest request)
+        {
+            var response = _parkingSpotService.ReserveParkingSpot(request);
 
-        //    return Ok(_parkingSpotService.GetUserReservations(enterpriseId, Account.Id));
-        //}
+            return response;
+        }
+
+        // HELPER METHODS
+
+        private ActionResult<bool> CheckUser(int enterpriseId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            return true;
+        }
     }
 }

@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../store';
-import { addReservation } from '../../../store/queries/enterpriseQueries';
+import { addReservation, getAccountsWithoutSpot } from '../../../store/queries/enterpriseQueries';
 import { getUserData } from '../../../store/queries/userQueries';
 import { ParkingSpot } from '../../../store/types/enterpriseTypes';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../common/siteActions';
@@ -23,6 +23,12 @@ const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData}) =
     const [targetUser, setTargetUser] = useState(false);
     const [, setLoading] = useState(false);
     const [, setSuccess] = React.useState(false);
+
+    useEffect(() => {
+        if(regularUsers.length === 0)
+        // TODO: enterpriseId tuua sisse
+            getAccountsWithoutSpot(1).then(data => setRegularUsers(data));
+    }, [regularUsers])
 
     const changeSelectedUser = (event: any, values: any) => {
         if (values) {

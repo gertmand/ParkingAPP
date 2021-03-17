@@ -8,7 +8,7 @@ namespace API.Models.Entities
 {
     public class Reservation : ParkingDateEntityData
     {
-        public int SpotAccountId { get; set; }
+        public int? SpotAccountId { get; set; }
         public int ReserverAccountId { get; set; }
         public int ParkingSpotId { get; set; }
         public int? ReleasedSpotId { get; set; }

@@ -18,13 +18,18 @@ namespace API.Helpers
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
         public DbSet<ReleasedSpot> ReleasedSpots { get; set; }
 
+        // Joined Entitied
+
+        public DbSet<ParkingSpotAccount> ParkingSpotAccounts { get; set; }
+        public DbSet<EnterpriseAccount> EnterpriseAccounts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<EnterpriseAccount>().ToTable("EnterpriseAccounts")
                 .HasKey(key => new {key.AccountId, key.EnterpriseId});
-            modelBuilder.Entity<ParkingSpotAccounts>().ToTable("ParkingSpotAccounts")
+            modelBuilder.Entity<ParkingSpotAccount>().ToTable("ParkingSpotAccount")
                 .HasKey(key => new {key.AccountId, key.ParkingSpotId});
 
             modelBuilder.Entity<Account>().Property(i => i.Id).HasIdentityOptions(startValue: 4);
@@ -106,10 +111,10 @@ namespace API.Helpers
                 );
             }
 
-            modelBuilder.Entity<ParkingSpotAccounts>().HasData(
-                new List<ParkingSpotAccounts>
+            modelBuilder.Entity<ParkingSpotAccount>().HasData(
+                new List<ParkingSpotAccount>
                 {
-                    new ParkingSpotAccounts {AccountId = 1, ParkingSpotId = 1},
+                    new ParkingSpotAccount {AccountId = 1, ParkingSpotId = 1},
                 });
 
             modelBuilder.Entity<ReleasedSpot>().HasData(
