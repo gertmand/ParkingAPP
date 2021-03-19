@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import React, { FC, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { ParkingSpot } from '../../../store/types/enterpriseTypes'
+import ReleaseSpot from './releaseSpot'
 
 type Props = {
     spot: ParkingSpot,
@@ -64,7 +65,7 @@ const SpotData:FC<Props> = ({spot, giveSpotModal, handleGiveSpot, updateSpotData
                             Vabasta koht
                         </Button>
                     </Grid>
-                {/* <ReleaseSpot updateSpotData={updateSpotData} releaseModal={releaseModal} setReleaseModal={handleRelease}/> */}
+                { <ReleaseSpot updateSpotData={updateSpotData} releaseModal={releaseModal} setReleaseModal={handleRelease}/> }
                 </Typography>
             </Grid>
         </Grid>

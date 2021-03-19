@@ -141,7 +141,8 @@ namespace API.Services
                 request.EndDate = release.EndDate.Date;
                 request.ReleasedId = release.Id;
                 request.ReservationId = -1;
-                request.ReserverAccountId = -1; 
+                request.ReserverAccountId = -1;
+                request.ReserverName = "-";
                 request.Status = ParkingSpotStatusType.Released;
                 request.ParkingSpotId = spotId;
 
@@ -154,6 +155,8 @@ namespace API.Services
 
         public ReleasedResponse ReleaseParkingSpot(ReleaseRequest request)
         {
+            request.StartDate = request.StartDate.ToUniversalTime();
+            request.EndDate = request.EndDate.ToUniversalTime();
             var spot = _context.ParkingSpots.Where(x => x.Id == request.ParkingSpaceId).FirstOrDefault();
 
             if (spot == null)

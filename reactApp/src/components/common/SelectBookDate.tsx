@@ -17,7 +17,8 @@ type DateType = {
 export const SelectBookDate:FC<DateType> = ( {date, onDateChange, label, excludeDates}) => {
 
   const handleDateChange = (date: Date | null) => {
-    onDateChange(date);
+    if(date != null)
+      onDateChange(new Date(date?.setUTCHours(date.getUTCHours() + 10)));
     console.log(date)
   };
 

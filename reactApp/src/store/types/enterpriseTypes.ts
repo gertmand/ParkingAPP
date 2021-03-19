@@ -66,3 +66,10 @@ export type ParkingSpot = {
     number: Number,
     status: string
 }
+
+export type ReleaseRequest = {
+    parkingSpaceId: number,
+    startDate: Date,
+    endDate: Date,
+    enterpriseId: number
+}

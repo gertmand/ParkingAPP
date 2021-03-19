@@ -1,8 +1,8 @@
 import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
-import { get } from "../../_helpers/fetch-wrapper"
+import { get, post } from "../../_helpers/fetch-wrapper"
 import { FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
-import { Reservation, ReservationRequest } from "../types/enterpriseTypes"
+import { ReleaseRequest, Reservation, ReservationRequest } from "../types/enterpriseTypes"
 
 export const getEnterpriseUserData = async (enterpriseId: number, dispatch: any) => {
     dispatch(FETCH_ENTERPRISE_USER_DATA_START())
@@ -30,4 +30,8 @@ export const cancelSpotRelease = async (data: any) => {
 export const getEnterpriseParkingSpotData = async (enterpriseId: number, dispatch: any) => {
     dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_START())
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/spot`).then(data => dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS(data))).catch(err => dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR(err)))
+}
+
+export const releaseParkingSpot = (request: ReleaseRequest) => {
+    return post(`${apiUrl}/api/enterprises/release`, request)
 }

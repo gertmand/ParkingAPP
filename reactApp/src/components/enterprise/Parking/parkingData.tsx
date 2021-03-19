@@ -1,6 +1,8 @@
 import { Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getEnterpriseUserData, getEnterpriseParkingSpotData } from '../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotListData } from '../../../store/types/enterpriseTypes';
 import GiveSpot from './giveSpot';
 import SpotData from './spotData';
@@ -16,13 +18,15 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList }) => {
     const classes = useStyles();
     const [giveSpotModal, setGiveSpotModal] = useState(false);
     const isCancelled = React.useRef(false);
+    const dispatch = useDispatch();
 
     const handleGiveSpot = (e: any) => {
         setGiveSpotModal(!giveSpotModal);
     }
 
     const updateSpotTable = () => {
-        console.log("updated");
+        getEnterpriseUserData(1, dispatch); // TODO: Enterprise ID sisse tuua
+        getEnterpriseParkingSpotData(1, dispatch); // TODO: Enterprise ID sisse tuua
     }
 
     useEffect(() => {

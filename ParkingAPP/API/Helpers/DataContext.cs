@@ -107,7 +107,7 @@ namespace API.Helpers
             for (var i = 1; i <= 32; i++)
             {
                 modelBuilder.Entity<ParkingSpot>().HasData(
-                    new ParkingSpot { Id = i, Number = i, EnterpriseId = 1, Created = new DateTime(2021, 01, 01), Updated = new DateTime(2021, 01, 01)}
+                    new ParkingSpot { Id = i, Number = i+105, EnterpriseId = 1, Created = new DateTime(2021, 01, 01), Updated = new DateTime(2021, 01, 01)}
                 );
             }
 
@@ -117,13 +117,13 @@ namespace API.Helpers
                     new ParkingSpotAccount {AccountId = 1, ParkingSpotId = 1},
                 });
 
-            modelBuilder.Entity<ReleasedSpot>().HasData(
-                new ReleasedSpot { Id = 1, ParkingSpotId = 2, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 05, 01)}
-            );
+            //modelBuilder.Entity<ReleasedSpot>().HasData(
+            //    new ReleasedSpot { Id = 1, ParkingSpotId = 2, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 05, 01)}
+            //);
 
-            modelBuilder.Entity<Reservation>().HasData(
-                new Reservation {Id = 1, SpotAccountId = 1, ReserverAccountId = 2, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 05, 01) }
-            );
+            //modelBuilder.Entity<Reservation>().HasData(
+            //    new Reservation {Id = 1, SpotAccountId = 1, ReserverAccountId = 2, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 05, 01) }
+            //);
         }
     }
 }
