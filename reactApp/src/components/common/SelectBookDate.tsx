@@ -18,6 +18,7 @@ export const SelectBookDate:FC<DateType> = ( {date, onDateChange, label, exclude
 
   const handleDateChange = (date: Date | null) => {
     onDateChange(date);
+    console.log(date)
   };
 
 

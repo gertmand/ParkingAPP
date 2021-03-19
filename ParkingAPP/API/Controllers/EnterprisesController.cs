@@ -96,6 +96,23 @@ namespace API.Controllers
             return userData;
         }
 
+        [HttpGet("{enterpriseId}/spot")]
+        public ActionResult<EnterpriseParkingSpotDataResponse> GetEnterpriseParkingSpotData(int enterpriseId)
+        {
+            CheckUser(enterpriseId);
+
+            var spotListData =
+                _parkingSpotService.GetParkingSpotListData(_parkingSpotService
+                    .GetUserParkingSpot(enterpriseId, Account.Id).Id);
+
+            var spotData = new EnterpriseParkingSpotDataResponse()
+            {
+                SpotListData = spotListData,
+            };
+
+            return spotData;
+        }
+
         // PARKING METHODS (PARKING, RESERVATION, RELEASE)
 
         [HttpGet("reservation")]

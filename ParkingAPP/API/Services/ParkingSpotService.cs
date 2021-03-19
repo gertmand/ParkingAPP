@@ -21,6 +21,7 @@ namespace API.Services
         ParkingSpotStatusType GetParkingSpotStatus(int id);
         ReleasedResponse ReleaseParkingSpot(ReleaseRequest request);
         ReservationResponse ReserveParkingSpot(ReservationRequest request);
+        IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -82,6 +83,72 @@ namespace API.Services
                 return ParkingSpotStatusType.Released;
 
             return ParkingSpotStatusType.Active;
+        }
+
+        public IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId)
+        {
+            List<ParkingSpotDataResponse> requests = new List<ParkingSpotDataResponse>();
+            int requestCount = 0;
+            DateTime today = DateTime.Today.Date;
+
+            var releases = _context.ReleasedSpots
+                .Where(x => x.ParkingSpotId == spotId)
+                .ToList();
+
+            var reservations = _context.Reservations
+                .Where(x => x.ParkingSpotId == spotId)
+                .ToList();
+
+            releases = DateUtil<ReleasedSpot>.RemoveDeletedDates(releases);
+            reservations = DateUtil<Reservation>.RemoveDeletedDates(reservations);
+
+            releases = RemoveReleasesIfReserved(releases, reservations);
+
+            foreach (var reservation in reservations)
+            {
+                ParkingSpotDataResponse request = new ParkingSpotDataResponse();
+
+                request.Id = requestCount;
+                request.StartDate = reservation.StartDate.Date;
+                request.EndDate = reservation.EndDate.Date;
+                request.ReservationId = reservation.Id;
+                request.ReserverAccountId = reservation.ReserverAccountId;
+                request.ParkingSpotId = spotId;
+
+                if (reservation.ReleasedSpotId != null)
+                {
+                    request.ReleasedId = reservation.ReleasedSpotId.Value;
+                    request.Status = ParkingSpotStatusType.Reserved;
+                }
+                else
+                {
+                    request.ReleasedId = -1;
+                    request.Status = ParkingSpotStatusType.Assigned;
+                }
+
+                requestCount++;
+
+                requests.Add(request);
+            }
+
+            foreach (var release in releases)
+            {
+                ParkingSpotDataResponse request = new ParkingSpotDataResponse();
+
+                request.Id = requestCount;
+                request.StartDate = release.StartDate.Date;
+                request.EndDate = release.EndDate.Date;
+                request.ReleasedId = release.Id;
+                request.ReservationId = -1;
+                request.ReserverAccountId = -1; 
+                request.Status = ParkingSpotStatusType.Released;
+                request.ParkingSpotId = spotId;
+
+                requestCount++;
+                requests.Add(request);
+            }
+
+            return requests.OrderBy(x => x.StartDate).ThenByDescending(x => x.Status).ToList();
         }
 
         public ReleasedResponse ReleaseParkingSpot(ReleaseRequest request)
@@ -148,7 +215,7 @@ namespace API.Services
 
             if (bookingTargetUser == null)
             {
-                throw new AppException();
+                throw new AppException("Isikut ei leitud!");
             }
 
             var reservationDto = new Reservation()
@@ -200,6 +267,26 @@ namespace API.Services
                 .Where(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId)).SingleOrDefault();
 
             return parkingSpot;
+        }
+
+        private List<ReleasedSpot> RemoveReleasesIfReserved(List<ReleasedSpot> releases, List<Reservation> reservations)
+        {
+            for (int i = reservations.Count - 1; i >= 0; i--)
+            {
+                if (reservations[i].ReleasedSpotId != null)
+                {
+                    for (int j = releases.Count - 1; j >= 0; j--)
+                    {
+                        if (reservations[i].ReleasedSpotId == releases[j].Id)
+                        {
+                            if (reservations[i].StartDate == releases[j].StartDate && reservations[i].EndDate == releases[j].EndDate)
+                                releases.RemoveAt(j);
+                        }
+                    }
+                }
+            }
+
+            return releases;
         }
     }
 }

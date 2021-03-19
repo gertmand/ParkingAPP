@@ -55,7 +55,7 @@ const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData}) =
         if (startDate && endDate && startDate <= endDate && parkingSpot.id !== undefined && regularUserId !== 0 && targetUser !== false) {
             setLoading(true);
             setSuccess(false);
-            addReservation({ startDate: startDate, endDate: endDate, userId: regularUserId, parkingSpotId: parkingSpot.id })
+            addReservation({ startDate: startDate, endDate: endDate, reserverAccountId: regularUserId, parkingSpotId: parkingSpot.id })
                 .then((result: any) => {
                     setLoading(false);
                     setSuccess(true);

@@ -22,7 +22,6 @@ const GiveModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setStartD
 
     const changeStartDate = (e: any) => {
         setStartDate(e);
-        console.log(startDate);
     }
 
     const changeEndDate = (e: any) => {
