@@ -8,14 +8,18 @@ type UserReducerType = {
     enterpriseData: any,
     enterpriseUserData: any,
     enterpriseUserDataFetching: boolean,
+    enterpriseParkingSpotData: any,
+    enterpriseParkingSpotDataFetching: boolean,
     error: any,
 };
 
 const initialState: UserReducerType = {
     userData: {},
     enterpriseData: {},
-    enterpriseUserDataFetching: false,
     enterpriseUserData: {}, // API.Models.EnterpriseUserDataResponse
+    enterpriseUserDataFetching: false,
+    enterpriseParkingSpotData: {},
+    enterpriseParkingSpotDataFetching: false,
     error: {}
 };
 
@@ -51,6 +55,26 @@ export const userReducer = (state = initialState, action: Action) => {
                 ...state,
                 error: action.payload,
                 enterpriseUserDataFetching: false
+            }
+        }
+        case "FETCH_ENTERPRISE_PARKINGSPOT_DATA_START": {
+            return {
+                ...state,
+                enterpriseParkingSpotDataFetching: true
+            }
+        }
+        case "FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS": {
+            return {
+                ...state,
+                enterpriseParkingSpotData: action.payload,
+                enterpriseParkingSpotDataFetching: false
+            }
+        }
+        case "FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR": {
+            return {
+                ...state,
+                error: action.payload,
+                enterpriseParkingSpotDataFetching: false
             }
         }
         default:

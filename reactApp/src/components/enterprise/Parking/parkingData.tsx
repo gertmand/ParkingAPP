@@ -1,21 +1,21 @@
 import { Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
-import { ParkingSpot } from '../../../store/types/enterpriseTypes';
+import { ParkingSpot, ParkingSpotListData } from '../../../store/types/enterpriseTypes';
 import GiveSpot from './giveSpot';
 import SpotData from './spotData';
 import SpotTable from './spotTable';
 
 
 type SpotProps = {
-    data: ParkingSpot,
+    parkingSpot: ParkingSpot,
+    parkingSpotDataList: ParkingSpotListData[]
 }
 
-const ParkingData: FC<SpotProps> = ({ data }) => {
+const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList }) => {
     const classes = useStyles();
     const [giveSpotModal, setGiveSpotModal] = useState(false);
     const isCancelled = React.useRef(false);
-    const [spotDataTable, setSpotDataTable] = useState([]);
 
     const handleGiveSpot = (e: any) => {
         setGiveSpotModal(!giveSpotModal);
@@ -40,13 +40,13 @@ const ParkingData: FC<SpotProps> = ({ data }) => {
             <Grid item xs={12}>
                 <Card className={clsx(classes.card)}>
                     <CardContent>
-                        <SpotData updateSpotData={updateSpotTable} handleGiveSpot={handleGiveSpot} giveSpotModal={giveSpotModal} spot={data} />
+                        <SpotData updateSpotData={updateSpotTable} handleGiveSpot={handleGiveSpot} giveSpotModal={giveSpotModal} spot={parkingSpot} />
                     </CardContent>
                 </Card>
             </Grid>
             { <Grid item xs={12}>
                 <div style={{margin: 0, marginLeft: 7}}>
-                    <SpotTable data={spotDataTable} updateSpotData={updateSpotTable} />
+                    <SpotTable data={parkingSpotDataList} updateSpotData={updateSpotTable} />
                 </div>
             </Grid> }
         </Grid>

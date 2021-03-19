@@ -7,7 +7,7 @@ import theme from './style/theme';
 import { getUserData } from './store/queries/userQueries';
 import { useDispatch } from 'react-redux';
 import { ADD_USER_DATA } from './store/userActions';
-import { getEnterpriseUserData } from './store/queries/enterpriseQueries';
+import { getEnterpriseParkingSpotData, getEnterpriseUserData } from './store/queries/enterpriseQueries';
 
 
 const App = (props: any) => {
@@ -23,7 +23,8 @@ const App = (props: any) => {
         localStorage.clear()
         window.location.reload(false);})}
 
-      getEnterpriseUserData(1, dispatch);
+      getEnterpriseUserData(1, dispatch); // TODO: Enterprise ID sisse tuua
+      getEnterpriseParkingSpotData(1, dispatch); // TODO: Enterprise ID sisse tuua
     }, [localStorage.getItem('token')])
 
   return (

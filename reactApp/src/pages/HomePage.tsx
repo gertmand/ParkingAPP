@@ -6,12 +6,13 @@ import { SiteAlert } from '../components/common/siteTypes';
 import SuccessAlert from '../components/common/successAlert';
 import ParkingData from '../components/enterprise/Parking/parkingData';
 import { AppState } from '../store';
-import { ParkingSpot } from '../store/types/enterpriseTypes';
+import { ParkingSpot, ParkingSpotListData } from '../store/types/enterpriseTypes';
 import Page from '../style/Page';
 
 const HomePage = (props: any) => {
   const classes = useStyles();
   const parkingSpot = useSelector<AppState, ParkingSpot>(state => state.user.enterpriseUserData.parkingSpot);
+  const parkingSpotData = useSelector<AppState, ParkingSpotListData[]>(state => state.user.enterpriseParkingSpotData.spotListData);
   const successAlert = useSelector<AppState, SiteAlert>(state => state.site.successAlert);
   const errorAlert = useSelector<AppState, SiteAlert>(state => state.site.errorAlert);
 
@@ -24,7 +25,7 @@ const HomePage = (props: any) => {
       {errorAlert.status ? <ErrorAlert /> : ""}
       <Container maxWidth={false}>
         {parkingSpot != null && parkingSpot.number != undefined ? (
-          <ParkingData data={parkingSpot} />
+          <ParkingData parkingSpot={parkingSpot} parkingSpotDataList={parkingSpotData} />
         ) : (
           "a"
         )}

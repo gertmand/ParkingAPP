@@ -65,10 +65,3 @@ export type ParkingSpot = {
     number: Number,
     status: string
 }
-
-export enum ParkingSpotStatusType {
-    Active,
-    Released,
-    Reserved,
-    Maintenence
-}

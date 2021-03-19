@@ -46,10 +46,10 @@ const SpotTable:FC<Props> = ({data, updateSpotData}: any) => {
             {data.map((row: ParkingSpotListData) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.status === "ASSIGNED" && "Laenatud"}
-                  {row.status === "RESERVED" && "Reserveeritud"}
-                  {row.status === "RELEASED" && "Vabastatud"}
-                  {row.status === "BOOKED" && "Broneering"}
+                  {row.status === "Assigned" && "Laenatud"}
+                  {row.status === "Reserved" && "Reserveeritud"}
+                  {row.status === "Released" && "Vabastatud"}
+                  {row.status === "Booked" && "Broneering"}
                 </TableCell>
                 <TableCell>{changeDate(row.startDate)}</TableCell>
                 <TableCell>{changeDate(row.endDate)}</TableCell>

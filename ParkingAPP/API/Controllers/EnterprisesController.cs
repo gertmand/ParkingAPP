@@ -99,7 +99,16 @@ namespace API.Controllers
         [HttpGet("{enterpriseId}/spot")]
         public ActionResult<EnterpriseParkingSpotDataResponse> GetEnterpriseParkingSpotData(int enterpriseId)
         {
-            CheckUser(enterpriseId);
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
 
             var spotListData =
                 _parkingSpotService.GetParkingSpotListData(_parkingSpotService
@@ -152,6 +161,7 @@ namespace API.Controllers
             if (Account == null)
             {
                 return Unauthorized();
+
             }
 
             if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
