@@ -12,6 +12,7 @@ namespace API.Models.ParkingSpotDtos
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int ReserverAccountId { get; set; }
+        public string? ReserverName { get; set; }
         public int ReservationId { get; set; }
         public int ReleasedId { get; set; }
         public int ParkingSpotId { get; set; }

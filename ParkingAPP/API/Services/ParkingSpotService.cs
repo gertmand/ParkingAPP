@@ -113,6 +113,7 @@ namespace API.Services
                 request.EndDate = reservation.EndDate.Date;
                 request.ReservationId = reservation.Id;
                 request.ReserverAccountId = reservation.ReserverAccountId;
+                request.ReserverName = GetAccountName(request.ReserverAccountId);
                 request.ParkingSpotId = spotId;
 
                 if (reservation.ReleasedSpotId != null)
@@ -234,6 +235,7 @@ namespace API.Services
             {
                 ParkingSpotId = request.ParkingSpotId,
                 ReserverAccountId = request.ReserverAccountId,
+                //ReserverName = GetAccountName(request.ReserverAccountId),
                 SpotAccountId = spotAccount?.AccountId,
                 StartDate = request.StartDate,
                 EndDate = request.EndDate,
@@ -267,6 +269,12 @@ namespace API.Services
                 .Where(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId)).SingleOrDefault();
 
             return parkingSpot;
+        }
+
+        private string GetAccountName(int userId)
+        {
+            var account = _context.Accounts.Find(userId);
+            return account.FirstName + " " + account.LastName;
         }
 
         private List<ReleasedSpot> RemoveReleasesIfReserved(List<ReleasedSpot> releases, List<Reservation> reservations)

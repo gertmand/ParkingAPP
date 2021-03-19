@@ -52,6 +52,7 @@ export type ParkingSpotListData = {
     startDate: Date,
     endDate: Date,
     reserverAccountId: number,
+    reserverName: string,
     reservationId: number,
     releasedId: number,
     parkingSpotId: number

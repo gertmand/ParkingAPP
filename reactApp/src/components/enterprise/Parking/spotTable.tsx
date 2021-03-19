@@ -32,7 +32,7 @@ const SpotTable:FC<Props> = ({data, updateSpotData}: any) => {
     return (
       <TableContainer component={Paper}>
         <Table className={classes.table} size="small" aria-label="a dense table">
-          {data.length === 0 ? <caption style={{textAlign: "center"}}>Andmed puuduvad</caption> : ""}
+          {data == undefined || data.length === 0 ? <caption style={{textAlign: "center"}}>Andmed puuduvad</caption> : ""}
           <TableHead>
             <TableRow>
               <TableCell>Tüüp</TableCell>
@@ -43,7 +43,7 @@ const SpotTable:FC<Props> = ({data, updateSpotData}: any) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row: ParkingSpotListData) => (
+            {data != undefined ? data.map((row: ParkingSpotListData) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.status === "Assigned" && "Laenatud"}
@@ -53,14 +53,14 @@ const SpotTable:FC<Props> = ({data, updateSpotData}: any) => {
                 </TableCell>
                 <TableCell>{changeDate(row.startDate)}</TableCell>
                 <TableCell>{changeDate(row.endDate)}</TableCell>
-                <TableCell>{row.reserverAccountId}</TableCell>
+                <TableCell>{row.reserverName}</TableCell>
                 <TableCell>
                   <Tooltip title="TÜHISTA">
                     <Button onClick={() => handleDelete(row)}><Delete color='error' /></Button>
                   </Tooltip>
                 </TableCell>
               </TableRow>
-            ))}
+            )): ""}
           </TableBody>
         </Table>
       </TableContainer>
