@@ -8,7 +8,6 @@ import {
   Toolbar
 } from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
-import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
@@ -29,7 +28,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
+const TopBar = ({ className, ...rest }) => {
   const classes = useStyles();
   const [notifications] = useState(["asd", "asd"]);
 
@@ -39,7 +38,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   };
 
   return (
-    <AppBar className={clsx(classes.root, classes.appBar, className)} elevation={0} {...rest}>
+    <AppBar className={clsx(classes.root, classes.appBar)} elevation={0} {...rest}>
       <Toolbar>
         <RouterLink to="/">
           <Logo />
@@ -58,11 +57,6 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
             <InputIcon />
           </IconButton>
         </Hidden>
-        <Hidden lgUp>
-          <IconButton color="inherit" onClick={onMobileNavOpen}>
-            <MenuIcon />
-          </IconButton>
-        </Hidden>
       </Toolbar>
     </AppBar>
   );
@@ -70,7 +64,6 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
 
 TopBar.propTypes = {
   className: PropTypes.string,
-  onMobileNavOpen: PropTypes.func
 };
 
 export default TopBar;

@@ -10,36 +10,24 @@ import ProductList from '../../style/views/product/ProductListView'
 import SettingsView from '../../style/views/settings/SettingsView'
 import PrivateRoute from './PrivateRoute'
 
-const PrivateRoutes = (enterprises: any) => {
+const PrivateRoutes = (props: any) => {
     const enterprise = localStorage.getItem('enterprise');
 
-    // if(enterprise == undefined) {
-    //     return(
-    //         <>
-    //         <GlobalStyles />
-    //         <DashboardNavLayout>
-    //             <Switch>
-    //                 <PrivateRoute exact path='/enterprise' component={() => <EnterpriseSelectionPage enterprises={enterprises} />} />
-    //                 <Redirect from ="*" to="/enterprise" />
-    //             </Switch>
-    //         </DashboardNavLayout>
-    //     </>
-    //     )
-    // } else {
         return(
             <>
                 <GlobalStyles />
-                    <DashboardLayout> 
-                        <Switch>
+                    <Switch>
+                            <PrivateRoute path='/enterprise' component={EnterpriseSelectionPage} />
+                        <DashboardLayout> 
                             <PrivateRoute exact path='/' component={HomePage} />
                             <PrivateRoute exact path='/profile' component={ProfileDetails} />
                             <PrivateRoute path='/settings' component={SettingsView} />
                             <PrivateRoute path='/test' component={ProductList} />
                             <PrivateRoute path='/profile' component={ProfileDetails} />
-                            <PrivateRoute path='/enterprise' component={EnterpriseSelectionPage} />
-                            {enterprise == null || enterprise == undefined ? <Redirect from="*" to='/enterprise' /> : <Redirect from="*" to='/' />}
-                        </Switch>
-                    </DashboardLayout>
+                            <Redirect from="*" to='/' />
+                            {/* {enterprise == null || enterprise == undefined ? <Redirect from="*" to='/enterprise' /> : <Redirect from="*" to='/' />} */}
+                            </DashboardLayout>
+                    </Switch>
             </>
             )
     // }

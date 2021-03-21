@@ -19,7 +19,7 @@ const HomePage = (props: any) => {
   const [reservationSpot, setReservationSpot] = useState<Reservation>()
 
   useEffect(() => {
-    if(localStorage.getItem('enterprise') == undefined) {
+    if(localStorage.getItem('enterprise') == "0") {
       props.history.push('/enterprise')
     }
   }, [])

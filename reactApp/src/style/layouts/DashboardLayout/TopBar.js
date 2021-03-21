@@ -6,7 +6,8 @@ import {
   IconButton,
   makeStyles,
   Toolbar,
-  Theme
+  Theme,
+  Typography
 } from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -51,7 +52,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   };
 
   const handleEnterprise = () => {
-    localStorage.removeItem("enterprise")
+    localStorage.setItem('enterprise', "0")
     window.location.reload();
   };
 
@@ -64,7 +65,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
         <Box flexGrow={1} />
         <Hidden mdDown>
           <Link variant="button" color="textPrimary" className={classes.link} onClick={() => handleEnterprise()}>
-            {enterprise != undefined || enterprise != null ? <p>{enterprise.name}</p>  : <p>Enterprise</p>}
+            {Object.entries(enterprise).length != 0 ? <p>{enterprise.name}</p>  : <p>ENTERPRISE</p> }
           </Link>
           <IconButton color="inherit">
             <Badge

@@ -8,7 +8,7 @@ import GlobalStyles from '../../style/GlobalStyles';
 import PrivateRoutes from './PrivateRoutes';
 import Routes from './Routes';
 
-const RenderView = (enterprises: any, {history, match}: any) => {
+const RenderView = (enterprise: any) => {
     const UserData = useSelector<AppState, User>(state => state.user.userData);
 
     if (UserData) {
@@ -21,7 +21,7 @@ const RenderView = (enterprises: any, {history, match}: any) => {
         } else {
             return (
                 <>
-                    <PrivateRoutes enterprises={enterprises} />
+                    <PrivateRoutes enterprise={enterprise} />
                 </>
             )}
     } else {

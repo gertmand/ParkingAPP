@@ -13,11 +13,13 @@ import { getEnterprise, getEnterpriseParkingSpotData, getEnterpriseUserData, get
 const App = (props: any) => {
   const dispatch = useDispatch();
   const [enterprises, setEnterprises] = useState();
+  const [enterprise, setEnterprise] = useState<string>("");
 
-  const getDataQuery = async (enterpriseId: number) => {
+  const getDataQuery = async (enterpriseId: any) => {
     getUserData().then(async (result:any) => {
       dispatch(ADD_USER_DATA(result));
-      if(enterpriseId != undefined) {
+      console.log(enterpriseId)
+      if(!isNaN(enterpriseId)) {
         await getEnterpriseUserData(enterpriseId, dispatch);
         await getEnterpriseParkingSpotData(enterpriseId, dispatch);
         await getEnterprise(enterpriseId, dispatch);
@@ -36,20 +38,23 @@ const App = (props: any) => {
   useEffect(() => {
     //localStorage.setItem('enterprise', "2");
     const token = localStorage.getItem('token');
-    const enterprise = localStorage.getItem('enterprise');
+    const enterpriseToken = localStorage.getItem('enterprise');
 
     if(token != null) {
-      if(enterprise == undefined || enterprise == null) {
+      if(enterpriseToken == undefined || enterpriseToken == null) {
         getEnterprises();
       }
-        getDataQuery(parseInt(enterprise!));
+        if(enterpriseToken != null || enterpriseToken != undefined) {
+          setEnterprise(enterpriseToken);
+        }
+        getDataQuery(parseInt(enterpriseToken!));
     }
 
   }, [localStorage.getItem('token'), localStorage.getItem('enterprise')])
 
   return (
       <ThemeProvider theme={theme}>
-        {RenderView(enterprises, props)}
+        {RenderView(enterprise)}
       </ThemeProvider>
   );
 };
