@@ -23,12 +23,12 @@ const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData}) =
     const [targetUser, setTargetUser] = useState(false);
     const [, setLoading] = useState(false);
     const [, setSuccess] = React.useState(false);
+    const enterpriseId = localStorage.getItem('enterprise')
 
     useEffect(() => {
-        if(regularUsers.length === 0)
-        // TODO: enterpriseId tuua sisse
-            getAccountsWithoutSpot(1).then(data => setRegularUsers(data));
-    }, [regularUsers])
+        if(regularUsers.length === 0 && enterpriseId != undefined)
+            getAccountsWithoutSpot(parseInt(enterpriseId!)).then(data => setRegularUsers(data));
+    }, [regularUsers, enterpriseId])
 
     const changeSelectedUser = (event: any, values: any) => {
         if (values) {

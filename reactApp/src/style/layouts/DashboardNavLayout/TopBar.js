@@ -5,8 +5,7 @@ import {
   Hidden,
   IconButton,
   makeStyles,
-  Toolbar,
-  Theme
+  Toolbar
 } from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -16,11 +15,8 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../Logo';
-import Link from '@material-ui/core/Link';
-import { useSelector } from 'react-redux';
-import { Enterprise } from '../../../store/types/enterpriseTypes'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {},
   avatar: {
     width: 60,
@@ -30,29 +26,16 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
     height:64,
     backgroundColor: "#008bd0"
-  },
-  link: {
-    margin: theme.spacing(1, 1.5),
-    color: "white",
-    '&:hover': {
-      cursor: "pointer"
-   },
   }
 }));
 
 const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const classes = useStyles();
   const [notifications] = useState(["asd", "asd"]);
-  const enterprise = useSelector(state => state.user.enterpriseData);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     window.location.reload(false);
-  };
-
-  const handleEnterprise = () => {
-    localStorage.removeItem("enterprise")
-    window.location.reload();
   };
 
   return (
@@ -63,9 +46,6 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
-          <Link variant="button" color="textPrimary" className={classes.link} onClick={() => handleEnterprise()}>
-            {enterprise != undefined || enterprise != null ? <p>{enterprise.name}</p>  : <p>Enterprise</p>}
-          </Link>
           <IconButton color="inherit">
             <Badge
               badgeContent={notifications.length}

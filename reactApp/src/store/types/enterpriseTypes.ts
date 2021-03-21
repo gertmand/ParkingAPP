@@ -28,8 +28,8 @@ export type Reservation = {
     reserverAccountId: number,
     releasedSpotId: number,
     parkingSpotId: number,
-    parkingSpaceNumber?: number,
-    parkingSpaceOwner?: string
+    parkingSpotNumber?: number,
+    parkingSpotOwner?: string
 }
 
 export type ReservationRequest = {

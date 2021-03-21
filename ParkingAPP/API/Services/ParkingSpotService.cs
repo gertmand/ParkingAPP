@@ -56,6 +56,9 @@ namespace API.Services
         {
             var parkingSpot = getParkingSpotByUserId(enterpriseId, userId);
 
+            if (parkingSpot == null)
+                return null;
+
             return _mapper.Map<ParkingSpotResponse>(parkingSpot);
         }
 
@@ -269,7 +272,7 @@ namespace API.Services
             var parkingSpot = _context.ParkingSpots
                 .Include(x => x.ParkingSpotAccounts)
                 .ThenInclude(x => x.Account)
-                .Where(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId)).SingleOrDefault();
+                .SingleOrDefault(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId));
 
             return parkingSpot;
         }

@@ -110,9 +110,16 @@ namespace API.Controllers
                 return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
             }
 
+            var spotId = _parkingSpotService
+                .GetUserParkingSpot(enterpriseId, Account.Id)?.Id;
+
+            if (spotId == null || spotId == 0)
+            {
+                return Ok();
+            }
+
             var spotListData =
-                _parkingSpotService.GetParkingSpotListData(_parkingSpotService
-                    .GetUserParkingSpot(enterpriseId, Account.Id).Id);
+                _parkingSpotService.GetParkingSpotListData(spotId.Value);
 
             var spotData = new EnterpriseParkingSpotDataResponse()
             {

@@ -1,8 +1,16 @@
 import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
 import { get, post } from "../../_helpers/fetch-wrapper"
-import { FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
-import { ReleaseRequest, Reservation, ReservationRequest } from "../types/enterpriseTypes"
+import { ADD_ENTERPRISE_DATA, FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
+import { ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
+
+export const getUserEnterprises = async () => {
+    return await get(`${apiUrl}/api/enterprises/user`)
+}
+
+export const getEnterprise = async (id: any, dispatch: any) => {
+    return await get(`${apiUrl}/api/enterprises/${id}`).then(data => dispatch(ADD_ENTERPRISE_DATA(data))).catch(data => localStorage.removeItem("enterprise"));
+}
 
 export const getEnterpriseUserData = async (enterpriseId: number, dispatch: any) => {
     dispatch(FETCH_ENTERPRISE_USER_DATA_START())

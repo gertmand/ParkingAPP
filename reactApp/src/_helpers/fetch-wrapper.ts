@@ -34,7 +34,7 @@ const handleResponse = (response: any) => {
         if (!response.ok) {
             if ([401, 403].includes(response.status)) {
                 // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
-                localStorage.clear();
+                localStorage.removeItem('token');
             }
 
             const error = (data && data.message) || response.statusText;

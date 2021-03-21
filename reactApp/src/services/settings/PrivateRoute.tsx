@@ -10,7 +10,9 @@ const PrivateRoute = (props:any, {roles}: any) => {
 
     if (!isAuthUser) return <Redirect to="/login" />;
   
-    return <Route {...props} />;
+    return (
+      <Route {...props} />
+    );
   };
 
 

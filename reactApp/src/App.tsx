@@ -7,32 +7,51 @@ import theme from './style/theme';
 import { getUserData } from './store/queries/userQueries';
 import { useDispatch } from 'react-redux';
 import { ADD_USER_DATA } from './store/userActions';
-import { getEnterpriseParkingSpotData, getEnterpriseUserData } from './store/queries/enterpriseQueries';
+import { getEnterprise, getEnterpriseParkingSpotData, getEnterpriseUserData, getUserEnterprises } from './store/queries/enterpriseQueries';
 
 
 const App = (props: any) => {
   const dispatch = useDispatch();
+  const [enterprises, setEnterprises] = useState();
+
+  const getDataQuery = async (enterpriseId: number) => {
+    getUserData().then(async (result:any) => {
+      dispatch(ADD_USER_DATA(result));
+      if(enterpriseId != undefined) {
+        await getEnterpriseUserData(enterpriseId, dispatch);
+        await getEnterpriseParkingSpotData(enterpriseId, dispatch);
+        await getEnterprise(enterpriseId, dispatch);
+      }
+    }).catch(() => {
+      localStorage.removeItem('token')
+      window.location.reload(false);})
+  }
+
+  const getEnterprises = async () => {
+    await getUserEnterprises().then(async (result) => {
+      await setEnterprises(result);
+     })
+  }
 
   useEffect(() => {
+    //localStorage.setItem('enterprise', "2");
     const token = localStorage.getItem('token');
+    const enterprise = localStorage.getItem('enterprise');
 
     if(token != null) {
-      getUserData().then((result:any) => {
-        dispatch(ADD_USER_DATA(result));
-      }).catch(() => {
-        localStorage.clear()
-        window.location.reload(false);})}
+      if(enterprise == undefined || enterprise == null) {
+        getEnterprises();
+      }
+        getDataQuery(parseInt(enterprise!));
+    }
 
-      getEnterpriseUserData(1, dispatch); // TODO: Enterprise ID sisse tuua
-      getEnterpriseParkingSpotData(1, dispatch); // TODO: Enterprise ID sisse tuua
-    }, [localStorage.getItem('token')])
+  }, [localStorage.getItem('token'), localStorage.getItem('enterprise')])
 
   return (
       <ThemeProvider theme={theme}>
-        {RenderView(props)}
+        {RenderView(enterprises, props)}
       </ThemeProvider>
   );
 };
-
 
 export default App;
