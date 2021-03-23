@@ -100,7 +100,7 @@ namespace API.Helpers
                 {
                     new EnterpriseAccount {AccountId = 1, EnterpriseId = 1},
                     new EnterpriseAccount {AccountId = 1, EnterpriseId = 2},
-                    new EnterpriseAccount {AccountId = 2, EnterpriseId = 1},
+                    new EnterpriseAccount {AccountId = 2, EnterpriseId = 1, IsAdmin = true},
                     new EnterpriseAccount {AccountId = 3, EnterpriseId = 1}
                 });
 

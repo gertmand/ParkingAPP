@@ -1,5 +1,6 @@
 import React from 'react'
 import { Redirect, Switch } from 'react-router'
+import AdminPage from '../../pages/AdminPage'
 import EnterpriseSelectionPage from '../../pages/EnterpriseSelectionPage'
 import HomePage from '../../pages/HomePage'
 import GlobalStyles from '../../style/GlobalStyles'
@@ -24,6 +25,7 @@ const PrivateRoutes = (props: any) => {
                             <PrivateRoute path='/settings' component={SettingsView} />
                             <PrivateRoute path='/test' component={ProductList} />
                             <PrivateRoute path='/profile' component={ProfileDetails} />
+                            <PrivateRoute path='/admin' component={AdminPage} />
                             <Redirect from="*" to='/' />
                             {/* {enterprise == null || enterprise == undefined ? <Redirect from="*" to='/enterprise' /> : <Redirect from="*" to='/' />} */}
                             </DashboardLayout>

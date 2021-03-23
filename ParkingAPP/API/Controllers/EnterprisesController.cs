@@ -81,6 +81,7 @@ namespace API.Controllers
 
             var reservations = _parkingSpotService.GetUserReservations(enterpriseId, Account.Id);
             var parkingSpot = _parkingSpotService.GetUserParkingSpot(enterpriseId, Account.Id);
+            var isAdmin = _enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id);
 
             if(parkingSpot != null)
                 parkingSpot.Status = _parkingSpotService.GetParkingSpotStatus(parkingSpot.Id);
@@ -90,7 +91,8 @@ namespace API.Controllers
             var userData = new EnterpriseUserDataResponse
             {
                 ParkingSpot = parkingSpot,
-                Reservations = reservations
+                Reservations = reservations,
+                IsAdmin = isAdmin
             };
 
             return userData;

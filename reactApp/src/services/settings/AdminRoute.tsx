@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { connect, useSelector } from "react-redux";
 import { Redirect } from "react-router";
+import { AppState } from "../../store";
+import { getEnterpriseUserData } from "../../store/queries/enterpriseQueries";
+import { User } from "../../store/types/userType";
 import PrivateRoute from "./PrivateRoute";
 
 const AdminRoute = (props:any) => {
-  // const userAdmin= useSelector<AppState, User>(state => state.user.userAdmin);
+  //const enterpriseUserData= useSelector(state => state.user.enterpriseUserData);
   const [userAdmin, setAdmin] = useState(false);
 
   if(!userAdmin) { return <Redirect to='/home' />}
@@ -14,7 +17,7 @@ const AdminRoute = (props:any) => {
 
 const mapStateToProps = (state: any) => {
   return {
-      admin: state.user.userAdmin
+      admin: state.user.enterpriseUserData
   };
 }
 

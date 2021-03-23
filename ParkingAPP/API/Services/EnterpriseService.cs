@@ -22,6 +22,7 @@ namespace API.Services
         IEnumerable<Reservation> GetReservations();
         IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId);
         bool CheckUserEnterprise(int userId, int enterpriseId);
+        bool GetEnterpriseAdmin(int enterpriseId, int userId);
     }
 
 
@@ -98,7 +99,15 @@ namespace API.Services
             }
 
             return regularUsersList;
-        } 
+        }
+
+        public bool GetEnterpriseAdmin(int enterpriseId, int userId)
+        {
+            var isAdmin = _context.EnterpriseAccounts
+                .Where(x => x.AccountId == userId && x.EnterpriseId == enterpriseId).First().IsAdmin;
+
+            return isAdmin;
+        }
 
         // helper methods
 

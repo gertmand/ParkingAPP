@@ -7,6 +7,8 @@ namespace API.Models.JoinedEntities
         public int AccountId { get; set; }
         public int EnterpriseId { get; set; }
 
+        public bool IsAdmin { get; set; } = false;
+
         public Account Account { get; set; }
         public Enterprise Enterprise { get; set; }
     }

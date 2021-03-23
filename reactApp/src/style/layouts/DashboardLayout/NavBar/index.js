@@ -53,26 +53,9 @@ const items = [
 
 const adminItems = [
   {
-    href: '/admin/cars',
-    icon: DriveEtaIcon,
-    title: 'USSi teavitamine'
-  },
-  {
-    href: '/admin/users',
-    icon: UsersIcon,
-    title: 'Töötajad'
-  },
-  
-  {
-    href: '/admin/parkimiskohad',
-    icon: Columns,
-    title: 'Parkimiskohad'
-  },
-  
-  {
-    href: '/admin/logs',
+    href: '/admin',
     icon: BookOpen,
-    title: 'Logid'
+    title: 'Admin'
   }
 ];
 
@@ -100,7 +83,7 @@ const useStyles = makeStyles(() => ({
 
 const NavBar = ({ onMobileClose, openMobile }, props) => {
   const userData = useSelector(state => state.user.userData);
-  // const userAdmin = useSelector(state => state.user.userAdmin);
+  const enterpriseUserData = useSelector(state => state.user.enterpriseUserData);
   const classes = useStyles();
   const location = useLocation();
 
@@ -136,7 +119,7 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
         </List>
       </Box>
 
-      {/* {userAdmin && 
+      {enterpriseUserData.isAdmin && 
       <><Box flexGrow={1} />
           <Box p={2}>
             <List>
@@ -149,7 +132,7 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
               ))}
             </List>
           </Box></> 
-      } */}
+      }
     </Box>
   );
 
