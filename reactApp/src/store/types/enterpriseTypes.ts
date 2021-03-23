@@ -12,6 +12,8 @@ export enum EnterpriseType {
     Appartment
 }
 
+// Enterprise User Data
+
 export type EnterpriseUserData = {
     reservations?: Reservation[],
     parkingSpot?: ParkingSpot
@@ -24,14 +26,50 @@ export type Reservation = {
     deletionDate?: Date
     spotAccountId: number,
     reserverAccountId: number,
+    releasedSpotId: number,
     parkingSpotId: number,
-    releasedSpotId: number
+    parkingSpotNumber?: number,
+    parkingSpotOwner?: string
+}
+
+export type ReservationRequest = {
+    startDate: Date,
+    endDate: Date,
+    reserverAccountId: number,
+    parkingSpotId: number
+}
+
+
+// Enterprise ParkingSpot Data
+
+export type EnterpriseParkingSpotData = {
+    spotListData: ParkingSpotListData[]
+}
+
+export type ParkingSpotListData = {
+    id: number,
+    status: string,
+    startDate: Date,
+    endDate: Date,
+    reserverAccountId: number,
+    reserverName: string,
+    reservationId: number,
+    releasedId: number,
+    parkingSpotId: number
 }
 
 export type ParkingSpot = {
     id: number,
     created: Date,
     updated: Date,
-    deletionDate?: Date
-    number: Number
+    deletionDate?: Date,
+    number: Number,
+    status: string
+}
+
+export type ReleaseRequest = {
+    parkingSpaceId: number,
+    startDate: Date,
+    endDate: Date,
+    enterpriseId: number
 }

@@ -3,21 +3,19 @@ import LocalParkingIcon from '@material-ui/icons/LocalParking'
 import clsx from 'clsx'
 import React, { FC, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { AppState } from '../../store'
-import { ParkingSpot } from '../../store/types/enterpriseTypes'
+import { ParkingSpot, Reservation } from '../../../store/types/enterpriseTypes'
+import ReleaseSpot from './releaseSpot'
 
 type Props = {
     spot: ParkingSpot,
+    reservedSpot?: Reservation,
     giveSpotModal: boolean,
     handleGiveSpot(e: any): any,
     updateSpotData(): any,
 }
 
-const SpotData:FC<Props> = ({spot, giveSpotModal, handleGiveSpot, updateSpotData}) => {
+const SpotData:FC<Props> = ({spot, reservedSpot, giveSpotModal, handleGiveSpot, updateSpotData}) => {
     const classes = useStyles();
-    // const spotStatus = useSelector<AppState, string>(state => state.parkingSpace.spotStatus);
-    const [spotStatus, setSpotStatus] = useState("active");
-    //const cars = useSelector<AppState, Car[]>(state => state.car.carData);
     const [releaseModal, setReleaseModal] = useState(false);
 
     const handleRelease = (e: any) => {
@@ -31,14 +29,24 @@ const SpotData:FC<Props> = ({spot, giveSpotModal, handleGiveSpot, updateSpotData
                     PARKIMISKOHT
                 </Typography>
                 <Typography color="textPrimary" variant="h4">
-                    KOHT: {spot.number}
+                    KOHT: {spot != undefined ? spot.number : reservedSpot != undefined ? reservedSpot.parkingSpotNumber : "Puudub"}
                 </Typography>
                 
-                <Typography color="textPrimary" style={{marginTop: 7}} variant="h4">STAATUS: 
-                {spotStatus === "active" ? <p style={{display:"inline", color:"green"}}> AKTIIVNE!</p> : ""}
-                {spotStatus === "reserved" ? <p style={{display:"inline", color:"red"}}> BRONEERITUD!</p> : ""}
-                {spotStatus === "released" ? <p style={{display:"inline", color:"#a25900"}}> VABASTATUD!</p> : ""}
-                </Typography>
+                {spot != undefined && 
+                    <Typography color="textPrimary" style={{marginTop: 7}} variant="h4">STAATUS: 
+                        {spot.status.toLowerCase() === "active" ? <p style={{display:"inline", color:"green"}}> AKTIIVNE!</p> : ""}
+                        {spot.status.toLowerCase() === "reserved" ? <p style={{display:"inline", color:"red"}}> BRONEERITUD!</p> : ""}
+                        {spot.status.toLowerCase() === "released" ? <p style={{display:"inline", color:"#a25900"}}> VABASTATUD!</p> : ""}
+                    </Typography>
+                }
+
+                {reservedSpot != undefined && 
+                    <Typography color="textPrimary" style={{marginTop: 7}} variant="h4">STAATUS: 
+                        <p style={{display:"inline", color:"green"}}> BRONEERING!</p>
+                    </Typography>
+                }
+
+
                 {/* <Typography style={{marginTop: 7, display: 'inline-block'}} color="textPrimary" variant="h4">
                     AUTO NUMBER: {cars.map(car => (
                         <span className={clsx(classes.ulParent)} key={car.id}>{car.regNr} </span>
@@ -66,7 +74,7 @@ const SpotData:FC<Props> = ({spot, giveSpotModal, handleGiveSpot, updateSpotData
                             Vabasta koht
                         </Button>
                     </Grid>
-                {/* <ReleaseSpot updateSpotData={updateSpotData} releaseModal={releaseModal} setReleaseModal={handleRelease}/> */}
+                { <ReleaseSpot updateSpotData={updateSpotData} releaseModal={releaseModal} setReleaseModal={handleRelease}/> }
                 </Typography>
             </Grid>
         </Grid>

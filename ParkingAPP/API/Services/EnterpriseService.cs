@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using API.Helpers;
 using API.Models.EnterpriseDtos;
@@ -19,6 +20,7 @@ namespace API.Services
         IEnumerable<EnterpriseResponse> GetAll();
         IEnumerable<EnterpriseResponse> GetAllByAccountId(int userId);
         IEnumerable<Reservation> GetReservations();
+        IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId);
         bool CheckUserEnterprise(int userId, int enterpriseId);
     }
 
@@ -73,6 +75,30 @@ namespace API.Services
             }
             return false;
         }
+
+        public IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId)
+        {
+            var regularUsersList = new List<EnterpriseAccountsResponse>();
+
+            var spotUsers = _context.ParkingSpotAccounts.ToListAsync().Result.Select(x => x.AccountId);
+
+            var allUsers = _context.Accounts.ToList();
+
+            foreach (var user in allUsers)
+            {
+                if (!spotUsers.Contains(user.Id))
+                {
+                    regularUsersList.Add(new EnterpriseAccountsResponse
+                    {
+                        UserId = user.Id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName
+                    });
+                }
+            }
+
+            return regularUsersList;
+        } 
 
         // helper methods
 

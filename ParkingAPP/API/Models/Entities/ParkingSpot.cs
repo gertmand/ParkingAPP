@@ -13,6 +13,6 @@ namespace API.Models.Entities
         public int EnterpriseId { get; set; }
 
         public virtual Enterprise Enterprise { get; set; }
-        public virtual ICollection<ParkingSpotAccounts> ParkingSpotAccounts { get; set; }
+        public virtual ICollection<ParkingSpotAccount> ParkingSpotAccounts { get; set; }
     }
 }

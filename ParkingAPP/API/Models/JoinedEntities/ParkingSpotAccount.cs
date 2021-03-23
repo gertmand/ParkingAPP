@@ -2,7 +2,7 @@
 
 namespace API.Models.JoinedEntities
 {
-    public class ParkingSpotAccounts
+    public class ParkingSpotAccount
     {
         public int ParkingSpotId { get; set; }
         public int AccountId { get; set; }

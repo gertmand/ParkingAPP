@@ -18,13 +18,18 @@ namespace API.Helpers
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
         public DbSet<ReleasedSpot> ReleasedSpots { get; set; }
 
+        // Joined Entitied
+
+        public DbSet<ParkingSpotAccount> ParkingSpotAccounts { get; set; }
+        public DbSet<EnterpriseAccount> EnterpriseAccounts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<EnterpriseAccount>().ToTable("EnterpriseAccounts")
                 .HasKey(key => new {key.AccountId, key.EnterpriseId});
-            modelBuilder.Entity<ParkingSpotAccounts>().ToTable("ParkingSpotAccounts")
+            modelBuilder.Entity<ParkingSpotAccount>().ToTable("ParkingSpotAccount")
                 .HasKey(key => new {key.AccountId, key.ParkingSpotId});
 
             modelBuilder.Entity<Account>().Property(i => i.Id).HasIdentityOptions(startValue: 4);
@@ -102,23 +107,23 @@ namespace API.Helpers
             for (var i = 1; i <= 32; i++)
             {
                 modelBuilder.Entity<ParkingSpot>().HasData(
-                    new ParkingSpot { Id = i, Number = i, EnterpriseId = 1, Created = new DateTime(2021, 01, 01), Updated = new DateTime(2021, 01, 01)}
+                    new ParkingSpot { Id = i, Number = i+105, EnterpriseId = 1, Created = new DateTime(2021, 01, 01), Updated = new DateTime(2021, 01, 01)}
                 );
             }
 
-            modelBuilder.Entity<ParkingSpotAccounts>().HasData(
-                new List<ParkingSpotAccounts>
+            modelBuilder.Entity<ParkingSpotAccount>().HasData(
+                new List<ParkingSpotAccount>
                 {
-                    new ParkingSpotAccounts {AccountId = 1, ParkingSpotId = 1},
+                    new ParkingSpotAccount {AccountId = 1, ParkingSpotId = 1},
                 });
 
-            modelBuilder.Entity<ReleasedSpot>().HasData(
-                new ReleasedSpot { Id = 1, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 02, 01)}
-            );
+            //modelBuilder.Entity<ReleasedSpot>().HasData(
+            //    new ReleasedSpot { Id = 1, ParkingSpotId = 2, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 05, 01)}
+            //);
 
-            modelBuilder.Entity<Reservation>().HasData(
-                new Reservation {Id = 1, SpotAccountId = 1, ReserverAccountId = 2, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 02, 01) }
-            );
+            //modelBuilder.Entity<Reservation>().HasData(
+            //    new Reservation {Id = 1, SpotAccountId = 1, ReserverAccountId = 2, ParkingSpotId = 1, StartDate = new DateTime(2021, 01, 01), EndDate = new DateTime(2021, 05, 01) }
+            //);
         }
     }
 }

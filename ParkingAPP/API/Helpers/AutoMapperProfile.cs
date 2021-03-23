@@ -43,6 +43,8 @@ namespace API.Helpers
 
             CreateMap<Reservation, ReservationResponse>();
 
+            CreateMap<ReleasedSpot, ReleasedResponse>();
+
             CreateMap<EnterpriseCreateRequest, Enterprise>();
         }
     }
