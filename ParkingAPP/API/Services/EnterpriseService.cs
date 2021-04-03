@@ -23,6 +23,7 @@ namespace API.Services
         IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId);
         bool CheckUserEnterprise(int userId, int enterpriseId);
         bool GetEnterpriseAdmin(int enterpriseId, int userId);
+        bool GetEnterpriseData(int enterpriseId, int userId);
     }
 
 
@@ -107,6 +108,14 @@ namespace API.Services
                 .Where(x => x.AccountId == userId && x.EnterpriseId == enterpriseId).First().IsAdmin;
 
             return isAdmin;
+        }
+
+        public bool GetEnterpriseData(int enterpriseId, int userId)
+        {
+            var canBook = _context.EnterpriseAccounts
+                .Where(x => x.AccountId == userId && x.EnterpriseId == enterpriseId).First().CanBook;
+
+            return canBook;
         }
 
         // helper methods

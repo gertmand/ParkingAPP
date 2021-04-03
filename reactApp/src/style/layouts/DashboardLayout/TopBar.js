@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
 const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const classes = useStyles();
-  const [notifications] = useState(["asd", "asd"]);
+  const [notifications] = useState(["asd", "asd", "asd"]);
   const enterprise = useSelector(state => state.user.enterpriseData);
 
   const handleLogout = () => {

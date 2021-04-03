@@ -11,16 +11,12 @@ type Props = {
     reservedSpot?: Reservation,
     giveSpotModal: boolean,
     handleGiveSpot(e: any): any,
+    handleRelease(e: any): any,
     updateSpotData(): any,
 }
 
-const SpotData:FC<Props> = ({spot, reservedSpot, giveSpotModal, handleGiveSpot, updateSpotData}) => {
+const SpotData:FC<Props> = ({spot, reservedSpot, giveSpotModal, handleGiveSpot, updateSpotData, handleRelease}) => {
     const classes = useStyles();
-    const [releaseModal, setReleaseModal] = useState(false);
-
-    const handleRelease = (e: any) => {
-        setReleaseModal(!releaseModal);
-    }
 
     return (
         <Grid container justify="space-between" spacing={3}>
@@ -65,16 +61,10 @@ const SpotData:FC<Props> = ({spot, reservedSpot, giveSpotModal, handleGiveSpot, 
             <Grid container item justify="space-between" spacing={1}>
                 <Typography color="textSecondary" variant="caption" className={clsx(classes.parkingSpotCard)} >
                     <Grid item>
-                        <Button className={clsx(classes.buttonGiveSpot)} onClick={() => handleGiveSpot(!giveSpotModal)} variant="contained" color="primary">
-                            Laena koht kolleegile
+                        <Button className={clsx(classes.detailButton)}  variant="contained" color="primary">
+                            Detailid
                         </Button>
                     </Grid>
-                    <Grid item>
-                        <Button className={clsx(classes.buttonRelease)} onClick={() => setReleaseModal(true)} variant="contained" color="primary">
-                            Vabasta koht
-                        </Button>
-                    </Grid>
-                { <ReleaseSpot updateSpotData={updateSpotData} releaseModal={releaseModal} setReleaseModal={handleRelease}/> }
                 </Typography>
             </Grid>
         </Grid>
@@ -105,8 +95,8 @@ const useStyles = makeStyles(theme => ({
             float: "none",
         },
     },
-    buttonRelease: {
-        float: "right",
+    detailButton: {
+        float: "left",
         [theme.breakpoints.down('xs')]: {
             float: "none",
             marginTop: "5px",

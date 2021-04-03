@@ -20,17 +20,17 @@ const user = {
 
 const items = [
   {
-    href: '/home',
+    href: '/',
     icon: BarChartIcon,
     title: 'Esileht'
   },
   {
-    href: '/home',
+    href: '/',
     icon: BarChartIcon,
     title: 'Parkimiskoht'
   },
   {
-    href: '/home',
+    href: '/',
     icon: BarChartIcon,
     title: 'Broneeringud'
   },
@@ -38,6 +38,16 @@ const items = [
     href: '/profile',
     icon: BarChartIcon,
     title: 'Profiil'
+  },
+  {
+    href: '/test',
+    icon: BarChartIcon,
+    title: 'Test'
+  },
+  {
+    href: '/settings',
+    icon: BarChartIcon,
+    title: 'Test2'
   },
   // {
   //   href: '/userDetails',

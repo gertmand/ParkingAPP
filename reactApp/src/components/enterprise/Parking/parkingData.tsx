@@ -1,29 +1,38 @@
-import { Card, CardContent, Grid, makeStyles } from '@material-ui/core';
+import { Button, Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getEnterpriseUserData, getEnterpriseParkingSpotData } from '../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotListData, Reservation } from '../../../store/types/enterpriseTypes';
 import GiveSpot from './giveSpot';
+import ReleaseSpot from './releaseSpot';
 import SpotData from './spotData';
 import SpotTable from './spotTable';
+import Toolbar from './toolbar';
 
 
 type SpotProps = {
     parkingSpot?: ParkingSpot,
     parkingSpotDataList?: ParkingSpotListData[],
-    reservedSpot?: Reservation
+    reservedSpot?: Reservation,
+    addReservationButton: boolean,
+    spotButtons: boolean
 }
 
-const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservedSpot }) => {
+const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservedSpot, addReservationButton, spotButtons }) => {
     const classes = useStyles();
     const [giveSpotModal, setGiveSpotModal] = useState(false);
+    const [releaseModal, setReleaseModal] = useState(false);
     const isCancelled = React.useRef(false);
     const dispatch = useDispatch();
     const enterpriseId = localStorage.getItem('enterprise')
 
     const handleGiveSpot = (e: any) => {
         setGiveSpotModal(!giveSpotModal);
+    }
+
+    const handleRelease = (e: any) => {
+        setReleaseModal(!releaseModal);
     }
 
     const updateSpotTable = () => {
@@ -44,11 +53,12 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reserved
 
     return (
         <>
+        <Toolbar addReservationButton={addReservationButton} handleGiveSpot={handleGiveSpot} handleRelease={handleRelease} spotButtons={spotButtons} />
         <Grid container spacing={1} className={classes.height}>
             <Grid item xs={12}>
                 <Card className={clsx(classes.card)}>
                     <CardContent>
-                        <SpotData updateSpotData={updateSpotTable} handleGiveSpot={handleGiveSpot} giveSpotModal={giveSpotModal} spot={parkingSpot!} reservedSpot={reservedSpot} />
+                        <SpotData handleRelease={handleRelease} updateSpotData={updateSpotTable} handleGiveSpot={handleGiveSpot} giveSpotModal={giveSpotModal} spot={parkingSpot!} reservedSpot={reservedSpot} />
                     </CardContent>
                 </Card>
             </Grid>
@@ -59,6 +69,7 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reserved
             </Grid> }
         </Grid>
         <GiveSpot updateSpotData={updateSpotTable} giveSpotModal={giveSpotModal} setGiveSpotModal={handleGiveSpot} />
+        <ReleaseSpot updateSpotData={updateSpotTable} releaseModal={releaseModal} setReleaseModal={handleRelease} />
         </>
     )
 }

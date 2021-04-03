@@ -98,7 +98,7 @@ namespace API.Helpers
             modelBuilder.Entity<EnterpriseAccount>().HasData(
                 new List<EnterpriseAccount>
                 {
-                    new EnterpriseAccount {AccountId = 1, EnterpriseId = 1},
+                    new EnterpriseAccount {AccountId = 1, EnterpriseId = 1, CanBook = true},
                     new EnterpriseAccount {AccountId = 1, EnterpriseId = 2},
                     new EnterpriseAccount {AccountId = 2, EnterpriseId = 1, IsAdmin = true},
                     new EnterpriseAccount {AccountId = 3, EnterpriseId = 1}

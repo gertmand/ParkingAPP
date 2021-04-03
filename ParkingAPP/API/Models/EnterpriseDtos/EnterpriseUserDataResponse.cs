@@ -9,7 +9,7 @@ namespace API.Models.EnterpriseDtos
     {
         public ParkingSpotResponse? ParkingSpot { get; set; }
         public IEnumerable<ReservationResponse>? Reservations { get; set; }
-
         public bool? IsAdmin { get; set; }
+        public bool? CanBook { get; set; }
     }
 }

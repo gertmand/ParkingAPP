@@ -18,10 +18,9 @@ export const SelectBookDate:FC<DateType> = ( {date, onDateChange, label, exclude
 
   const handleDateChange = (date: Date | null) => {
     if(date != null)
-      onDateChange(new Date(date?.setUTCHours(date.getUTCHours() + 10)));
+      onDateChange(new Date(date?.setUTCHours(date.getUTCHours() + 2)));
     console.log(date)
   };
-
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={estLocale}>
