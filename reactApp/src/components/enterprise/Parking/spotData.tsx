@@ -1,10 +1,8 @@
 import { Avatar, Button, colors, Grid, Hidden, makeStyles, Typography } from '@material-ui/core'
 import LocalParkingIcon from '@material-ui/icons/LocalParking'
 import clsx from 'clsx'
-import React, { FC, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { FC } from 'react'
 import { ParkingSpot, Reservation } from '../../../store/types/enterpriseTypes'
-import ReleaseSpot from './releaseSpot'
 
 type Props = {
     spot: ParkingSpot,
@@ -25,10 +23,10 @@ const SpotData:FC<Props> = ({spot, reservedSpot, giveSpotModal, handleGiveSpot, 
                     PARKIMISKOHT
                 </Typography>
                 <Typography color="textPrimary" variant="h4">
-                    KOHT: {spot != undefined ? spot.number : reservedSpot != undefined ? reservedSpot.parkingSpotNumber : "Puudub"}
+                    KOHT: {spot !== undefined ? spot.number : reservedSpot !== undefined ? reservedSpot.parkingSpotNumber : "Puudub"}
                 </Typography>
                 
-                {spot != undefined && 
+                {spot !== undefined && 
                     <Typography color="textPrimary" style={{marginTop: 7}} variant="h4">STAATUS: 
                         {spot.status.toLowerCase() === "active" ? <p style={{display:"inline", color:"green"}}> AKTIIVNE!</p> : ""}
                         {spot.status.toLowerCase() === "reserved" ? <p style={{display:"inline", color:"red"}}> BRONEERITUD!</p> : ""}
@@ -36,7 +34,7 @@ const SpotData:FC<Props> = ({spot, reservedSpot, giveSpotModal, handleGiveSpot, 
                     </Typography>
                 }
 
-                {reservedSpot != undefined && 
+                {reservedSpot !== undefined && 
                     <Typography color="textPrimary" style={{marginTop: 7}} variant="h4">STAATUS: 
                         <p style={{display:"inline", color:"green"}}> BRONEERING!</p>
                     </Typography>

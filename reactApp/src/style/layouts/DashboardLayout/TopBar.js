@@ -6,7 +6,6 @@ import {
   IconButton,
   makeStyles,
   Toolbar,
-  Theme,
   Typography
 } from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
@@ -15,11 +14,11 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../Logo';
+
 import Link from '@material-ui/core/Link';
-import { useSelector } from 'react-redux';
-import { Enterprise } from '../../../store/types/enterpriseTypes'
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -36,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1, 1.5),
     color: "white",
     '&:hover': {
-      cursor: "pointer"
+      cursor: "pointer",
+      textDecoration: "underline"
    },
   }
 }));
@@ -51,11 +51,6 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
     window.location.reload(false);
   };
 
-  const handleEnterprise = () => {
-    localStorage.setItem('enterprise', "0")
-    window.location.reload();
-  };
-
   return (
     <AppBar className={clsx(classes.root, classes.appBar, className)} elevation={0} {...rest}>
       <Toolbar>
@@ -64,9 +59,9 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
-          <Link variant="button" color="textPrimary" className={classes.link} onClick={() => handleEnterprise()}>
-            {Object.entries(enterprise).length != 0 ? <p>{enterprise.name}</p>  : <p>ENTERPRISE</p> }
-          </Link>
+          <RouterLink to="/enterprise" onClick={() => localStorage.setItem('enterprise', "0")}>
+            {Object.entries(enterprise).length !== 0 ? <Typography variant="button" display="block" className={classes.link}>{enterprise.name}</Typography>  : <Typography variant="button" display="block" className={classes.link}>ENTERPRISE</Typography> }
+          </RouterLink>
           <IconButton color="inherit">
             <Badge
               badgeContent={notifications.length}

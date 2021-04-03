@@ -14,20 +14,20 @@ import {
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
-const states = [
-  {
-    value: 'alabama',
-    label: 'Alabama'
-  },
-  {
-    value: 'new-york',
-    label: 'New York'
-  },
-  {
-    value: 'san-francisco',
-    label: 'San Francisco'
-  }
-];
+// const states = [
+//   {
+//     value: 'alabama',
+//     label: 'Alabama'
+//   },
+//   {
+//     value: 'new-york',
+//     label: 'New York'
+//   },
+//   {
+//     value: 'san-francisco',
+//     label: 'San Francisco'
+//   }
+// ];
 
 const useStyles = makeStyles(() => ({
   root: {}

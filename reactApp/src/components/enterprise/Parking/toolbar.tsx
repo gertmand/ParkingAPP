@@ -1,7 +1,5 @@
-import { Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core';
-import { Box } from '@material-ui/core'
-import React, { FC } from 'react'
+import { Box, Button, makeStyles } from '@material-ui/core';
+import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../store';
 
@@ -9,10 +7,11 @@ type Props = {
     addReservationButton: boolean,
     handleGiveSpot(e: any): any,
     handleRelease(e: any): any,
+    handleBook(e: any): any,
     spotButtons: boolean
 }
 
-const Toolbar:FC<Props> = ({addReservationButton, handleGiveSpot, handleRelease, spotButtons}) => {
+const Toolbar:FC<Props> = ({addReservationButton, handleGiveSpot, handleRelease, handleBook, spotButtons}) => {
     const classes = useStyles();
     const canBook = useSelector<AppState, boolean>(state => state.user.enterpriseUserData.canBook)
 
@@ -29,10 +28,10 @@ const Toolbar:FC<Props> = ({addReservationButton, handleGiveSpot, handleRelease,
                     VABASTA KOHT
                 </Button>
             }
-                {addReservationButton === true || canBook === true && 
-                    <Button color="primary" variant="contained" >
+                {addReservationButton === true || canBook === true ? 
+                    <Button color="primary" variant="contained" onClick={() => handleBook(true)}>
                         LISA BRONEERING
-                    </Button>
+                    </Button> : ""
                 }
             </Box>
         </div>

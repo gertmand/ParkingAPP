@@ -13,6 +13,7 @@ export const getEnterprise = async (id: any, dispatch: any) => {
 }
 
 export const getEnterpriseUserData = async (enterpriseId: number, dispatch: any) => {
+    if(enterpriseId === 0) { return null }
     dispatch(FETCH_ENTERPRISE_USER_DATA_START())
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/user`).then(data => dispatch(FETCH_ENTERPRISE_USER_DATA_SUCCESS(data))).catch(err => dispatch(FETCH_ENTERPRISE_USER_DATA_ERROR(err)))
 }
@@ -36,6 +37,7 @@ export const cancelSpotRelease = async (data: any) => {
 }
 
 export const getEnterpriseParkingSpotData = async (enterpriseId: number, dispatch: any) => {
+    if(enterpriseId === 0) { return null }
     dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_START())
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/spot`).then(data => dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS(data))).catch(err => dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR(err)))
 }

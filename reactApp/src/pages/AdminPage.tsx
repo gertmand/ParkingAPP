@@ -1,21 +1,77 @@
-import { Button, Card, CardContent, Container, Grid } from '@material-ui/core';
-import React from 'react';
-import Page from '../style/Page';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Container, Grid, Paper } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import HelpIcon from '@material-ui/icons/Help';
-import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-import ThumbDown from '@material-ui/icons/ThumbDown';
-import ThumbUp from '@material-ui/icons/ThumbUp';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import { makeStyles, Theme } from '@material-ui/core/styles';
+import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs';
+import Typography from '@material-ui/core/Typography';
+import React from 'react';
+import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
+import Page from '../style/Page';
 
-interface TabPanelProps {
+
+  export const AdminPage = (props: any) => {
+    const classes = useStyles();
+    const [value, setValue] = React.useState(0);
+  
+    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+      setValue(newValue);
+    };
+  
+    return (
+      <Page {...props.children} className={classes.root} title="Admin">
+        <Container maxWidth={false}>
+          <Grid container spacing={1} className={classes.height}>
+            <Grid item xs={12}>
+              <div className={classes.root}>
+                <Paper>
+                  <AppBar position="static">
+                    <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="off" aria-label="scrollable prevent tabs example">
+                      <Tab label="Parklakohad"  aria-label="spots" {...a11yProps(0)} />
+                      <Tab label="Liikmed" aria-label="members" {...a11yProps(1)} />
+                      <Tab label="Seaded" aria-label="settings" {...a11yProps(2)} />
+                    </Tabs>
+                  </AppBar>
+                  <TabPanel value={value} index={0}>
+                    <ParkingTable />
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    Item Two
+                  </TabPanel>
+                  <TabPanel value={value} index={2}>
+                    Item Three
+                  </TabPanel>
+                </Paper>
+              </div>
+            </Grid>
+          </Grid>
+        </Container>
+      </Page>
+    );
+  }
+
+  const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+      flexGrow: 1,
+      width: '100%',
+      
+      minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3)
+    },
+    height: {
+        maxHeight: '25%',
+        marginLeft: -12,
+        margin: 0
+    },
+    card: {
+        margin: 0,
+        marginLeft: 7,
+        color: theme.palette.text.secondary,
+    }
+  }));
+
+  interface TabPanelProps {
     children?: React.ReactNode;
     index: any;
     value: any;
@@ -47,131 +103,5 @@ interface TabPanelProps {
       'aria-controls': `scrollable-prevent-tabpanel-${index}`,
     };
   }
-  
-  const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-      flexGrow: 1,
-      width: '100%',
-      
-      minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3)
-    },
-    height: {
-        maxHeight: '25%',
-        marginLeft: -12,
-        margin: 0
-    },
-    card: {
-        margin: 0,
-        marginLeft: 7,
-        color: theme.palette.text.secondary,
-    }
-  }));
-  
-  export const AdminPage = (props: any) => {
-    const classes = useStyles();
-    const [value, setValue] = React.useState(0);
-  
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-      setValue(newValue);
-    };
-  
-    return (
-        <Page {...props.children} className={classes.root} title="Admin">
-       <Container maxWidth={false}>
-       <Grid container spacing={1} className={classes.height}>
-       <Grid item xs={12}>
-       <Card className={classes.card}>
-       <CardContent>
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            variant="scrollable"
-            scrollButtons="off"
-            aria-label="scrollable prevent tabs example"
-          >
-            <Tab icon={<PhoneIcon />} aria-label="phone" {...a11yProps(0)} />
-            <Tab icon={<FavoriteIcon />} aria-label="favorite" {...a11yProps(1)} />
-            <Tab icon={<PersonPinIcon />} aria-label="person" {...a11yProps(2)} />
-            <Tab icon={<HelpIcon />} aria-label="help" {...a11yProps(3)} />
-            <Tab icon={<ShoppingBasket />} aria-label="shopping" {...a11yProps(4)} />
-            <Tab icon={<ThumbDown />} aria-label="up" {...a11yProps(5)} />
-            <Tab icon={<ThumbUp />} aria-label="down" {...a11yProps(6)} />
-          </Tabs>
-        </AppBar>
-        <TabPanel value={value} index={0}>
-          Item One
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          Item Two
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Item Three
-        </TabPanel>
-        <TabPanel value={value} index={3}>
-          Item Four
-        </TabPanel>
-        <TabPanel value={value} index={4}>
-          Item Five
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          Item Six
-        </TabPanel>
-        <TabPanel value={value} index={6}>
-          Item Seven
-        </TabPanel>
-      </div>
-      </CardContent>
-    </Card>
-      </Grid>
-      </Grid>
-      </Container>
-      </Page>
-    );
-  }
 
-// export const AdminPage = (props: any) => {
-//   const classes = useStyles();
-  
-//   return (
-//     <Page {...props.children} className={classes.root} title="Admin">
-//       <Container maxWidth={false}>
-//         {/* <Grid container spacing={3}>
-//           <Box display="flex" justifyContent="center" mt={2} p={2} m={2}>
-//             <Button
-//               color="primary"
-//               component="a"
-//               href="logs"
-//               variant="contained"
-//             >
-//               LOGID
-//             </Button>
-//           </Box>
-//           <Box display="flex" justifyContent="center" mt={2} p={2} m={2}>
-//             <Button
-//               color="primary"
-//               component="a"
-//               href="users"
-//               variant="contained"
-//             >
-//               KASUTAJAD
-//             </Button>
-//           </Box>
-//         </Grid> */}
-
-
-//       </Container>
-//     </Page>
-//   );
-// };
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     minHeight: '100%',
-//     paddingBottom: theme.spacing(3),
-//     paddingTop: theme.spacing(3)
-//   }
-// }));
 export default AdminPage;

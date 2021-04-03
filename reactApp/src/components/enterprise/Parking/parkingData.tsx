@@ -1,9 +1,10 @@
-import { Button, Card, CardContent, Grid, makeStyles } from '@material-ui/core';
+import { Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getEnterpriseUserData, getEnterpriseParkingSpotData } from '../../../store/queries/enterpriseQueries';
+import { getEnterpriseParkingSpotData, getEnterpriseUserData } from '../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotListData, Reservation } from '../../../store/types/enterpriseTypes';
+import BookSpotModal from './bookSpotModal';
 import GiveSpot from './giveSpot';
 import ReleaseSpot from './releaseSpot';
 import SpotData from './spotData';
@@ -26,6 +27,7 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reserved
     const isCancelled = React.useRef(false);
     const dispatch = useDispatch();
     const enterpriseId = localStorage.getItem('enterprise')
+    const [bookModal, setBookModal] = useState(false);
 
     const handleGiveSpot = (e: any) => {
         setGiveSpotModal(!giveSpotModal);
@@ -36,10 +38,15 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reserved
     }
 
     const updateSpotTable = () => {
-        if(enterpriseId != undefined) {            
+        if(enterpriseId !== undefined) {            
             getEnterpriseUserData(parseInt(enterpriseId!), dispatch); 
             getEnterpriseParkingSpotData(parseInt(enterpriseId!), dispatch); 
         }
+    }
+
+    const handleBookModal = () => {
+        console.log(!bookModal);
+        setBookModal(!bookModal);
     }
 
     useEffect(() => {
@@ -53,7 +60,7 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reserved
 
     return (
         <>
-        <Toolbar addReservationButton={addReservationButton} handleGiveSpot={handleGiveSpot} handleRelease={handleRelease} spotButtons={spotButtons} />
+        <Toolbar addReservationButton={addReservationButton} handleGiveSpot={handleGiveSpot} handleRelease={handleRelease} handleBook={handleBookModal} spotButtons={spotButtons} />
         <Grid container spacing={1} className={classes.height}>
             <Grid item xs={12}>
                 <Card className={clsx(classes.card)}>
@@ -70,6 +77,7 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reserved
         </Grid>
         <GiveSpot updateSpotData={updateSpotTable} giveSpotModal={giveSpotModal} setGiveSpotModal={handleGiveSpot} />
         <ReleaseSpot updateSpotData={updateSpotTable} releaseModal={releaseModal} setReleaseModal={handleRelease} />
+        <BookSpotModal bookModal={bookModal} setBookModal={handleBookModal} />
         </>
     )
 }

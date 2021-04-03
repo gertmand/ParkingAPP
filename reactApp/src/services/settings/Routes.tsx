@@ -1,7 +1,6 @@
 import React from "react"
-import { Switch, Route, Redirect } from "react-router"
+import { Redirect, Route, Switch } from "react-router"
 import LoginPage from "../../pages/auth/LoginPage"
-import HomePage from "../../pages/HomePage"
 import GlobalStyles from "../../style/GlobalStyles"
 import MainLayout from "../../style/layouts/MainLayout/MainLayout"
 

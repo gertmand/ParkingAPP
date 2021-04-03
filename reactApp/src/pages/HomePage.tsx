@@ -6,7 +6,7 @@ import { SiteAlert } from '../components/common/siteTypes';
 import SuccessAlert from '../components/common/successAlert';
 import ParkingData from '../components/enterprise/Parking/parkingData';
 import { AppState } from '../store';
-import { Enterprise, EnterpriseParkingSpotData, EnterpriseUserData, Reservation } from '../store/types/enterpriseTypes';
+import { EnterpriseParkingSpotData, EnterpriseUserData, Reservation } from '../store/types/enterpriseTypes';
 import Page from '../style/Page';
 
 const HomePage = (props: any) => {
@@ -19,28 +19,29 @@ const HomePage = (props: any) => {
   const [reservationSpot, setReservationSpot] = useState<Reservation>()
 
   useEffect(() => {
-    if(localStorage.getItem('enterprise') == "0") {
+    if (localStorage.getItem('enterprise') === "0") {
       props.history.push('/enterprise')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    if(userData.reservations !== undefined) {
-      if(userData.reservations[0] !== undefined) {
+    if (userData.reservations !== undefined) {
+      if (userData.reservations[0] !== undefined) {
         const start = new Date(userData.reservations[0].startDate);
         const now = new Date();
-        if(start <= now) {
-            if(userData.reservations[0].parkingSpotNumber !== undefined) {
-                setReservationSpot(userData.reservations[0]);
+        if (start <= now) {
+          if (userData.reservations[0].parkingSpotNumber !== undefined) {
+            setReservationSpot(userData.reservations[0]);
+          }
+          if (userData.reservations.length > 1) {
+            if (userData.reservations[1] !== undefined) {
+              setReservationSpot(userData.reservations[1]);
+              //setFirstReservation(userData.reservations[1].startDate);
             }
-            if(userData.reservations.length > 1) {
-                if(userData.reservations[1] !== undefined) {
-                    setReservationSpot(userData.reservations[1]);
-                    //setFirstReservation(userData.reservations[1].startDate);
-                }
-            }
+          }
         } else {
-            //setFirstReservation(userData.reservations[0].startDate);
+          //setFirstReservation(userData.reservations[0].startDate);
         }
       }
     }
@@ -48,13 +49,13 @@ const HomePage = (props: any) => {
 
   return (
     <Page
-    {...props.children}
-     className={classes.root} 
-     title="Esileht">
+      {...props.children}
+      className={classes.root}
+      title="Esileht">
       {successAlert.status ? <SuccessAlert /> : ""}
       {errorAlert.status ? <ErrorAlert /> : ""}
       <Container maxWidth={false}>
-        {userData.parkingSpot != null && userData.parkingSpot.number != undefined ? (
+        {userData.parkingSpot !== null && userData.parkingSpot?.number !== undefined ? (
           <ParkingData parkingSpot={userData.parkingSpot} parkingSpotDataList={parkingSpotData.spotListData} addReservationButton={false} spotButtons={true} />
         ) : (
           <ParkingData reservedSpot={reservationSpot} addReservationButton={true} spotButtons={false} />

@@ -12,14 +12,13 @@ import { getEnterprise, getEnterpriseParkingSpotData, getEnterpriseUserData, get
 
 const App = (props: any) => {
   const dispatch = useDispatch();
-  const [enterprises, setEnterprises] = useState();
+  const [, setEnterprises] = useState();
   const [enterprise, setEnterprise] = useState<string>("");
 
   const getDataQuery = async (enterpriseId: any) => {
     getUserData().then(async (result:any) => {
       dispatch(ADD_USER_DATA(result));
-      console.log(enterpriseId)
-      if(!isNaN(enterpriseId)) {
+      if(!isNaN(enterpriseId) && enterpriseId !== 0 && enterpriseId !== "0") {
         await getEnterpriseUserData(enterpriseId, dispatch);
         await getEnterpriseParkingSpotData(enterpriseId, dispatch);
         await getEnterprise(enterpriseId, dispatch);
@@ -41,15 +40,15 @@ const App = (props: any) => {
     const enterpriseToken = localStorage.getItem('enterprise');
 
     if(token != null) {
-      if(enterpriseToken == undefined || enterpriseToken == null) {
+      if(enterpriseToken === undefined || enterpriseToken === null) {
         getEnterprises();
       }
-        if(enterpriseToken != null || enterpriseToken != undefined) {
-          setEnterprise(enterpriseToken);
+        if(enterpriseToken !== null || enterpriseToken !== undefined) {
+          setEnterprise(enterpriseToken!);
         }
         getDataQuery(parseInt(enterpriseToken!));
     }
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localStorage.getItem('token'), localStorage.getItem('enterprise')])
 
   return (

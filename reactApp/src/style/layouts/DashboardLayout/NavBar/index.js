@@ -1,12 +1,9 @@
 import { Avatar, Box, Divider, Drawer, Hidden, List, makeStyles, Typography } from '@material-ui/core';
-import DriveEtaIcon from '@material-ui/icons/DriveEta';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import {
   BarChart as BarChartIcon,
-  BookOpen,
-  Columns,
-  Users as UsersIcon
+  BookOpen
 } from 'react-feather';
 import { useSelector } from 'react-redux';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
@@ -20,17 +17,17 @@ const user = {
 
 const items = [
   {
-    href: '/',
+    href: '/1',
     icon: BarChartIcon,
     title: 'Esileht'
   },
   {
-    href: '/',
+    href: '/home',
     icon: BarChartIcon,
     title: 'Parkimiskoht'
   },
   {
-    href: '/',
+    href: '/2',
     icon: BarChartIcon,
     title: 'Broneeringud'
   },

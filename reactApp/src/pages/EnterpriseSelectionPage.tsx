@@ -1,17 +1,16 @@
-import { Container, Fab, Grid, makeStyles } from '@material-ui/core'
-import React, { Component, useEffect, useState } from 'react'
+import { Container, Fab, Grid, makeStyles } from '@material-ui/core';
 import NavigationIcon from '@material-ui/icons/Navigation';
-import { Enterprise } from '../store/types/enterpriseTypes';
-import { ADD_ENTERPRISE_DATA } from '../store/actions/enterpriseActions';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import Page from '../style/Page';
+import { ADD_ENTERPRISE_DATA } from '../store/actions/enterpriseActions';
 import { getUserEnterprises } from '../store/queries/enterpriseQueries';
+import { Enterprise } from '../store/types/enterpriseTypes';
 import TopBar from '../style/layouts/DashboardNavLayout/TopBar';
+import Page from '../style/Page';
 
 const EnterpriseSelectionPage = (props: any) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [asd, setAsd] = useState<Enterprise[]>([])
     const [enterprises, setEnterprises] = useState<Enterprise[]>([]);
 
     useEffect(() => {
@@ -40,7 +39,7 @@ const EnterpriseSelectionPage = (props: any) => {
                 title="Esileht">
                     <Container maxWidth={"md"} className={classes.height}>
                         <Grid container spacing={10} justify={"center"} >
-                            {enterprises != undefined && enterprises.map((data: Enterprise) => (
+                            {enterprises !== undefined && enterprises.map((data: Enterprise) => (
                                 <Grid item key={data.id}>
                                     <Fab id={data.id.toString()} variant="extended" color="primary" aria-label={data.description} className={classes.margin} onClick={() => handleClick(data)}>
                                         <NavigationIcon className={classes.extendedIcon} />

@@ -20,7 +20,7 @@ const LoginPage = (props: any) => {
       .then((result: User) => {
         console.log(result);
         localStorage.setItem('token', result.jwtToken)
-        if(localStorage.getItem('enterprise') == undefined) {
+        if(localStorage.getItem('enterprise') === undefined) {
           localStorage.setItem('enterprise', '0')
         }
         props.history.push('/');

@@ -26,7 +26,7 @@ const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData}) =
     const enterpriseId = localStorage.getItem('enterprise')
 
     useEffect(() => {
-        if(regularUsers.length === 0 && enterpriseId != undefined)
+        if(regularUsers.length === 0 && enterpriseId !== undefined)
             getAccountsWithoutSpot(parseInt(enterpriseId!)).then(data => setRegularUsers(data));
     }, [regularUsers, enterpriseId])
 
