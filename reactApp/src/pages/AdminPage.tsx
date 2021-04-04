@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from '@material-ui/core';
+import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import { makeStyles, Theme } from '@material-ui/core/styles';
@@ -17,13 +17,6 @@ import Page from '../style/Page';
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
       setValue(newValue);
     };
-
-    useEffect(() => {
-      effect
-      return () => {
-        cleanup
-      }
-    }, [input])
   
     return (
       <Page {...props.children} className={classes.root} title="Parking Solutions - Admin">
@@ -34,19 +27,27 @@ import Page from '../style/Page';
                 <Paper>
                   <AppBar position="static">
                     <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="off" aria-label="scrollable prevent tabs example">
-                      <Tab label="Parklakohad"  aria-label="spots" {...a11yProps(0)} />
-                      <Tab label="Liikmed" aria-label="members" {...a11yProps(1)} />
-                      <Tab label="Seaded" aria-label="settings" {...a11yProps(2)} />
+                      <Tab label="Uudised" aria-label="news" {...a11yProps(0)} />
+                      <Tab label="Parklakohad"  aria-label="spots" {...a11yProps(1)} />
+                      <Tab label="Liikmed" aria-label="members" {...a11yProps(2)} />
+                      <Tab label="Seaded" aria-label="settings" {...a11yProps(3)} />
+                      <Tab label="Logid" aria-label="logs" {...a11yProps(4)} />
                     </Tabs>
                   </AppBar>
                   <TabPanel value={value} index={0}>
-                    <ParkingTable />
+                    <Typography>Uudised</Typography>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <UsersTable />
+                    <ParkingTable />
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    Item Three
+                    <Typography>Liikmed</Typography>
+                  </TabPanel>
+                  <TabPanel value={value} index={3}>
+                    <Typography>Seaded</Typography>
+                  </TabPanel>
+                  <TabPanel value={value} index={4}>
+                    <Typography>Logid</Typography>
                   </TabPanel>
                 </Paper>
               </div>
