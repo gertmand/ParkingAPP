@@ -14,7 +14,7 @@ import Toolbar from './toolbar';
 
 type SpotProps = {
     parkingSpot?: ParkingSpot,
-    parkingSpotDataList?: ParkingSpotListData[],
+    parkingSpotDataList?: ParkingSpotListData[] | Reservation[],
     reservedSpot?: Reservation,
     addReservationButton: boolean,
     spotButtons: boolean

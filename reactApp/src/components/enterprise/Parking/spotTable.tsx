@@ -3,12 +3,12 @@ import Delete from '@material-ui/icons/Delete';
 import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { cancelSpotRelease } from '../../../store/queries/enterpriseQueries';
-import { ParkingSpotListData } from '../../../store/types/enterpriseTypes';
+import { ParkingSpotListData, Reservation } from '../../../store/types/enterpriseTypes';
 import { changeDate } from '../../../_helpers/changeDate';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../common/siteActions';
 
 type Props = {
-  data: ParkingSpotListData[],
+  data: ParkingSpotListData[] | Reservation[],
   updateSpotData(): void
 }
 
