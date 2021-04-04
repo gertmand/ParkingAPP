@@ -18,7 +18,6 @@ const LoginPage = (props: any) => {
     setSubmit(true);
     login({email: email, password: password})
       .then((result: User) => {
-        console.log(result);
         localStorage.setItem('token', result.jwtToken)
         if(localStorage.getItem('enterprise') === undefined) {
           localStorage.setItem('enterprise', '0')

@@ -18,8 +18,6 @@ import { useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../Logo';
 
-import Link from '@material-ui/core/Link';
-
 const useStyles = makeStyles((theme) => ({
   root: {},
   avatar: {
@@ -54,7 +52,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   return (
     <AppBar className={clsx(classes.root, classes.appBar, className)} elevation={0} {...rest}>
       <Toolbar>
-        <RouterLink to="/">
+        <RouterLink to="/home">
           <Logo />
         </RouterLink>
         <Box flexGrow={1} />

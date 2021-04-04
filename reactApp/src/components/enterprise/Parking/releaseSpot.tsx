@@ -42,7 +42,6 @@ const ReleaseSpot:FC<Props> = ({releaseModal, setReleaseModal, updateSpotData} :
                 updateSpotData();
                 dispatch(SET_SUCCESS_ALERT({status: true, message: "Parkimiskoht on vabastatud teistele broneerimiseks!"}));
             }).catch((err: any) => {
-                console.log(err);
                 dispatch(SET_ERROR_ALERT({status: true, message: err}));
             })
         }

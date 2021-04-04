@@ -15,13 +15,14 @@ namespace API.Services
     public interface IParkingSpotService
     {
         ParkingSpotResponse GetById(int id);
-        IEnumerable<ParkingSpotResponse> GetAll();
-        IEnumerable<ReservationResponse> GetUserReservations(int enterpriseId, int userId);
         ParkingSpotResponse GetUserParkingSpot(int enterpriseId, int userId);
-        ParkingSpotStatusType GetParkingSpotStatus(int id);
         ReleasedResponse ReleaseParkingSpot(ReleaseRequest request);
         ReservationResponse ReserveParkingSpot(ReservationRequest request);
+        IEnumerable<ReservationResponse> GetUserReservations(int enterpriseId, int userId);
+        IEnumerable<ParkingSpotResponse> GetAll();
         IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId);
+        List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request);
+        ParkingSpotStatusType GetParkingSpotStatus(int id);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -252,7 +253,111 @@ namespace API.Services
             return response;
         }
 
+        public List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request)
+        {
+            List<AvailableDatesResponse> availableForReservation = new List<AvailableDatesResponse>();
+
+            var releasedSpots = _context.ReleasedSpots.Where(x => x.EndDate.Date >= DateTime.Today.Date && x.StartDate.Date <= request.EndDate.Date).ToList();
+            var reservations = _context.Reservations.Where(x => x.EndDate.Date >= DateTime.Today.Date && x.StartDate.Date <= request.EndDate.Date).ToList();
+
+            releasedSpots = DateUtil<ReleasedSpot>.RemoveDeletedDates(releasedSpots);
+            reservations = DateUtil<Reservation>.RemoveDeletedDates(reservations);
+
+            foreach (ReleasedSpot releasedSpot in releasedSpots)
+            {
+                var releasedSpotReservations = reservations.Where(x => x.ReleasedSpotId == releasedSpot.Id || x.ParkingSpotId == releasedSpot.ParkingSpotId).ToList();
+                List<DateTime> datesToReserve = new List<DateTime>();
+
+                // Adding all the dates to list and removing all the reserved dates
+                datesToReserve = RemoveReservedDates(releasedSpotReservations, releasedSpot, datesToReserve);
+
+                // Removing all the dates, which are not between input
+                datesToReserve.RemoveAll(x => x.Date < request.StartDate.Date || x.Date > request.EndDate.Date);
+
+                availableForReservation.AddRange(GetPossibleDates(datesToReserve, releasedSpot.ParkingSpotId, releasedSpot.Id));
+            }
+
+            return availableForReservation;
+        }
+
         // helper methods
+
+        private List<DateTime> AddPeriodDatesToList(List<DateTime> datesToReserve, ReleasedSpot releasedSpot)
+        {
+            for (var dt = releasedSpot.StartDate; releasedSpot.DeletionDate != null ? dt <= releasedSpot.DeletionDate : dt <= releasedSpot.EndDate; dt = dt.AddDays(1))
+            {
+                datesToReserve.Add(dt.Date);
+            }
+
+            return datesToReserve;
+        }
+
+        private List<AvailableDatesResponse> GetPossibleDates(List<DateTime> datesToReserve, int parkingSpotId, int releasedSpotId)
+        {
+            List<AvailableDatesResponse> responses = new List<AvailableDatesResponse>();
+            DateTime dStartDate = new DateTime();
+            DateTime dEndDate = new DateTime();
+            int daysCount = 0;
+
+            for (int i = 0; i <= datesToReserve.Count - 1; i++)
+            {
+                daysCount++;
+                if (i != datesToReserve.Count - 1 && datesToReserve[i].AddDays(1).Date == datesToReserve[i + 1].Date)
+                {
+                    if (dStartDate == new DateTime())
+                    {
+                        dStartDate = datesToReserve[i].Date;
+                    }
+                }
+                else
+                {
+                    if (dStartDate == new DateTime())
+                    {
+                        dStartDate = datesToReserve[i].Date;
+                    }
+                    dEndDate = datesToReserve[i].Date;
+
+                    AvailableDatesResponse response = new AvailableDatesResponse { StartDate = dStartDate, EndDate = dEndDate, ParkingSpotId = parkingSpotId, ReleasedSpotId = releasedSpotId, Days = daysCount };
+                    responses.Add(response);
+
+                    dStartDate = new DateTime();
+                    dEndDate = new DateTime();
+                    daysCount = 0;
+                }
+            }
+
+            return responses;
+        }
+
+        private List<DateTime> RemoveReservedDates(List<Reservation> releasedSpotReservations, ReleasedSpot releasedSpot, List<DateTime> datesToReserve)
+        {
+            datesToReserve = AddPeriodDatesToList(datesToReserve, releasedSpot);
+
+            foreach (Reservation reservation in releasedSpotReservations)
+            {
+                // Kui reservationil ReleaseSpotId = antud releaseSpotiga või tegemist on sama parklakohaga, siis eemalda reservedDates listist reserveeritud ajad
+                if (reservation.ReleasedSpotId.HasValue || reservation.ParkingSpotId == releasedSpot.ParkingSpotId)
+                {
+                    if (reservation.ReleasedSpotId == releasedSpot.Id || reservation.ParkingSpotId == releasedSpot.ParkingSpotId)
+                    {
+                        for (int i = datesToReserve.Count - 1; i >= 0; i--)
+                        {
+                            if (datesToReserve[i].Date >= reservation.StartDate.Date && datesToReserve[i].Date <= reservation.EndDate.Date)
+                            {
+                                if (reservation.DeletionDate != null && datesToReserve[i].Date > reservation.DeletionDate.Value.Date)
+                                {
+                                    continue;
+                                }
+
+                                datesToReserve.RemoveAt(i);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return datesToReserve;
+        }
 
         // WHERE RESERVER ID == USERID
         private IEnumerable<Reservation> getReservationsByUserId(int enterpriseId, int userId) 

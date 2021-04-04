@@ -25,7 +25,6 @@ const ReleaseModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setSta
 
     const changeStartDate = (e: any) => {
         setStartDate(e);
-        console.log(startDate);
     }
 
     const changeEndDate = (e: any) => {

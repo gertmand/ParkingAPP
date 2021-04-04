@@ -165,9 +165,20 @@ namespace API.Controllers
             return response;
         }
 
+        [HttpGet("available-dates")]
+        public ActionResult<IEnumerable<AvailableDatesResponse>> GetAvailableDatesForReservation(AvailableDatesRequest request)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            return _parkingSpotService.GetAvailableDatesForReservation(request).OrderByDescending(x => x.Days).ToList();
+        }
+
         // HELPER METHODS
 
-        private ActionResult<bool> CheckUser(int enterpriseId)
+            private ActionResult<bool> CheckUser(int enterpriseId)
         {
             if (Account == null)
             {

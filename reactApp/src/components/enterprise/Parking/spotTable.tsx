@@ -19,7 +19,6 @@ const SpotTable:FC<Props> = ({data, updateSpotData}: any) => {
     const handleDelete = (data: ParkingSpotListData) => {
       if(data.releasedId !== -1) {
         cancelSpotRelease(data).then((request: any) => {
-          console.log(request);
           dispatch(SET_SUCCESS_ALERT({status: true, message: "Vabastus on tühistatud!"}));
           updateSpotData();
         })

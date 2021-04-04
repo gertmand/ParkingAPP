@@ -2,13 +2,9 @@ import { TableHead, TableRow, TableCell, TableBody, Table, Tooltip, Button, make
 import clsx from 'clsx'
 import React from 'react'
 import { PlusCircle, XCircle } from 'react-feather'
-import Toolbar from '../../Parking/toolbar'
 
 const ParkingTable = () => {
     const classes = useStyles();
-    const dummy = () => {
-
-    }
 
     return (
         <>

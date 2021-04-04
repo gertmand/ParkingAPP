@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.Helpers;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
+using API.Models.ParkingSpotDtos;
 using AutoMapper;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;

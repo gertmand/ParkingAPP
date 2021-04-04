@@ -45,7 +45,6 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reserved
     }
 
     const handleBookModal = () => {
-        console.log(!bookModal);
         setBookModal(!bookModal);
     }
 
