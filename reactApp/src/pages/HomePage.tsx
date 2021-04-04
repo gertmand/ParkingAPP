@@ -51,9 +51,9 @@ const HomePage = (props: any) => {
     <Page
       {...props.children}
       className={classes.root}
-      title="Esileht">
-      {successAlert.status ? <SuccessAlert /> : ""}
-      {errorAlert.status ? <ErrorAlert /> : ""}
+      title="Parking Solution - Esileht">
+      {successAlert.status ? <SuccessAlert /> : null}
+      {errorAlert.status ? <ErrorAlert /> : null}
       <Container maxWidth={false}>
         {userData.parkingSpot !== null && userData.parkingSpot?.number !== undefined ? (
           <ParkingData parkingSpot={userData.parkingSpot} parkingSpotDataList={parkingSpotData.spotListData} addReservationButton={false} spotButtons={true} />

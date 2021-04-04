@@ -10,7 +10,7 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import NavItem from './NavItem';
 
 const user = {
-  avatar: '/static/images/avatars/avatar_unknown.jpg',
+  avatar: 'test.png',
   jobTitle: 'gertmand1@gmail.com',
   name: 'Gert Mänd'
 };
@@ -78,7 +78,7 @@ const useStyles = makeStyles(() => ({
   avatar: {
     cursor: 'pointer',
     width: 64,
-    height: 64
+    height: 64,
   },
   name: {
     marginTop: 10
@@ -102,9 +102,9 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
   }, [location.pathname]);
 
   const content = (
-    <Box height="100%" display="flex" flexDirection="column">
+    <Box height="100%" display="flex" flexDirection="column" >
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
-        <Avatar className={classes.avatar} component={RouterLink} src={user.avatar} to="/profile"/>
+        <Avatar className={classes.avatar} component={RouterLink} src={"images/" + userData.avatar} to="/profile"/>
         <Typography className={classes.name} color="textPrimary" variant="h5">
           {userData.firstName} {userData.lastName}
         </Typography>
@@ -127,7 +127,8 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
       </Box>
 
       {enterpriseUserData.isAdmin && 
-      <><Box flexGrow={1} />
+        <>
+        <Box flexGrow={1} />
           <Box p={2}>
             <List>
               {adminItems.map(item => (
@@ -138,7 +139,8 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
                   icon={item.icon} />
               ))}
             </List>
-          </Box></> 
+          </Box>
+        </> 
       }
     </Box>
   );

@@ -81,7 +81,7 @@ const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData}) =
 
     return (
         <div>
-            {giveSpotModal ? <GiveModal open={giveSpotModal} setModal={handleGiveSpotModal} startDate={startDate} endDate={endDate} setStartDate={handleStartDate} setEndDate={handleEndDate} submit={giveSpot} regularUsers={regularUsers} changeSelectedUser={changeSelectedUser}/> : ""}
+            {giveSpotModal ? <GiveModal open={giveSpotModal} setModal={handleGiveSpotModal} startDate={startDate} endDate={endDate} setStartDate={handleStartDate} setEndDate={handleEndDate} submit={giveSpot} regularUsers={regularUsers} changeSelectedUser={changeSelectedUser}/> : null}
         </div>
     )
 }

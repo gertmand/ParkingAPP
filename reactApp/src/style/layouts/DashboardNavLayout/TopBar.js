@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
   appBar: {
     color: "#fff",
     height:64,
-    backgroundColor: "#008bd0"
+    backgroundColor: "#1b262c"
   }
 }));
 

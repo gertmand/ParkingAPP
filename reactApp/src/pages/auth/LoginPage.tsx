@@ -77,7 +77,7 @@ const LoginPage = (props: any) => {
                   </Button>
                 </Box>
                 <Box mb={1}>
-                  {error ? <Typography color="textPrimary" gutterBottom variant="body2" >{error}</Typography> : ""}
+                  {error ? <Typography color="textPrimary" gutterBottom variant="body2" >{error}</Typography> : null}
                 </Box>
               </form>
             )}

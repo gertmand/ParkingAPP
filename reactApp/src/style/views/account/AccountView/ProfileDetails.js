@@ -14,20 +14,6 @@ import {
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
-// const states = [
-//   {
-//     value: 'alabama',
-//     label: 'Alabama'
-//   },
-//   {
-//     value: 'new-york',
-//     label: 'New York'
-//   },
-//   {
-//     value: 'san-francisco',
-//     label: 'San Francisco'
-//   }
-// ];
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -61,8 +47,8 @@ const ProfileDetails = ({ className, ...rest }) => {
     >
       <Card>
         <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
+          subheader="Andmeid on võimalik muuta"
+          title="Profiil"
         />
         <Divider />
         <CardContent>
@@ -77,8 +63,8 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                helperText="Please specify the first name"
-                label="First name"
+                helperText="Palun täpsustage eesnimi"
+                label="Eesnimi"
                 name="firstName"
                 onChange={handleChange}
                 required
@@ -93,7 +79,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Last name"
+                label="Perekonnanimi"
                 name="lastName"
                 onChange={handleChange}
                 required
@@ -108,7 +94,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Email Address"
+                label="E-mail Aadress"
                 name="email"
                 onChange={handleChange}
                 required
@@ -123,7 +109,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Phone Number"
+                label="Telefon"
                 name="phone"
                 onChange={handleChange}
                 type="number"
@@ -131,47 +117,6 @@ const ProfileDetails = ({ className, ...rest }) => {
                 variant="outlined"
               />
             </Grid>
-            {/* <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option
-                    key={option.value}
-                    value={option.value}
-                  >
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
-            </Grid> */}
           </Grid>
         </CardContent>
         <Divider />
@@ -184,7 +129,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             color="primary"
             variant="contained"
           >
-            Save details
+            Salvesta andmed
           </Button>
         </Box>
       </Card>

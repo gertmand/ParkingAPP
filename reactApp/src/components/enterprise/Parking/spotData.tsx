@@ -28,9 +28,9 @@ const SpotData:FC<Props> = ({spot, reservedSpot, giveSpotModal, handleGiveSpot, 
                 
                 {spot !== undefined && 
                     <Typography color="textPrimary" style={{marginTop: 7}} variant="h4">STAATUS: 
-                        {spot.status.toLowerCase() === "active" ? <p style={{display:"inline", color:"green"}}> AKTIIVNE!</p> : ""}
-                        {spot.status.toLowerCase() === "reserved" ? <p style={{display:"inline", color:"red"}}> BRONEERITUD!</p> : ""}
-                        {spot.status.toLowerCase() === "released" ? <p style={{display:"inline", color:"#a25900"}}> VABASTATUD!</p> : ""}
+                        {spot.status.toLowerCase() === "active" ? <p style={{display:"inline", color:"green"}}> AKTIIVNE!</p> : null}
+                        {spot.status.toLowerCase() === "reserved" ? <p style={{display:"inline", color:"red"}}> BRONEERITUD!</p> : null}
+                        {spot.status.toLowerCase() === "released" ? <p style={{display:"inline", color:"#a25900"}}> VABASTATUD!</p> : null}
                     </Typography>
                 }
 

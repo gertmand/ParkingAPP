@@ -21,7 +21,6 @@ const PrivateRoutes = (props: any) => {
                             <PrivateRoute path='/profile' component={ProfileDetails} />
                             <PrivateRoute path='/settings' component={SettingsView} />
                             <PrivateRoute path='/test' component={ProductList} />
-                            <PrivateRoute path='/profile' component={ProfileDetails} />
                             <PrivateRoute path='/admin' component={AdminPage} />
                             <Redirect from="*" to='/home' />
                             {/* {enterprise == null || enterprise == undefined ? <Redirect from="*" to='/enterprise' /> : <Redirect from="*" to='/' />} */}

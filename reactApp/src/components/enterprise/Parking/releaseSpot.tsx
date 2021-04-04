@@ -55,7 +55,7 @@ const ReleaseSpot:FC<Props> = ({releaseModal, setReleaseModal, updateSpotData} :
 
     return (
         <div>
-            {releaseModal ? <ReleaseModal open={releaseModal} setModal={handleReleaseModal} startDate={startDate} endDate={endDate} setStartDate={handleStartDate} setEndDate={handleEndDate} submit={submitRelease}/> : ""}
+            {releaseModal ? <ReleaseModal open={releaseModal} setModal={handleReleaseModal} startDate={startDate} endDate={endDate} setStartDate={handleStartDate} setEndDate={handleEndDate} submit={submitRelease}/> : null}
         </div>
     )
 }
