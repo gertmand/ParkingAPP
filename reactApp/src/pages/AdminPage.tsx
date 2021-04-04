@@ -6,6 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import React from 'react';
 import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
+import UsersTable from '../components/enterprise/Admin/UsersTable/usersTable';
 import Page from '../style/Page';
 
 
@@ -35,7 +36,7 @@ import Page from '../style/Page';
                     <ParkingTable />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    Item Two
+                    <UsersTable />
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     Item Three

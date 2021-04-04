@@ -176,9 +176,21 @@ namespace API.Controllers
             return _parkingSpotService.GetAvailableDatesForReservation(request).OrderByDescending(x => x.Days).ToList();
         }
 
+        // ADMIN METHODS
+
+        [HttpGet("admin/{enterpriseId}/users")]
+        public async Task<List<EnterpriseAccountsResponse>> GetEnterpriseUsers(int enterpriseId)
+        {
+            CheckUser(enterpriseId);
+
+            var enterpriseUsers = _enterpriseService.GetEnterpriseAccounts(enterpriseId);
+
+            return enterpriseUsers.ToList();
+        }
+
         // HELPER METHODS
 
-            private ActionResult<bool> CheckUser(int enterpriseId)
+        private ActionResult<bool> CheckUser(int enterpriseId)
         {
             if (Account == null)
             {
