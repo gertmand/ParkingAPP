@@ -207,7 +207,8 @@ namespace API.Controllers
         public ActionResult<IEnumerable<ParkingSpotResponse>> GetEnterpriseParkingSpots(int enterpriseId)
         {
 
-            if (Account == null || _enterpriseService.GetEnterpriseAdmin(enterpriseId,Account.Id) == false)
+
+            if (Account == null)
             {
                 return Unauthorized();
             }
@@ -215,6 +216,11 @@ namespace API.Controllers
             if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
             {
                 return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
             }
 
 
