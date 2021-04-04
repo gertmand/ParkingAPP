@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.DAL;
 using API.Helpers;
 using API.Middleware;
 using API.Services;
@@ -19,9 +20,11 @@ namespace API
     public class Startup
     {
         public readonly string allowedOrigins = "http://localhost:3000";
-        public Startup(IConfiguration configuration)
+        private IWebHostEnvironment CurrentEnvironment { get; set; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            CurrentEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -29,7 +32,15 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(opt => opt.UseNpgsql((Configuration.GetConnectionString("Default"))));
+            if (CurrentEnvironment.IsDevelopment())
+            {
+                services.AddDbContext<DataContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("Default")));
+            }
+            else
+            {
+                services.AddDbContext<DataContext>(opt =>
+                    opt.UseInMemoryDatabase("ParkingDb"));
+            }
             services.AddControllers();
 
             services.AddCors();
