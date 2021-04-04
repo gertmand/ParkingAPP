@@ -58,7 +58,7 @@ const HomePage = (props: any) => {
         {userData.parkingSpot !== null && userData.parkingSpot?.number !== undefined ? (
           <ParkingData parkingSpot={userData.parkingSpot} parkingSpotDataList={parkingSpotData.spotListData} addReservationButton={false} spotButtons={true} />
         ) : (
-          <ParkingData reservedSpot={reservationSpot} addReservationButton={true} spotButtons={false} />
+          <ParkingData reservedSpot={reservationSpot} reservationList={userData.reservations} addReservationButton={true} spotButtons={false} />
         )}
       </Container>
     </Page>
