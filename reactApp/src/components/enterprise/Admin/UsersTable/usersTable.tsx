@@ -22,8 +22,6 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
             <TableHead>
             <TableRow>
                 <TableCell align='center'>Nimi</TableCell>
-                <TableCell align='center'>E-mail</TableCell>
-                <TableCell align='center'>Sõidukid</TableCell>
                 <TableCell align='center'></TableCell>
             </TableRow>
             </TableHead>
@@ -44,8 +42,6 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
             {users !== undefined ? users.map((user : User) => (
                 <TableRow hover key={1}>
                 <TableCell component="th" scope="row" align='center'>{user.firstName + ' ' + user.lastName}</TableCell>
-                <TableCell align='center'>kevinkiil@hotmail.com</TableCell>
-                <TableCell align='center'>420LOL</TableCell>
                 <TableCell align='left'>
                     <Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip>
                     <Button><XCircle color="red"/></Button>
