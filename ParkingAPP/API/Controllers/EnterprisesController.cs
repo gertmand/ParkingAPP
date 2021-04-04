@@ -178,7 +178,7 @@ namespace API.Controllers
 
         // ADMIN METHODS
 
-        [HttpGet("admin/{enterpriseId}/users")]
+        [HttpGet("{enterpriseId}/admin/users")]
         public async Task<List<EnterpriseAccountsResponse>> GetEnterpriseUsers(int enterpriseId)
         {
             CheckUser(enterpriseId);
