@@ -4,6 +4,8 @@ using API.Models.Entities;
 using API.Models.ParkingSpotDtos;
 using API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Routing.Constraints;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace API.Helpers
 {
@@ -41,7 +43,9 @@ namespace API.Helpers
 
             CreateMap<ParkingSpot, ParkingSpotResponse>();
 
-            CreateMap<Reservation, ReservationResponse>();
+            CreateMap<Reservation, ReservationResponse>()
+                .ForMember(x => x.ReserverName, opt => opt.MapFrom(src => src.ReserverAccount.FirstName + " " + src.ReserverAccount.LastName))
+                .ForMember(x => x.ParkingSpotOwner, opt => opt.MapFrom(src => src.SpotAccount.FirstName + " " + src.SpotAccount.LastName));
 
             CreateMap<ReleasedSpot, ReleasedResponse>();
 
