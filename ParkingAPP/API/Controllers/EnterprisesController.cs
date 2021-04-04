@@ -188,6 +188,27 @@ namespace API.Controllers
             return enterpriseUsers.ToList();
         }
 
+
+        [HttpGet("{enterpriseId}/admin/parkingspots")]
+        public ActionResult<IEnumerable<ParkingSpotResponse>> GetEnterpriseParkingSpots(int enterpriseId)
+        {
+
+            if (Account == null || _enterpriseService.GetEnterpriseAdmin(enterpriseId,Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+
+            var enterpriseParkingSpots = _parkingSpotService.GetAll(enterpriseId);
+
+            return enterpriseParkingSpots.ToList();
+        }
+
         // HELPER METHODS
 
         private ActionResult<bool> CheckUser(int enterpriseId)

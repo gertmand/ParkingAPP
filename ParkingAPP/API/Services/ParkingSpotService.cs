@@ -20,7 +20,7 @@ namespace API.Services
         ReleasedResponse ReleaseParkingSpot(ReleaseRequest request);
         ReservationResponse ReserveParkingSpot(ReservationRequest request);
         IEnumerable<ReservationResponse> GetUserReservations(int enterpriseId, int userId);
-        IEnumerable<ParkingSpotResponse> GetAll();
+        IEnumerable<ParkingSpotResponse> GetAll(int enterpriseId);
         IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId);
         List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request);
         ParkingSpotStatusType GetParkingSpotStatus(int id);
@@ -37,9 +37,10 @@ namespace API.Services
             _mapper = mapper;
         }
 
-        public IEnumerable<ParkingSpotResponse> GetAll()
+        public IEnumerable<ParkingSpotResponse> GetAll(int enterpriseId)
         {
-            throw new NotImplementedException();
+            var parkingspots = getAllParkingSpots(enterpriseId);
+            return _mapper.Map<IList<ParkingSpotResponse>>(parkingspots);
         }
 
         public ParkingSpotResponse GetById(int id)
@@ -371,6 +372,12 @@ namespace API.Services
                 .Where(x => x.ReserverAccountId == userId && x.ParkingSpot.EnterpriseId == enterpriseId).ToList();
 
             return reservations;
+        }
+
+        private List<ParkingSpot> getAllParkingSpots(int enterpriseId)
+        {
+            var parkingspots = _context.ParkingSpots.Where(x => x.EnterpriseId == enterpriseId).ToList();
+            return parkingspots;
         }
 
         private ParkingSpot getParkingSpotByUserId(int enterpriseId, int userId)
