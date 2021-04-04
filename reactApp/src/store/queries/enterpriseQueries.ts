@@ -45,3 +45,9 @@ export const getEnterpriseParkingSpotData = async (enterpriseId: number, dispatc
 export const releaseParkingSpot = (request: ReleaseRequest) => {
     return post(`${apiUrl}/api/enterprises/release`, request)
 }
+
+// ADMIN QUERIES
+
+export const getEnterpriseUsers = async (enterpriseId: number) => {
+    return await get(`${apiUrl}/api/enterprises/admin/${enterpriseId}/users`)
+}
