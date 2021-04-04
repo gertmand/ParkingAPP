@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using API.DAL;
 using API.Helpers;
 using API.Models.AccountDtos;
 using API.Models.Entities;

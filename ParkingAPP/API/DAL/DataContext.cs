@@ -6,7 +6,7 @@ using API.Models.Entities;
 using API.Models.JoinedEntities;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Helpers
+namespace API.DAL
 {
     public class DataContext : DbContext
     {
