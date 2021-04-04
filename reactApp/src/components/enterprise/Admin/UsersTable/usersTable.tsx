@@ -2,9 +2,15 @@ import { TableHead, TableRow, TableCell, TableBody, Table, Tooltip, Button, make
 import clsx from 'clsx'
 import React from 'react'
 import { PlusCircle, XCircle } from 'react-feather'
+import { User } from '../../../../store/types/userType';
 
-const UsersTable = () => {
+type TableProps = {
+    users: User[];
+  };
+
+const UsersTable: React.FC<TableProps> = ({users}) => {
     const classes = useStyles();
+    console.log(users)
     return (
         <>
         <Box display="flex" justifyContent="flex-end" >
@@ -35,15 +41,18 @@ const UsersTable = () => {
                 <TableCell><Button onClick={()=> handleDelete(row.parkingSpaceMainUserId)}><XCircle color="red"/></Button></TableCell>
                 </TableRow>
             ))} */}
+            {users !== undefined ? users.map((user : User) => (
                 <TableRow hover key={1}>
-                    <TableCell component="th" scope="row" align='center'>Kevin Kiil</TableCell>
-                    <TableCell align='center'>kevinkiil@hotmail.com</TableCell>
-                    <TableCell align='center'>420LOL</TableCell>
-                    <TableCell align='left'>
-                        <Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip>
-                        <Button><XCircle color="red"/></Button>
-                    </TableCell>
-                </TableRow>
+                <TableCell component="th" scope="row" align='center'>{user.firstName + ' ' + user.lastName}</TableCell>
+                <TableCell align='center'>kevinkiil@hotmail.com</TableCell>
+                <TableCell align='center'>420LOL</TableCell>
+                <TableCell align='left'>
+                    <Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip>
+                    <Button><XCircle color="red"/></Button>
+                </TableCell>
+            </TableRow>
+            )) : null}
+                
             </TableBody>
         </Table>
         </>

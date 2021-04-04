@@ -49,5 +49,5 @@ export const releaseParkingSpot = (request: ReleaseRequest) => {
 // ADMIN QUERIES
 
 export const getEnterpriseUsers = async (enterpriseId: number) => {
-    return await get(`${apiUrl}/api/enterprises/admin/${enterpriseId}/users`)
+    return await get(`${apiUrl}/api/enterprises/${enterpriseId}/admin/users`)
 }

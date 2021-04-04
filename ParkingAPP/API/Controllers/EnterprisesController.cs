@@ -192,7 +192,10 @@ namespace API.Controllers
                 return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
             }
 
-
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
 
             var enterpriseUsers = _enterpriseService.GetEnterpriseAccounts(enterpriseId);
 
