@@ -1,4 +1,4 @@
-import { TableHead, TableRow, TableCell, TableBody, Table, Tooltip, Button, makeStyles, Box } from '@material-ui/core'
+import { Box, Button, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
 import React from 'react'
 import { PlusCircle, XCircle } from 'react-feather'

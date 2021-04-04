@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../store';
 import { releaseParkingSpot } from '../../../store/queries/enterpriseQueries';
-import { ParkingSpot } from '../../../store/types/enterpriseTypes';
+import { Enterprise, ParkingSpot } from '../../../store/types/enterpriseTypes';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../common/siteActions';
 import ReleaseModal from './releaseModal';
 
@@ -15,6 +15,7 @@ type Props = {
 const ReleaseSpot:FC<Props> = ({releaseModal, setReleaseModal, updateSpotData} : any) => {
     const dispatch = useDispatch();
     const parkingSpot = useSelector<AppState, ParkingSpot>(state => state.user.enterpriseUserData.parkingSpot);
+    const enterprise = useSelector<AppState, Enterprise>(state => state.user.enterpriseData);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
 
@@ -34,7 +35,7 @@ const ReleaseSpot:FC<Props> = ({releaseModal, setReleaseModal, updateSpotData} :
 
     const submitRelease = () => {
         if(startDate != null && endDate != null && startDate <= endDate) {
-            releaseParkingSpot({parkingSpaceId: parkingSpot.id, startDate: startDate, endDate: endDate, enterpriseId: 1}).then((data: any) => { //TODO: enterpriseId
+            releaseParkingSpot({parkingSpaceId: parkingSpot.id, startDate: startDate, endDate: endDate, enterpriseId: enterprise.id}).then((data: any) => { //TODO: enterpriseId
                 //getSpotStatus(parkingSpot.id, dispatch);
                 setReleaseModal(!releaseModal);
                 setStartDate(null);
