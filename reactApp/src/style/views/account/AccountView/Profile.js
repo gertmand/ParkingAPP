@@ -14,15 +14,7 @@ import {
   makeStyles
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  city: 'Los Angeles',
-  country: 'USA',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith',
-  timezone: 'GTM-7'
-};
+import ImageUpload from './ImageUpload';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -36,32 +28,23 @@ const Profile = ({ className, ...rest }) => {
   const classes = useStyles();
   const userData = useSelector(state => state.user.userData);
 
+  const handleUploadClick = (event) => {
+    
+  };
+
+
   return (
-    <Card
-      className={clsx(classes.root, className)}
-      {...rest}
-    >
+    <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="column"
-        >
+        <Box alignItems="center" display="flex" flexDirection="column">
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
+            src={'images/' + userData.avatar}
           />
-          <Typography
-            color="textPrimary"
-            gutterBottom
-            variant="h3"
-          >
+          <Typography color="textPrimary" gutterBottom variant="h3">
             {}
           </Typography>
-          <Typography
-            color="textSecondary"
-            variant="body1"
-          >
+          <Typography color="textSecondary" variant="body1">
             {`${userData.email}`}
           </Typography>
           <Typography
@@ -69,18 +52,14 @@ const Profile = ({ className, ...rest }) => {
             color="textSecondary"
             variant="body1"
           >
-            {`${moment().format('hh:mm A')} ${user.timezone}`}
+            {`${moment().format('HH:mm')}`}
           </Typography>
         </Box>
       </CardContent>
       <Divider />
       <CardActions>
-        <Button
-          color="primary"
-          fullWidth
-          variant="text"
-        >
-          Upload picture
+        <Button color="primary" fullWidth variant="text" onClick={handleUploadClick}>
+          <ImageUpload />
         </Button>
       </CardActions>
     </Card>

@@ -51,7 +51,7 @@ const HomePage = (props: any) => {
     <Page
       {...props.children}
       className={classes.root}
-      title="Parking Solution - Esileht">
+      title="Parking Solutions - Esileht">
       {successAlert.status ? <SuccessAlert /> : null}
       {errorAlert.status ? <ErrorAlert /> : null}
       <Container maxWidth={false}>

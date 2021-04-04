@@ -101,13 +101,9 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
           ))}
         </List>
       </Box>
-
-
-      
-        <>
         <Box flexGrow={1} />
         <Box pr={2} pl={2} pb={2}>
-                {enterpriseUserData.isAdmin && 
+                { enterpriseUserData.isAdmin && 
                   <>
                     {adminItems.map(item => (
                       <NavItem
@@ -118,24 +114,20 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
                     ))}
                   </>
                 }
-                {openMobile === true && onMobileClose ? 
+                { openMobile === true && onMobileClose ? 
                 <>
-                <NavItem
-                  href='/enterprise'
-                  title='Enterprise'
-                  icon={Cast} 
-                  onClick={() => localStorage.setItem('enterprise', "0")} />
-                <NavItem
-                  href='/logout'
-                  title='Logi Välja'
-                  icon={LogOut} 
-                  onClick={() => handleLogout()} /></> : null
+                  <NavItem
+                    href='/enterprise'
+                    title='Enterprise'
+                    icon={Cast} 
+                    onClick={() => localStorage.setItem('enterprise', "0")} />
+                  <NavItem
+                    href='/logout'
+                    title='Logi Välja'
+                    icon={LogOut} 
+                    onClick={() => handleLogout()} /></> : null
                 }
         </Box>
-        </> 
-      
-
-
     </Box>
   );
 

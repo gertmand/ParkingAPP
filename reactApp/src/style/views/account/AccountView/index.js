@@ -4,8 +4,9 @@ import {
   makeStyles
 } from '@material-ui/core';
 import React from 'react';
-import UserDetails from '../../../../components/user/userCarAdd';
 import Page from '../../../Page';
+import ProfileDetails from './ProfileDetails';
+import Profile from './Profile';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,28 +23,15 @@ const Account = () => {
   return (
     <Page
       className={classes.root}
-      title="Account"
+      title="Parking Solutions - Profiil"
     >
       <Container maxWidth="lg">
-        <Grid
-          container
-          spacing={0}
-        >
-          {/* <Grid
-            item
-            lg={4}
-            md={6}
-            xs={12}
-          >
+        <Grid container spacing={3} >
+          <Grid item lg={4} md={6}  xs={12} >
             <Profile />
-          </Grid> */}
-          <Grid
-            item
-            lg={8}
-            md={6}
-            xs={12}
-          >
-            <UserDetails />
+          </Grid>
+          <Grid item lg={8} md={6} xs={12} >
+            <ProfileDetails />
           </Grid>
         </Grid>
       </Container>

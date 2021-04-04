@@ -18,7 +18,7 @@ import Page from '../style/Page';
     };
   
     return (
-      <Page {...props.children} className={classes.root} title="Admin">
+      <Page {...props.children} className={classes.root} title="Parking Solutions - Admin">
         <Container maxWidth={false}>
           <Grid container spacing={1} className={classes.height}>
             <Grid item xs={12}>
