@@ -4,19 +4,37 @@ import Box from '@material-ui/core/Box';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
+import UsersTable from '../components/enterprise/Admin/UsersTable/usersTable';
+import { AppState } from '../store';
+import { getEnterpriseUsers } from '../store/queries/enterpriseQueries';
 import Page from '../style/Page';
 
 
   export const AdminPage = (props: any) => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [enterpriseUsers, setEnterpriseUsers] = useState([]);
+    const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
   
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
       setValue(newValue);
     };
   
+    useEffect(() => {
+      if (enterpriseUsers !== undefined && enterpriseUsers.length === 0 && enterpriseId !== undefined)
+      {
+        console.log(enterpriseId)
+        getEnterpriseUsers(enterpriseId).then(result => {
+          setEnterpriseUsers(result);
+          console.log("Great success")
+          console.log(result)
+        })
+      }
+    }, [enterpriseUsers, enterpriseId])
+    
     return (
       <Page {...props.children} className={classes.root} title="Parking Solutions - Admin">
         <Container maxWidth={false}>
@@ -40,7 +58,7 @@ import Page from '../style/Page';
                     <ParkingTable />
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    <Typography>Liikmed</Typography>
+                    <UsersTable users = {enterpriseUsers}/>
                   </TabPanel>
                   <TabPanel value={value} index={3}>
                     <Typography>Seaded</Typography>

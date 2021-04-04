@@ -14,13 +14,14 @@ import Toolbar from './toolbar';
 
 type SpotProps = {
     parkingSpot?: ParkingSpot,
-    parkingSpotDataList?: ParkingSpotListData[] | Reservation[],
+    parkingSpotDataList?: ParkingSpotListData[],
+    reservationList?: Reservation[],
     reservedSpot?: Reservation,
     addReservationButton: boolean,
     spotButtons: boolean
 }
 
-const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservedSpot, addReservationButton, spotButtons }) => {
+const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservationList, reservedSpot, addReservationButton, spotButtons }) => {
     const classes = useStyles();
     const [giveSpotModal, setGiveSpotModal] = useState(false);
     const [releaseModal, setReleaseModal] = useState(false);
@@ -70,7 +71,7 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reserved
             </Grid>
             { <Grid item xs={12}>
                 <div style={{margin: 0, marginLeft: 7}}>
-                    <SpotTable data={parkingSpotDataList!} updateSpotData={updateSpotTable} /> 
+                    <SpotTable spotData={parkingSpotDataList!} reservationData={reservationList!} updateSpotData={updateSpotTable} /> 
                 </div>
             </Grid> }
         </Grid>

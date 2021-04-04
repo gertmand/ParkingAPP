@@ -8,11 +8,12 @@ import { changeDate } from '../../../_helpers/changeDate';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../common/siteActions';
 
 type Props = {
-  data: ParkingSpotListData[] | Reservation[],
+  spotData: ParkingSpotListData[],
+  reservationData: Reservation[],
   updateSpotData(): void
 }
 
-const SpotTable:FC<Props> = ({data, updateSpotData}: any) => {
+const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -28,10 +29,14 @@ const SpotTable:FC<Props> = ({data, updateSpotData}: any) => {
       }
     }
 
-    return (
+    const handleDeleteReservation = (data: Reservation) => {
+      console.log("Reserveering eemaldatud")
+    }
+
+    const spotContent = (
       <TableContainer component={Paper}>
         <Table className={classes.table} size="small" aria-label="a dense table">
-          {(data === undefined || data.length === 0) ? <caption style={{textAlign: "center"}}>Andmed puuduvad</caption> : null}
+          {(spotData === undefined || spotData.length === 0) ? <caption style={{textAlign: "center"}}>Andmed puuduvad</caption> : null}
           <TableHead>
             <TableRow>
               <TableCell>Tüüp</TableCell>
@@ -42,7 +47,7 @@ const SpotTable:FC<Props> = ({data, updateSpotData}: any) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data !== undefined ? data.map((row: ParkingSpotListData) => (
+            {spotData !== undefined ? spotData.map((row: ParkingSpotListData) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
                   {row.status === "Assigned" && "Laenatud"}
@@ -63,7 +68,51 @@ const SpotTable:FC<Props> = ({data, updateSpotData}: any) => {
           </TableBody>
         </Table>
       </TableContainer>
-    );
+    )
+
+    const reservationContent = (
+      <TableContainer component={Paper}>
+        <Table className={classes.table} size="small" aria-label="a dense table">
+          {(reservationData === undefined || reservationData.length === 0) ? <caption style={{textAlign: "center"}}>Andmed puuduvad</caption> : null}
+          <TableHead>
+            <TableRow>
+              <TableCell>Tüüp</TableCell>
+              <TableCell>Algus</TableCell>
+              <TableCell>Lõpp</TableCell>
+              <TableCell>Kasutaja</TableCell>
+              <TableCell>Tegevus</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {reservationData !== undefined ? reservationData.map((row: Reservation) => (
+              <TableRow key={row.id}>
+                {/* <TableCell component="th" scope="row">
+                  {row.status === "Assigned" && "Laenatud"}
+                  {row.status === "Reserved" && "Reserveeritud"}
+                  {row.status === "Released" && "Vabastatud"}
+                  {row.status === "Booked" && "Broneering"}
+                </TableCell> */}
+                <TableCell>Broneering</TableCell>
+                <TableCell>{changeDate(row.startDate)}</TableCell>
+                <TableCell>{changeDate(row.endDate)}</TableCell>
+                <TableCell>{row.reserverName}</TableCell>
+                <TableCell>
+                  <Tooltip title="TÜHISTA">
+                    <Button onClick={() => handleDeleteReservation(row)}><Delete color='error' /></Button>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            )) : null}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )
+
+    if(spotData != undefined) {
+      return spotContent
+    } else {
+      return reservationContent
+    }
 }
 
 const useStyles = makeStyles({

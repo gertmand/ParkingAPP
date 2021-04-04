@@ -96,7 +96,7 @@ namespace API.Services
                 {
                     regularUsersList.Add(new EnterpriseAccountsResponse
                     {
-                        UserId = user.Id,
+                        Id = user.Id,
                         FirstName = user.FirstName,
                         LastName = user.LastName
                     });
