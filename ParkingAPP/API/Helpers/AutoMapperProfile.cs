@@ -20,6 +20,8 @@ namespace API.Helpers
 
             CreateMap<Account, AuthenticateResponse>();
 
+            CreateMap<Account, EnterpriseAccountsResponse>();
+
             CreateMap<RegisterRequest, Account>();
 
             CreateMap<CreateRequest, Account>();

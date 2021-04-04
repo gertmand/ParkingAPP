@@ -80,7 +80,9 @@ namespace API.Services
             return false;
         }
 
-        public IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId)
+
+        //TODO EnterpriseId filter needed
+        public IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccountsWithoutParkingspots(int enterpriseId) 
         {
             var regularUsersList = new List<EnterpriseAccountsResponse>();
 
@@ -118,6 +120,16 @@ namespace API.Services
                 .Where(x => x.AccountId == userId && x.EnterpriseId == enterpriseId).First().CanBook;
 
             return canBook;
+        }
+
+        // ADMIN METHODS
+
+        public IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId)
+        {
+            var enterpriseUsers = _context.EnterpriseAccounts.Include(x => x.Account)
+                .Where(x => x.EnterpriseId == enterpriseId).Select(x => x.Account).ToList();
+
+            return _mapper.Map<IList<EnterpriseAccountsResponse>>(enterpriseUsers);
         }
 
         // helper methods

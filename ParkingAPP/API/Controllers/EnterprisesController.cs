@@ -179,9 +179,20 @@ namespace API.Controllers
         // ADMIN METHODS
 
         [HttpGet("{enterpriseId}/admin/users")]
-        public async Task<List<EnterpriseAccountsResponse>> GetEnterpriseUsers(int enterpriseId)
+        public ActionResult<IEnumerable<EnterpriseAccountsResponse>> GetEnterpriseUsers(int enterpriseId)
         {
-            CheckUser(enterpriseId);
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+
 
             var enterpriseUsers = _enterpriseService.GetEnterpriseAccounts(enterpriseId);
 
