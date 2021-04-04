@@ -68,7 +68,7 @@ const HomePage = (props: any) => {
 const useStyles = makeStyles(theme => ({
   root: {
     minHeight: '100%',
-    paddingBottom: theme.spacing(3),
+    paddingBottom: theme.spacing(12),
     paddingTop: theme.spacing(3)
   },
   card: {

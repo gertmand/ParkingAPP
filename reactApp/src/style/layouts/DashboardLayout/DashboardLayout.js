@@ -2,6 +2,7 @@ import React, { Component} from 'react';
 import { withStyles } from '@material-ui/core';
 import NavBar from './NavBar';
 import TopBar from './TopBar';
+import Footer from './Footer';
 import PropTypes from 'prop-types'
 
 const styles = theme => ({
@@ -55,6 +56,7 @@ class DashboardLayout extends Component {
           <div className={classes.contentContainer}>
             <div className={classes.content}>
               {this.props.children}
+              <Footer />
             </div>
           </div>
         </div>

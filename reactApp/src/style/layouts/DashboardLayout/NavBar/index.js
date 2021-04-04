@@ -1,19 +1,10 @@
 import { Avatar, Box, Divider, Drawer, Hidden, List, makeStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import {
-  BarChart as BarChartIcon,
-  BookOpen
-} from 'react-feather';
+import { BarChart as BarChartIcon, BookOpen, Cast, Compass, LogOut, Tablet, User } from 'react-feather';
 import { useSelector } from 'react-redux';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import NavItem from './NavItem';
-
-const user = {
-  avatar: 'test.png',
-  jobTitle: 'gertmand1@gmail.com',
-  name: 'Gert Mänd'
-};
 
 const items = [
   {
@@ -23,39 +14,19 @@ const items = [
   },
   {
     href: '/home',
-    icon: BarChartIcon,
+    icon: Compass,
     title: 'Parkimiskoht'
   },
   {
     href: '/2',
-    icon: BarChartIcon,
+    icon: Tablet,
     title: 'Broneeringud'
   },
   {
     href: '/profile',
-    icon: BarChartIcon,
+    icon: User,
     title: 'Profiil'
   },
-  {
-    href: '/test',
-    icon: BarChartIcon,
-    title: 'Test'
-  },
-  {
-    href: '/settings',
-    icon: BarChartIcon,
-    title: 'Test2'
-  },
-  // {
-  //   href: '/userDetails',
-  //   icon: UserIcon,
-  //   title: 'Profiil',
-  // },
-  // {
-  //   href: '/broneeringud',
-  //   icon: Calendar,
-  //   title: 'Broneeringud'
-  // }
 ];
 
 const adminItems = [
@@ -73,7 +44,7 @@ const useStyles = makeStyles(() => ({
   desktopDrawer: {
     width: 256,
     top: 64,
-    height: 'calc(100% - 64px)'
+    height: 'calc(100% - 123px)'
   },
   avatar: {
     cursor: 'pointer',
@@ -101,6 +72,11 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.reload(false);
+  };
+
   const content = (
     <Box height="100%" display="flex" flexDirection="column" >
       <Box alignItems="center" display="flex" flexDirection="column" p={2}>
@@ -126,22 +102,40 @@ const NavBar = ({ onMobileClose, openMobile }, props) => {
         </List>
       </Box>
 
-      {enterpriseUserData.isAdmin && 
+
+      
         <>
         <Box flexGrow={1} />
-          <Box p={2}>
-            <List>
-              {adminItems.map(item => (
+        <Box pr={2} pl={2} pb={2}>
+                {enterpriseUserData.isAdmin && 
+                  <>
+                    {adminItems.map(item => (
+                      <NavItem
+                        href={item.href}
+                        key={item.title}
+                        title={item.title}
+                        icon={item.icon} />
+                    ))}
+                  </>
+                }
+                {openMobile === true && onMobileClose ? 
+                <>
                 <NavItem
-                  href={item.href}
-                  key={item.title}
-                  title={item.title}
-                  icon={item.icon} />
-              ))}
-            </List>
-          </Box>
+                  href='/enterprise'
+                  title='Enterprise'
+                  icon={Cast} 
+                  onClick={() => localStorage.setItem('enterprise', "0")} />
+                <NavItem
+                  href='/logout'
+                  title='Logi Välja'
+                  icon={LogOut} 
+                  onClick={() => handleLogout()} /></> : null
+                }
+        </Box>
         </> 
-      }
+      
+
+
     </Box>
   );
 
