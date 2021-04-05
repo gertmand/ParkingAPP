@@ -3,7 +3,7 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ADD_ENTERPRISE_DATA } from '../store/actions/enterpriseActions';
-import { getUserEnterprises } from '../store/queries/enterpriseQueries';
+import { getEnterpriseParkingSpotData, getEnterpriseUserData, getUserEnterprises } from '../store/queries/enterpriseQueries';
 import { Enterprise } from '../store/types/enterpriseTypes';
 import TopBar from '../style/layouts/DashboardNavLayout/TopBar';
 import Page from '../style/Page';
@@ -25,6 +25,8 @@ const EnterpriseSelectionPage = (props: any) => {
 
     const handleClick = (enterprise: Enterprise) => {
         localStorage.setItem("enterprise", enterprise.id.toString())
+        getEnterpriseUserData(enterprise.id, dispatch, true);
+        getEnterpriseParkingSpotData(enterprise.id, dispatch, true);
         dispatch(ADD_ENTERPRISE_DATA(enterprise))
         props.history.push("/");
     }

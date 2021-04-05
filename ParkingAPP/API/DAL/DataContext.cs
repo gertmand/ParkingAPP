@@ -46,7 +46,8 @@ namespace API.DAL
                     AcceptTerms = true,
                     Role = Role.Admin,
                     VerificationToken = null,
-                    Verified = new DateTime(2020, 02, 01)
+                    Verified = new DateTime(2020, 02, 01),
+                    Avatar = "gert3.png"
                 },
                 new Account 
                 {
@@ -98,7 +99,7 @@ namespace API.DAL
             modelBuilder.Entity<EnterpriseAccount>().HasData(
                 new List<EnterpriseAccount>
                 {
-                    new EnterpriseAccount {AccountId = 1, EnterpriseId = 1, CanBook = true},
+                    new EnterpriseAccount {AccountId = 1, EnterpriseId = 1, CanBook = true, IsAdmin = true},
                     new EnterpriseAccount {AccountId = 1, EnterpriseId = 2},
                     new EnterpriseAccount {AccountId = 2, EnterpriseId = 1, IsAdmin = true},
                     new EnterpriseAccount {AccountId = 3, EnterpriseId = 1}

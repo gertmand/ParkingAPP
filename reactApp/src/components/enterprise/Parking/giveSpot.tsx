@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../store';
-import { addReservation, getAccountsWithoutSpot } from '../../../store/queries/enterpriseQueries';
+import { addReservation } from '../../../store/queries/enterpriseQueries';
 import { getUserData } from '../../../store/queries/userQueries';
 import { ParkingSpot } from '../../../store/types/enterpriseTypes';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../common/siteActions';
@@ -10,29 +10,23 @@ import GiveModal from './giveModal';
 type Props = {
     giveSpotModal: boolean,
     setGiveSpotModal(e: any): any,
-    updateSpotData(): any
+    updateSpotData(): any,
+    regularUsers: any[]
 }
 
-const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData}) => {
+const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData, regularUsers}) => {
     const dispatch = useDispatch();
     const parkingSpot = useSelector<AppState, ParkingSpot>(state => state.user.enterpriseUserData.parkingSpot);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
     const [regularUserId, setRegularUserId] = useState<number>(0);
-    const [regularUsers, setRegularUsers] = useState([]);
     const [targetUser, setTargetUser] = useState(false);
     const [, setLoading] = useState(false);
     const [, setSuccess] = React.useState(false);
-    const enterpriseId = localStorage.getItem('enterprise')
-
-    useEffect(() => {
-        if(regularUsers.length === 0 && enterpriseId !== undefined)
-            getAccountsWithoutSpot(parseInt(enterpriseId!)).then(data => setRegularUsers(data));
-    }, [regularUsers, enterpriseId])
 
     const changeSelectedUser = (event: any, values: any) => {
         if (values) {
-            setRegularUserId(values.userId);
+            setRegularUserId(values.id);
             setTargetUser(true);
         }
     }
