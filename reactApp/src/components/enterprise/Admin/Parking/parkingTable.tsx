@@ -1,7 +1,7 @@
-import { Box, Button, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core'
+import { Box, Button, InputAdornment, makeStyles, SvgIcon, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { FC } from 'react'
-import { PlusCircle, XCircle } from 'react-feather'
+import React, { FC, useState } from 'react'
+import { PlusCircle, XCircle, Search as SearchIcon } from 'react-feather'
 import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
 
 type TableProps = {
@@ -10,9 +10,23 @@ type TableProps = {
 
 const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
     const classes = useStyles();
+    const[searchTerm, setSearchTerm] = useState('')
 
     return (
         <>
+<TextField  placeholder="otsi parkimiskohta..." InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SvgIcon
+                        fontSize="small"
+                        color="action"
+                      >
+                        <SearchIcon />
+                      </SvgIcon>
+                    </InputAdornment>
+                  )
+                }} variant="outlined" onChange={event => {setSearchTerm(event.target.value)}}/>
+
         <Box display="flex" justifyContent="flex-end" >
             <Button color="primary" variant="contained">
                 Lisa parklakoht
@@ -28,12 +42,16 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
             </TableRow>
             </TableHead>
             <TableBody>
-            {parkingSpots !== undefined ?  parkingSpots.map((row : ParkingSpot) => (
+            {parkingSpots !== undefined ?  parkingSpots.filter((val)=>{if(searchTerm == ""){return val} 
+            else if(val.number.toString().toLowerCase().includes(searchTerm.toLowerCase())){
+                return val
+            }}
+            ).map((row : ParkingSpot) => (
                 <TableRow className={classes.tableRow} hover key={row.id}>
                     <TableCell className={classes.tableCell} component="th" scope="row" align='center'> {row.number} </TableCell>
                     <TableCell className={classes.tableCell} align='center'>TODO </TableCell>
                     <TableCell className={classes.tableCell} align='center'>TODO</TableCell>
-                    <TableCell className={classes.tableCell}><Button><XCircle color="red"/></Button><Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip></TableCell>
+                    <TableCell className={classes.tableCell}><Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip><Button><XCircle color="red"/></Button></TableCell>
                 </TableRow>
             )): null}
             </TableBody>
