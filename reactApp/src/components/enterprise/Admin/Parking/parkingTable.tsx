@@ -29,16 +29,11 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
             </TableHead>
             <TableBody>
             {parkingSpots !== undefined ?  parkingSpots.map((row : ParkingSpot) => (
-                <TableRow hover key={row.id}>
-                <TableCell component="th" scope="row" align='center'> 
-                    {row.number} 
-                </TableCell>
-                <TableCell align='center'>
-                    TODO 
-                </TableCell>
-                <TableCell align='left'><Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip></TableCell>
-                <TableCell align='center'>TODO</TableCell>
-                <TableCell><Button><XCircle color="red"/></Button></TableCell>
+                <TableRow className={classes.tableRow} hover key={row.id}>
+                    <TableCell className={classes.tableCell} component="th" scope="row" align='center'> {row.number} </TableCell>
+                    <TableCell className={classes.tableCell} align='center'>TODO </TableCell>
+                    <TableCell className={classes.tableCell} align='center'>TODO</TableCell>
+                    <TableCell className={classes.tableCell}><Button><XCircle color="red"/></Button><Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip></TableCell>
                 </TableRow>
             )): null}
             </TableBody>
@@ -53,7 +48,13 @@ const useStyles = makeStyles({
     },
     table: {
       minWidth: 650,
-    }
+    },
+    tableRow: {
+        height: 40
+      },
+      tableCell: {
+        padding: "0px 16px"
+      }
   });
 
 export default ParkingTable
