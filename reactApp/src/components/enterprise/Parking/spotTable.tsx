@@ -108,7 +108,7 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData}) => {
       </TableContainer>
     )
 
-    if(spotData != undefined) {
+    if(spotData !== undefined) {
       return spotContent
     } else {
       return reservationContent

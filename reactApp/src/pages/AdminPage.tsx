@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
 import UsersTable from '../components/enterprise/Admin/UsersTable/usersTable';
 import { AppState } from '../store';
-import { getEnterpriseUsers } from '../store/queries/enterpriseQueries';
+import { getEnterpriseParkingSpots, getEnterpriseUsers } from '../store/queries/enterpriseQueries';
 import Page from '../style/Page';
 
 
@@ -17,6 +17,7 @@ import Page from '../style/Page';
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
     const [enterpriseUsers, setEnterpriseUsers] = useState([]);
+    const [enterpriseParkingSpots, setEnterpriseParkingSpots] = useState([]);
     const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
   
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -26,14 +27,20 @@ import Page from '../style/Page';
     useEffect(() => {
       if (enterpriseUsers !== undefined && enterpriseUsers.length === 0 && enterpriseId !== undefined)
       {
-        console.log(enterpriseId)
         getEnterpriseUsers(enterpriseId).then(result => {
           setEnterpriseUsers(result);
-          console.log("Great success")
-          console.log(result)
         })
       }
     }, [enterpriseUsers, enterpriseId])
+
+    useEffect(() => {
+      if (enterpriseParkingSpots !== undefined && enterpriseParkingSpots.length === 0 && enterpriseId !== undefined)
+      {
+        getEnterpriseParkingSpots(enterpriseId).then(result => {
+          setEnterpriseParkingSpots(result);
+        })
+      }
+    }, [enterpriseParkingSpots, enterpriseId])
     
     return (
       <Page {...props.children} className={classes.root} title="Parking Solutions - Admin">
@@ -55,7 +62,7 @@ import Page from '../style/Page';
                     <Typography>Uudised</Typography>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <ParkingTable />
+                    <ParkingTable parkingSpots = {enterpriseParkingSpots}/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <UsersTable users = {enterpriseUsers}/>

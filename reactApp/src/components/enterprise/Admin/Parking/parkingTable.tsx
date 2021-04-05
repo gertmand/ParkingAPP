@@ -1,9 +1,14 @@
 import { Box, Button, makeStyles, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core'
 import clsx from 'clsx'
-import React from 'react'
+import React, { FC } from 'react'
 import { PlusCircle, XCircle } from 'react-feather'
+import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
 
-const ParkingTable = () => {
+type TableProps = {
+    parkingSpots: ParkingSpot[];
+  };
+
+const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
     const classes = useStyles();
 
     return (
@@ -23,28 +28,19 @@ const ParkingTable = () => {
             </TableRow>
             </TableHead>
             <TableBody>
-            {/* {parkingSpaceMainUsers.filter(parkingSpace => (parkingSpace.parkingSpaceNumber.toString()).includes(search.toLowerCase())).map((row) => (
+            {parkingSpots !== undefined ?  parkingSpots.map((row : ParkingSpot) => (
                 <TableRow hover key={row.id}>
                 <TableCell component="th" scope="row" align='center'> 
-                    {row.parkingSpaceNumber} 
+                    {row.number} 
                 </TableCell>
                 <TableCell align='center'>
-                    {allUsers.filter((e) => e.id === row.userId).map(e=>e.firstName + " " + e.lastName)} 
+                    TODO 
                 </TableCell>
-                <TableCell align='left'><Tooltip title="Lisa peakasutaja"><Button onClick={() => handleClickOpen(row.parkingSpaceId)}><PlusCircle color="green"/></Button></Tooltip></TableCell>
-                <TableCell align='center'>{row.userCars}</TableCell>
-                <TableCell><Button onClick={()=> handleDelete(row.parkingSpaceMainUserId)}><XCircle color="red"/></Button></TableCell>
+                <TableCell align='left'><Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip></TableCell>
+                <TableCell align='center'>TODO</TableCell>
+                <TableCell><Button><XCircle color="red"/></Button></TableCell>
                 </TableRow>
-            ))} */}
-                <TableRow hover key={1}>
-                    <TableCell component="th" scope="row" align='center'>1</TableCell>
-                    <TableCell align='center'>Gert Mänd</TableCell>
-                    <TableCell align='center'>Autod</TableCell>
-                    <TableCell align='left'>
-                        <Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip>
-                        <Button><XCircle color="red"/></Button>
-                    </TableCell>
-                </TableRow>
+            )): null}
             </TableBody>
         </Table>
         </>
