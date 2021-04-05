@@ -23,6 +23,7 @@ namespace API.Services
         IEnumerable<EnterpriseResponse> GetAllByAccountId(int userId);
         IEnumerable<Reservation> GetReservations();
         IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId);
+        IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccountsWithoutParkingspots(int enterpriseId);
         bool CheckUserEnterprise(int userId, int enterpriseId);
         bool GetEnterpriseAdmin(int enterpriseId, int userId);
         bool GetEnterpriseData(int enterpriseId, int userId);
@@ -80,25 +81,25 @@ namespace API.Services
             return false;
         }
 
-
-        //TODO EnterpriseId filter needed
         public IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccountsWithoutParkingspots(int enterpriseId) 
         {
             var regularUsersList = new List<EnterpriseAccountsResponse>();
 
             var spotUsers = _context.ParkingSpotAccounts.ToListAsync().Result.Select(x => x.AccountId);
 
-            var allUsers = _context.Accounts.ToList();
+            var enterpriseUsers = _context.EnterpriseAccounts
+                .Include(x => x.Account)
+                .Where(x => x.EnterpriseId == enterpriseId).ToList();
 
-            foreach (var user in allUsers)
+            foreach (var user in enterpriseUsers)
             {
-                if (!spotUsers.Contains(user.Id))
+                if (!spotUsers.Contains(user.AccountId))
                 {
                     regularUsersList.Add(new EnterpriseAccountsResponse
                     {
-                        Id = user.Id,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName
+                        Id = user.AccountId,
+                        FirstName = user.Account.FirstName,
+                        LastName = user.Account.LastName
                     });
                 }
             }

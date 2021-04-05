@@ -61,7 +61,7 @@ namespace API.Controllers
         {
             CheckUser(enterpriseId);
 
-            var regularUsers = _enterpriseService.GetEnterpriseAccounts(enterpriseId);
+            var regularUsers = _enterpriseService.GetEnterpriseAccountsWithoutParkingspots(enterpriseId);
 
             return regularUsers.ToList();
         }
