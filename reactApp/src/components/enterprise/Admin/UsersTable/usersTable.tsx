@@ -10,7 +10,7 @@ type TableProps = {
 
 const UsersTable: React.FC<TableProps> = ({users}) => {
     const classes = useStyles();
-    console.log(users)
+
     return (
         <>
         <Box display="flex" justifyContent="flex-end" >

@@ -7,6 +7,7 @@ namespace API.Models.ParkingSpotDtos
 {
     public class ReservationResponse
     {
+        public int Id { get; set; }
         public int? SpotAccountId { get; set; }
         public int ReserverAccountId { get; set; }
         public string ReserverName { get; set; }

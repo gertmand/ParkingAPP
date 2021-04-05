@@ -19,8 +19,8 @@ const App = (props: any) => {
     getUserData().then(async (result:any) => {
       dispatch(ADD_USER_DATA(result));
       if(!isNaN(enterpriseId) && enterpriseId !== 0 && enterpriseId !== "0") {
-        await getEnterpriseUserData(enterpriseId, dispatch);
-        await getEnterpriseParkingSpotData(enterpriseId, dispatch);
+        await getEnterpriseUserData(enterpriseId, dispatch, true);
+        await getEnterpriseParkingSpotData(enterpriseId, dispatch, true);
         await getEnterprise(enterpriseId, dispatch);
       }
     }).catch(() => {
@@ -43,11 +43,12 @@ const App = (props: any) => {
       if(enterpriseToken === undefined || enterpriseToken === null) {
         getEnterprises();
       }
-        if(enterpriseToken !== null || enterpriseToken !== undefined) {
-          setEnterprise(enterpriseToken!);
-        }
-        getDataQuery(parseInt(enterpriseToken!));
+      if(enterpriseToken !== null || enterpriseToken !== undefined) {
+        setEnterprise(enterpriseToken!);
+      }
+      getDataQuery(parseInt(enterpriseToken!));
     }
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localStorage.getItem('token'), localStorage.getItem('enterprise')])
 

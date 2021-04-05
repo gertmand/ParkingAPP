@@ -1,8 +1,9 @@
 import { Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getEnterpriseParkingSpotData, getEnterpriseUserData } from '../../../store/queries/enterpriseQueries';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../../store';
+import { getAccountsWithoutSpot, getEnterpriseParkingSpotData, getEnterpriseUserData } from '../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotListData, Reservation } from '../../../store/types/enterpriseTypes';
 import BookSpotModal from './bookSpotModal';
 import GiveSpot from './giveSpot';
@@ -25,12 +26,15 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
     const classes = useStyles();
     const [giveSpotModal, setGiveSpotModal] = useState(false);
     const [releaseModal, setReleaseModal] = useState(false);
+    const [regularUsers, setRegularUsers] = useState([]);
     const isCancelled = React.useRef(false);
     const dispatch = useDispatch();
-    const enterpriseId = localStorage.getItem('enterprise')
+    const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
     const [bookModal, setBookModal] = useState(false);
 
     const handleGiveSpot = (e: any) => {
+        if(regularUsers.length === 0 && enterpriseId !== undefined)
+            getAccountsWithoutSpot(enterpriseId).then(data => setRegularUsers(data));
         setGiveSpotModal(!giveSpotModal);
     }
 
@@ -40,8 +44,8 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
 
     const updateSpotTable = () => {
         if(enterpriseId !== undefined) {            
-            getEnterpriseUserData(parseInt(enterpriseId!), dispatch); 
-            getEnterpriseParkingSpotData(parseInt(enterpriseId!), dispatch); 
+            getEnterpriseUserData(enterpriseId, dispatch, false); 
+            getEnterpriseParkingSpotData(enterpriseId, dispatch, false); 
         }
     }
 
@@ -50,13 +54,13 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
     }
 
     useEffect(() => {
-        updateSpotTable();
+        //updateSpotTable();
         
         return () => {
             isCancelled.current = true;
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [enterpriseId])
+    }, [])
 
     return (
         <>
@@ -75,7 +79,7 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
                 </div>
             </Grid> }
         </Grid>
-        <GiveSpot updateSpotData={updateSpotTable} giveSpotModal={giveSpotModal} setGiveSpotModal={handleGiveSpot} />
+        <GiveSpot updateSpotData={updateSpotTable} giveSpotModal={giveSpotModal} setGiveSpotModal={handleGiveSpot} regularUsers={regularUsers} />
         <ReleaseSpot updateSpotData={updateSpotTable} releaseModal={releaseModal} setReleaseModal={handleRelease} />
         <BookSpotModal bookModal={bookModal} setBookModal={handleBookModal} />
         </>

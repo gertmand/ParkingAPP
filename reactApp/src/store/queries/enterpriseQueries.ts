@@ -12,9 +12,9 @@ export const getEnterprise = async (id: any, dispatch: any) => {
     return await get(`${apiUrl}/api/enterprises/${id}`).then(data => dispatch(ADD_ENTERPRISE_DATA(data))).catch(data => localStorage.removeItem("enterprise"));
 }
 
-export const getEnterpriseUserData = async (enterpriseId: number, dispatch: any) => {
+export const getEnterpriseUserData = async (enterpriseId: number, dispatch: any, fetchStart: boolean) => {
     if(enterpriseId === 0) { return null }
-    dispatch(FETCH_ENTERPRISE_USER_DATA_START())
+    if(fetchStart === true) { dispatch(FETCH_ENTERPRISE_USER_DATA_START()) }
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/user`).then(data => dispatch(FETCH_ENTERPRISE_USER_DATA_SUCCESS(data))).catch(err => dispatch(FETCH_ENTERPRISE_USER_DATA_ERROR(err)))
 }
 
@@ -36,9 +36,9 @@ export const cancelSpotRelease = async (data: any) => {
     return "canceled";
 }
 
-export const getEnterpriseParkingSpotData = async (enterpriseId: number, dispatch: any) => {
+export const getEnterpriseParkingSpotData = async (enterpriseId: number, dispatch: any, fetchStart: boolean) => {
     if(enterpriseId === 0) { return null }
-    dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_START())
+    if(fetchStart === true) { dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_START()) }
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/spot`).then(data => dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS(data))).catch(err => dispatch(FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR(err)))
 }
 
