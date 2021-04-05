@@ -14,25 +14,19 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
 
     return (
         <>
-<TextField  placeholder="otsi parkimiskohta..." InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SvgIcon
-                        fontSize="small"
-                        color="action"
-                      >
-                        <SearchIcon />
-                      </SvgIcon>
-                    </InputAdornment>
-                  )
-                }} variant="outlined" onChange={event => {setSearchTerm(event.target.value)}}/>
-
         <Box display="flex" justifyContent="flex-end" >
             <Button color="primary" variant="contained">
                 Lisa parklakoht
             </Button>
         </Box>
+        <TextField variant="standard" onChange={event => {setSearchTerm(event.target.value)}}  placeholder="otsi parkimiskohta..." InputProps={{startAdornment: (
+                    <InputAdornment position="start">
+                      <SvgIcon fontSize="small"color="action">
+                        <SearchIcon />
+                      </SvgIcon>
+                    </InputAdornment>)}}/>
         <Table className={clsx(classes.table)}>
+            
             <TableHead>
             <TableRow>
                 <TableCell align='center'>Parkimiskoht</TableCell>
@@ -42,9 +36,9 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
             </TableRow>
             </TableHead>
             <TableBody>
-            {parkingSpots !== undefined ?  parkingSpots.filter((val)=>{if(searchTerm == ""){return val} 
-            else if(val.number.toString().toLowerCase().includes(searchTerm.toLowerCase())){
-                return val
+            {parkingSpots !== undefined ?  parkingSpots.filter((ps)=>{if(searchTerm == ""){return ps} 
+            else if(ps.number.toString().toLowerCase().includes(searchTerm.toLowerCase())){
+                return ps
             }}
             ).map((row : ParkingSpot) => (
                 <TableRow className={classes.tableRow} hover key={row.id}>
