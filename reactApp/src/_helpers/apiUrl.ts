@@ -1,1 +1,1 @@
-export const apiUrl = process.env.NODE_ENV === "development" ? "http://localhost:5000":"https://https://apiparkingsolutions.azurewebsites.net";
+export const apiUrl = process.env.NODE_ENV === "development" ? "http://localhost:5000":"https://apiparkingsolutions.azurewebsites.net";
