@@ -1,10 +1,9 @@
-import { Box, Button, InputAdornment, makeStyles, MenuList, SvgIcon, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core'
-import clsx from 'clsx'
-import React, { FC, useState } from 'react'
-import { PlusCircle, XCircle, Search as SearchIcon } from 'react-feather'
+import { Box, Button, InputAdornment, makeStyles, SvgIcon, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core';
+import { DataGrid, GridApi } from '@material-ui/data-grid';
+import clsx from 'clsx';
+import React, { FC, useState } from 'react';
+import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
 import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
-import { DataGrid, GridApi} from '@material-ui/data-grid';
-import { any } from 'prop-types';
 
 type TableProps = {
     parkingSpots: ParkingSpot[];
@@ -94,7 +93,7 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
             }}
             autoHeight
             rows={parkingSpots.filter(ps => {
-              if (searchTerm == '') {
+              if (searchTerm === '') {
                 return ps;
               } else if (
                 ps.number
@@ -104,6 +103,7 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
               ) {
                 return ps;
               }
+              return null;
             })}
             columns={columns}
             pageSize={10}
@@ -143,7 +143,7 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
             {parkingSpots !== undefined
               ? parkingSpots
                   .filter(ps => {
-                    if (searchTerm == '') {
+                    if (searchTerm === '') {
                       return ps;
                     } else if (
                       ps.number
@@ -153,6 +153,7 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
                     ) {
                       return ps;
                     }
+                    return null;
                   })
                   .map((row: ParkingSpot) => (
                     <TableRow className={classes.tableRow} hover key={row.id}>
