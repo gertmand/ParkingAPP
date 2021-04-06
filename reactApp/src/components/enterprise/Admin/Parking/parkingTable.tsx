@@ -21,8 +21,8 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
         { field: "tegevused", headerName: "Tegevused", sortable: false, width: 150, disableClickEventBubbling: true, headerAlign : 'center',
             renderCell: () => {
               return <ButtonGroup>
-                <Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip>
-                <Tooltip title="Kustuta parkimiskoht"><Button><XCircle color="red"/></Button></Tooltip>
+                <Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="#77d18f"/></Button></Tooltip>
+                <Tooltip title="Kustuta parkimiskoht"><Button><XCircle color="#e08d8d"/></Button></Tooltip>
                     </ButtonGroup>;
             }
           },
@@ -32,25 +32,7 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
     return (
       <>
         <div style={{ width: '100%'}}>
-          <DataGrid
-            disableColumnMenu
-            autoHeight
-            rows={ parkingSpots.filter(ps => {
-              if (searchTerm === '') {
-                return ps;
-              } else if (
-                ps.number
-                  .toString()
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase())
-              ) {
-                return ps;
-              }
-              return null;
-            })}
-            columns={columns}
-            pageSize={10}
-          />
+        
         </div>
         <Box display="flex" justifyContent="flex-end">
           <Button color="primary" variant="contained">
@@ -73,7 +55,26 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
             )
           }}
         />
-        <Table className={clsx(classes.table)}>
+        <DataGrid
+            disableColumnMenu
+            autoHeight
+            rows={ parkingSpots.filter(ps => {
+              if (searchTerm === '') {
+                return ps;
+              } else if (
+                ps.number
+                  .toString()
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase())
+              ) {
+                return ps;
+              }
+              return null;
+            })}
+            columns={columns}
+            pageSize={10}
+          />
+        {/* <Table className={clsx(classes.table)}>
           <TableHead>
             <TableRow>
               <TableCell align="center">Parkimiskoht</TableCell>
@@ -129,7 +130,7 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
                   ))
               : null}
           </TableBody>
-        </Table>
+        </Table> */}
       </>
     );
 }
