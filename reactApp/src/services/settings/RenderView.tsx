@@ -7,14 +7,12 @@ import GlobalStyles from '../../style/GlobalStyles';
 import PrivateRoutes from './PrivateRoutes';
 import Routes from './Routes';
 
-const RenderView = (enterprise: any) => {
-    const UserData = useSelector<AppState, User>(state => state.user.userData);
-    const userDataFetching = useSelector<AppState, boolean>(state => state.user.enterpriseUserDataFetching);
-    const parkingSpotFetching = useSelector<AppState, boolean>(state => state.user.enterpriseParkingSpotDataFetching);
-    //console.log(Object.entries(UserData).length !== 0)
-    console.log(Object.entries(UserData).length !== 0)
+const RenderView = () => {
+    const userDataFetching = useSelector<AppState, boolean>(state => state.user.userDataFetching);
+    const enterpriseUserDataFetching = useSelector<AppState, boolean>(state => state.user.enterpriseUserDataFetching);
+    const enterpriseParkingDataFetching = useSelector<AppState, boolean>(state => state.user.enterpriseParkingSpotDataFetching);
 
-    if (!userDataFetching && !parkingSpotFetching) {
+    if (!userDataFetching && !enterpriseUserDataFetching && !enterpriseParkingDataFetching) {
         if (!localStorage.getItem('token')) {
         return (
             <>
@@ -24,7 +22,7 @@ const RenderView = (enterprise: any) => {
         } else {
             return (
                 <>
-                    <PrivateRoutes enterprise={enterprise} />
+                    <PrivateRoutes />
                 </>
             )}
     } else {

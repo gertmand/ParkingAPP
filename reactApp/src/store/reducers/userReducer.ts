@@ -5,6 +5,7 @@ type Action = {
 
 type UserReducerType = {
     userData: any,
+    userDataFetching: boolean,
     enterpriseData: any,
     enterpriseUserData: any,
     enterpriseUserDataFetching: boolean,
@@ -15,6 +16,7 @@ type UserReducerType = {
 
 const initialState: UserReducerType = {
     userData: {},
+    userDataFetching: false,
     enterpriseData: {},
     enterpriseUserData: {}, // API.Models.EnterpriseUserDataResponse
     enterpriseUserDataFetching: false,
@@ -25,10 +27,24 @@ const initialState: UserReducerType = {
 
 export const userReducer = (state = initialState, action: Action) => {
     switch (action.type) {
-        case "ADD_USER_DATA": {
+        case "FETCH_USER_DATA_START": {
             return {
                 ...state,
-                userData: action.payload
+                userDataFetching: true
+            }
+        }
+        case "FETCH_USER_DATA_SUCCESS": {
+            return {
+                ...state,
+                userData: action.payload,
+                userDataFetching: false
+            }
+        }
+        case "FETCH_USER_DATA_ERROR": {
+            return {
+                ...state,
+                error: action.payload,
+                userDataFetching: false
             }
         }
         case "ADD_ENTERPRISE_DATA": {

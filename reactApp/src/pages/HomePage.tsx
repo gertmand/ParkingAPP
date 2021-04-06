@@ -1,6 +1,7 @@
 import { Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router';
 import ErrorAlert from '../components/common/errorAlert';
 import { SiteAlert } from '../components/common/siteTypes';
 import SuccessAlert from '../components/common/successAlert';
@@ -17,13 +18,6 @@ const HomePage = (props: any) => {
   const successAlert = useSelector<AppState, SiteAlert>(state => state.site.successAlert);
   const errorAlert = useSelector<AppState, SiteAlert>(state => state.site.errorAlert);
   const [reservationSpot, setReservationSpot] = useState<Reservation>()
-
-  useEffect(() => {
-    if (localStorage.getItem('enterprise') === "0") {
-      props.history.push('/enterprise')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useEffect(() => {
     if (userData.reservations !== undefined) {
@@ -46,6 +40,12 @@ const HomePage = (props: any) => {
       }
     }
   }, [userData])
+
+  console.log(localStorage.getItem('enterprise'))
+
+  if (localStorage.getItem('enterprise') === "0" || localStorage.getItem('enterprise') === null) {
+    return <Redirect to='/enterprise' />
+  }
 
   return (
     <Page

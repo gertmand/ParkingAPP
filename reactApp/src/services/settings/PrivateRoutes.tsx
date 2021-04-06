@@ -11,7 +11,7 @@ import SettingsView from '../../style/views/settings/SettingsView'
 import PrivateRoute from './PrivateRoute'
 import RouteWithLayout from './RouteWithLayout'
 
-const PrivateRoutes = (props: any) => {
+const PrivateRoutes = () => {
         return(
             <>
                 <GlobalStyles />

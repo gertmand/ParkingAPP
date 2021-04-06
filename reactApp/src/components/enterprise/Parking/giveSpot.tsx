@@ -2,7 +2,6 @@ import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../store';
 import { addReservation } from '../../../store/queries/enterpriseQueries';
-import { getUserData } from '../../../store/queries/userQueries';
 import { ParkingSpot } from '../../../store/types/enterpriseTypes';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../common/siteActions';
 import GiveModal from './giveModal';
@@ -57,7 +56,7 @@ const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData, re
                     setEndDate(null);
                     setGiveSpotModal(!giveSpotModal);
                     dispatch(SET_SUCCESS_ALERT({ status: true, message: "Sinu broneering on lisatud!" }));
-                    getUserData();
+                    //getUserData();
                     updateSpotData();
                 }).catch((err: any) => {
                     setLoading(false);
