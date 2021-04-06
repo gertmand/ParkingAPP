@@ -30,8 +30,10 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
             width: 100,
             disableClickEventBubbling: true,
             renderCell: (params: { api: GridApi; getValue: (arg0: string) => any; } ) => {
+              // eslint-disable-next-line
               const onClick = () => {
                 const api: GridApi = params.api;
+                // eslint-disable-next-line
                 const fields = api
                   .getAllColumns()
                   .map((c) => c.field)
@@ -55,8 +57,10 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
             width: 100,
             disableClickEventBubbling: true,
             renderCell: (params: { api: GridApi; getValue: (arg0: string) => any; } ) => {
-              const onClick = () => {
+              // eslint-disable-next-line
+              const onClick = () => { //TODO: unUsed
                 const api: GridApi = params.api;
+                // eslint-disable-next-line
                 const fields = api
                   .getAllColumns()
                   .map((c) => c.field)

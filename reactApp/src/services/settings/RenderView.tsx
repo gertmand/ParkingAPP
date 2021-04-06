@@ -12,8 +12,9 @@ const RenderView = (enterprise: any) => {
     const userDataFetching = useSelector<AppState, boolean>(state => state.user.enterpriseUserDataFetching);
     const parkingSpotFetching = useSelector<AppState, boolean>(state => state.user.enterpriseParkingSpotDataFetching);
     //console.log(Object.entries(UserData).length !== 0)
+    console.log(Object.entries(UserData).length !== 0)
 
-    if (Object.entries(UserData).length !== 0 && !userDataFetching && !parkingSpotFetching) {
+    if (!userDataFetching && !parkingSpotFetching) {
         if (!localStorage.getItem('token')) {
         return (
             <>
