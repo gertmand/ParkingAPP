@@ -1,5 +1,5 @@
-import { Box, Button, InputAdornment, makeStyles, SvgIcon, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core';
-import { DataGrid, GridApi } from '@material-ui/data-grid';
+import { Box, Button, ButtonGroup, InputAdornment, makeStyles, SvgIcon, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core';
+import { DataGrid, GridColumns } from '@material-ui/data-grid';
 import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
@@ -13,90 +13,29 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
     const classes = useStyles();
     const[searchTerm, setSearchTerm] = useState('')
 
-
-    const columns= [
-        { field: 'id', headerName :'', hide : true},
-        { field: 'number', headerName: 'Parklakoha number', width: 200 },
-        { field: 'mainUser', headerName: 'Peakasutaja(d)', width:200 },
-        {
-          field: 'carNumber',
-          headerName: ' Auto reg. number',
-          width: 200,
-        },
-        {
-            field: "add",
-            headerName: " ",
-            sortable: false,
-            width: 100,
-            disableClickEventBubbling: true,
-            renderCell: (params: { api: GridApi; getValue: (arg0: string) => any; } ) => {
-              // eslint-disable-next-line
-              const onClick = () => {
-                const api: GridApi = params.api;
-                // eslint-disable-next-line
-                const fields = api
-                  .getAllColumns()
-                  .map((c) => c.field)
-                  .filter((c) => c !== "__check__" && !!c);
-                const thisRow = {};
-               
-                /*fields.forEach((f) => {
-                  thisRow[f] = params.getValue(f);
-                });*/
-        
-                return alert(JSON.stringify(thisRow, null, 4));
-              };
-        
-              return <Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip>;
-            }
-          },
-          {
-            field: "delete",
-            headerName: " ",
-            sortable: false,
-            width: 100,
-            disableClickEventBubbling: true,
-            renderCell: (params: { api: GridApi; getValue: (arg0: string) => any; } ) => {
-              // eslint-disable-next-line
-              const onClick = () => { //TODO: unUsed
-                const api: GridApi = params.api;
-                // eslint-disable-next-line
-                const fields = api
-                  .getAllColumns()
-                  .map((c) => c.field)
-                  .filter((c) => c !== "__check__" && !!c);
-                const thisRow = {};
-               
-                /*fields.forEach((f) => {
-                  thisRow[f] = params.getValue(f);
-                });*/
-        
-                return alert(JSON.stringify(thisRow, null, 4));
-              };
-        
-              return <Button><XCircle color="red"/></Button>;
+    const columns: GridColumns = [
+        { field: 'id', headerName : '', hide : true},
+        { field: 'number', headerName: 'Parklakoha number', width: 190, align : 'center', headerAlign : 'center'},
+        { field: 'mainUser', headerName: 'Peakasutaja(d)', width:200, headerAlign : 'center' },
+        { field: 'carNumber', headerName: ' Auto reg. number', width: 200, headerAlign : 'center'},
+        { field: "tegevused", headerName: "Tegevused", sortable: false, width: 150, disableClickEventBubbling: true, headerAlign : 'center',
+            renderCell: () => {
+              return <ButtonGroup>
+                <Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="green"/></Button></Tooltip>
+                <Tooltip title="Kustuta parkimiskoht"><Button><XCircle color="red"/></Button></Tooltip>
+                    </ButtonGroup>;
             }
           },
       ];
-    
 
 
     return (
       <>
-        <div style={{ width: '100%', alignContent: 'center' }}>
+        <div style={{ width: '100%'}}>
           <DataGrid
-            localeText={{
-              columnMenuLabel: 'Menüü',
-              columnMenuShowColumns: 'Näita tulpasid',
-              columnMenuFilter: 'Filtreeri',
-              columnMenuHideColumn: 'Peida',
-              columnMenuUnsort: 'Lõpeta sorteering',
-              columnMenuSortAsc: 'Sorteeri kasvavalt',
-              columnMenuSortDesc: 'Sorteeri kahanevalt',
-              
-            }}
+            disableColumnMenu
             autoHeight
-            rows={parkingSpots.filter(ps => {
+            rows={ parkingSpots.filter(ps => {
               if (searchTerm === '') {
                 return ps;
               } else if (
