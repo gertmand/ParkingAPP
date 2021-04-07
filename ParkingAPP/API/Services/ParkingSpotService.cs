@@ -24,6 +24,7 @@ namespace API.Services
         IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId);
         List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request);
         ParkingSpotStatusType GetParkingSpotStatus(int id);
+        ParkingSpotResponse DeleteParkingSpot(int id);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -45,7 +46,8 @@ namespace API.Services
 
         public ParkingSpotResponse GetById(int id)
         {
-            throw new NotImplementedException();
+            ParkingSpot ps = getById(id);
+            return _mapper.Map<ParkingSpotResponse>(ps);
         }
 
         public IEnumerable<ReservationResponse> GetUserReservations(int enterpriseId, int userId)
@@ -282,6 +284,15 @@ namespace API.Services
             return availableForReservation;
         }
 
+        public ParkingSpotResponse DeleteParkingSpot(int id)
+        {
+            ParkingSpotResponse psr = GetById(id);
+            deleteParkingSpot(id);
+            return psr; 
+
+        }
+
+
         // helper methods
 
         private List<DateTime> AddPeriodDatesToList(List<DateTime> datesToReserve, ReleasedSpot releasedSpot)
@@ -414,6 +425,20 @@ namespace API.Services
             }
 
             return releases;
+        }
+
+        private ParkingSpot deleteParkingSpot(int id)
+        {
+            ParkingSpot ps = _context.ParkingSpots.Find(id);
+            _context.ParkingSpots.Remove(ps);
+            _context.SaveChanges();
+            return ps;
+        }
+
+        private ParkingSpot getById(int id)
+        {
+            ParkingSpot ps = _context.ParkingSpots.Find(id);
+            return ps;
         }
     }
 }

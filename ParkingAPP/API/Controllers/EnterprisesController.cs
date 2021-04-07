@@ -57,7 +57,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{enterpriseId}/users")]
-        public async Task<List<EnterpriseAccountsResponse>> GetUsersWithoutParkingSpace(int enterpriseId)
+        public List<EnterpriseAccountsResponse> GetUsersWithoutParkingSpace(int enterpriseId)
         {
             CheckUser(enterpriseId);
 
@@ -163,6 +163,14 @@ namespace API.Controllers
             var response = _parkingSpotService.ReserveParkingSpot(request);
 
             return response;
+        }
+
+        [HttpDelete("parkingspots/{id}")]
+        public ActionResult<ParkingSpotResponse> DeleteParkingSpot(int id)
+        {
+            ParkingSpotResponse ps = _parkingSpotService.GetById(id);
+            _parkingSpotService.DeleteParkingSpot(id);
+            return ps;
         }
 
         [HttpGet("available-dates")]
