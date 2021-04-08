@@ -1,6 +1,5 @@
-import { Box, Button, ButtonGroup, InputAdornment, makeStyles, SvgIcon, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core';
+import { Box, Button, ButtonGroup, InputAdornment, SvgIcon, TextField, Tooltip } from '@material-ui/core';
 import { DataGrid, GridColumns } from '@material-ui/data-grid';
-import clsx from 'clsx';
 import React, { FC, useState } from 'react';
 import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
 import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
@@ -10,7 +9,6 @@ type TableProps = {
   };
 
 const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
-    const classes = useStyles();
     const[searchTerm, setSearchTerm] = useState('')
 
     const columns: GridColumns = [
@@ -134,20 +132,5 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
       </>
     );
 }
-
-const useStyles = makeStyles({
-    root: {
-      marginTop: "15px"
-    },
-    table: {
-      minWidth: 650,
-    },
-    tableRow: {
-        height: 40
-      },
-      tableCell: {
-        padding: "0px 16px"
-      }
-  });
 
 export default ParkingTable
