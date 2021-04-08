@@ -165,12 +165,11 @@ namespace API.Controllers
             return response;
         }
 
-        [HttpDelete("parkingspots/{id}")]
+        [HttpPost("parkingspots/{id}")]
         public ActionResult<ParkingSpotResponse> DeleteParkingSpot(int id)
         {
-            ParkingSpotResponse ps = _parkingSpotService.GetById(id);
             _parkingSpotService.DeleteParkingSpot(id);
-            return ps;
+            return Ok(_parkingSpotService.GetById(id));
         }
 
         [HttpGet("available-dates")]

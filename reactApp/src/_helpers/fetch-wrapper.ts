@@ -16,6 +16,15 @@ export const get = (url: any) => {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
+export const del = (url: any) => {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeader(url) } as any,
+        credentials: 'include' as any,
+    };
+    return fetch(url, requestOptions).then(handleResponse);
+}
+
 
 const authHeader = (url: any) => {
     var token = localStorage.getItem('token');

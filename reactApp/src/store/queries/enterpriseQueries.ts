@@ -1,6 +1,6 @@
 import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
-import { get, post } from "../../_helpers/fetch-wrapper"
+import { del, get, post } from "../../_helpers/fetch-wrapper"
 import { ADD_ENTERPRISE_DATA, FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
 import { ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
 
@@ -44,6 +44,12 @@ export const getEnterpriseParkingSpotData = async (enterpriseId: number, dispatc
 
 export const releaseParkingSpot = (request: ReleaseRequest) => {
     return post(`${apiUrl}/api/enterprises/release`, request)
+}
+
+export const deleteParkingSpot = (parkingSpotId: number) => {
+    if(parkingSpotId !== undefined){
+        return del(`${apiUrl}/api/enterprises/parkingspots/${parkingSpotId}`)
+    }
 }
 
 // ADMIN QUERIES

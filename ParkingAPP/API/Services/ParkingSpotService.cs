@@ -286,9 +286,7 @@ namespace API.Services
 
         public ParkingSpotResponse DeleteParkingSpot(int id)
         {
-            ParkingSpotResponse psr = GetById(id);
-            deleteParkingSpot(id);
-            return psr; 
+            return _mapper.Map<ParkingSpotResponse>(deleteParkingSpot(id));
 
         }
 
@@ -387,7 +385,7 @@ namespace API.Services
 
         private List<ParkingSpot> getAllParkingSpots(int enterpriseId)
         {
-            var parkingspots = _context.ParkingSpots.Where(x => x.EnterpriseId == enterpriseId).ToList();
+            var parkingspots = _context.ParkingSpots.Where(x => x.EnterpriseId == enterpriseId && x.DeletionDate == null).ToList();
             return parkingspots;
         }
 
@@ -430,7 +428,7 @@ namespace API.Services
         private ParkingSpot deleteParkingSpot(int id)
         {
             ParkingSpot ps = _context.ParkingSpots.Find(id);
-            _context.ParkingSpots.Remove(ps);
+            ps.DeletionDate = DateTime.UtcNow;
             _context.SaveChanges();
             return ps;
         }

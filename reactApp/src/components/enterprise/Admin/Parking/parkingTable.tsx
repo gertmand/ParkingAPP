@@ -1,26 +1,38 @@
 import { Box, Button, ButtonGroup, InputAdornment, SvgIcon, TextField, Tooltip } from '@material-ui/core';
-import { DataGrid, GridColumns } from '@material-ui/data-grid';
+import { DataGrid, GridCellParams, GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import React, { FC, useState } from 'react';
 import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../../../store';
+import { deleteParkingSpot, getEnterpriseParkingSpots } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
+import { SET_SUCCESS_ALERT } from '../../../common/siteActions';
 
 type TableProps = {
-    parkingSpots: ParkingSpot[];
+    parkingSpots: ParkingSpot[],
+    updateParkingSpots():any
   };
 
-const ParkingTable:FC<TableProps>  = ({parkingSpots}) => {
+const ParkingTable:FC<TableProps>  = ({parkingSpots, updateParkingSpots}) => {
+    const dispatch = useDispatch();
     const[searchTerm, setSearchTerm] = useState('')
+    const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
+
+
+    function getFullName(params: GridValueGetterParams) {
+      return `${params.getValue('id')}`;
+    }
 
     const columns: GridColumns = [
         { field: 'id', headerName : '', hide : true},
         { field: 'number', headerName: 'Parklakoha number', width: 190, align : 'center', headerAlign : 'center'},
         { field: 'mainUser', headerName: 'Peakasutaja(d)', width:200, headerAlign : 'center' },
         { field: 'carNumber', headerName: ' Auto reg. number', width: 200, headerAlign : 'center'},
-        { field: "tegevused", headerName: "Tegevused", sortable: false, width: 150, disableClickEventBubbling: true, headerAlign : 'center',
-            renderCell: () => {
+        { field: "tegevused", headerName: "Tegevused", sortable: false, width: 150, disableClickEventBubbling: true, headerAlign : 'center', valueGetter:getFullName,
+            renderCell: (params : GridValueGetterParams) => {
               return <ButtonGroup>
                 <Tooltip title="Lisa peakasutaja"><Button><PlusCircle color="#77d18f"/></Button></Tooltip>
-                <Tooltip title="Kustuta parkimiskoht"><Button><XCircle color="#e08d8d"/></Button></Tooltip>
+                <Tooltip title="Kustuta parkimiskoht"><Button onClick={() => deleteParkingSpot(+getFullName(params))?.then(()=>{updateParkingSpots(); dispatch(SET_SUCCESS_ALERT({status:true, message: "Parkimiskoht kustutatud!"}));})}><XCircle color="#e08d8d"/></Button></Tooltip>
                     </ButtonGroup>;
             }
           },
