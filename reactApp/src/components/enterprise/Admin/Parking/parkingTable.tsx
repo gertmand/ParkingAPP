@@ -1,10 +1,9 @@
 import { Box, Button, ButtonGroup, InputAdornment, SvgIcon, TextField, Tooltip } from '@material-ui/core';
-import { DataGrid, GridCellParams, GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
+import { DataGrid, GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import React, { FC, useState } from 'react';
 import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../../../store';
-import { deleteParkingSpot, getEnterpriseParkingSpots } from '../../../../store/queries/enterpriseQueries';
+import { useDispatch} from 'react-redux';
+import { deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
 import { SET_SUCCESS_ALERT } from '../../../common/siteActions';
 
@@ -16,7 +15,6 @@ type TableProps = {
 const ParkingTable:FC<TableProps>  = ({parkingSpots, updateParkingSpots}) => {
     const dispatch = useDispatch();
     const[searchTerm, setSearchTerm] = useState('')
-    const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
 
 
     function getFullName(params: GridValueGetterParams) {
@@ -42,7 +40,6 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots, updateParkingSpots}) => {
     return (
       <>
         <div style={{ width: '100%'}}>
-        
         </div>
         <Box display="flex" justifyContent="flex-end">
           <Button color="primary" variant="contained">
@@ -67,6 +64,11 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots, updateParkingSpots}) => {
         />
         <DataGrid
             disableColumnMenu
+            localeText={{
+              noRowsLabel:'Andmed puuduvad!',
+              footerRowSelected: (count) =>
+                `${count.toLocaleString()} rida valitud`
+            }}
             autoHeight
             rows={ parkingSpots.filter(ps => {
               if (searchTerm === '') {
@@ -84,63 +86,6 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots, updateParkingSpots}) => {
             columns={columns}
             pageSize={10}
           />
-        {/* <Table className={clsx(classes.table)}>
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Parkimiskoht</TableCell>
-              <TableCell align="center">Peakasutaja</TableCell>
-              <TableCell align="center">Auto registreerimisnumber</TableCell>
-              <TableCell align="center"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {parkingSpots !== undefined
-              ? parkingSpots
-                  .filter(ps => {
-                    if (searchTerm === '') {
-                      return ps;
-                    } else if (
-                      ps.number
-                        .toString()
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-                    ) {
-                      return ps;
-                    }
-                    return null;
-                  })
-                  .map((row: ParkingSpot) => (
-                    <TableRow className={classes.tableRow} hover key={row.id}>
-                      <TableCell
-                        className={classes.tableCell}
-                        component="th"
-                        scope="row"
-                        align="center"
-                      >
-                        {' '}
-                        {row.number}{' '}
-                      </TableCell>
-                      <TableCell className={classes.tableCell} align="center">
-                        TODO{' '}
-                      </TableCell>
-                      <TableCell className={classes.tableCell} align="center">
-                        TODO
-                      </TableCell>
-                      <TableCell className={classes.tableCell}>
-                        <Tooltip title="Lisa peakasutaja">
-                          <Button>
-                            <PlusCircle color="green" />
-                          </Button>
-                        </Tooltip>
-                        <Button>
-                          <XCircle color="red" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-              : null}
-          </TableBody>
-        </Table> */}
       </>
     );
 }
