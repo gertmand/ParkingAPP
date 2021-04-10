@@ -58,7 +58,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
   function getParkingSpotId(params: GridValueGetterParams) {
     return `${params.getValue('id')}`;
   }
-  const handleopenParkingLotPlanModal = () => {
+  const handleOpenParkingLotPlanModal = () => {
     setParkingLotPlanModal(true);
   };
   const handleCloseParkingLotPlanModal = () => {
@@ -69,6 +69,13 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
   };
   const handleCloseDeleteConfirmationModal = () => {
     setDeleteConfirmationModal(false);
+  };
+
+  const handleOpenAddParkingLotPlanModal = () => {
+    setParkingLotPlanAddModal(true);
+  };
+  const handleCloseAddParkingLotPlanModal = () => {
+    setParkingLotPlanAddModal(false);
   };
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
     if (e.target.files == null) {
@@ -182,6 +189,42 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
       </Dialog>
 
 
+      <Dialog
+        open={openParkingLotPlanAddModal}
+        onClose={handleCloseAddParkingLotPlanModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Vali fail ja kinnita."}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Uue plaani lisamisel kirjutatakse vanad väärtused üle. 
+          </DialogContentText>
+          <Input disableUnderline type="file" onChange={onFileChange} id="input" />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseAddParkingLotPlanModal} color="primary">
+            Loobu
+          </Button>
+          <Button
+                onClick={() =>
+                  addParkingSpotPlan(formData, enterpriseId).then(() => {
+                    handleCloseAddParkingLotPlanModal();
+                    dispatch(
+                      SET_SUCCESS_ALERT({
+                        status: true,
+                        message: 'Parkla plaan lisatud!'
+                      })
+                    );
+                  })
+                }
+                color="primary"
+                variant="contained"
+              >Lisa plaan
+              </Button>
+        </DialogActions>
+      </Dialog>
+
 
 
 
@@ -213,19 +256,9 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
       <div style={{ width: '100%' }}>
         <Box display="flex" flexDirection="row" p={1} m={1}>
           <Box p={1}>
-            <Input type="file" onChange={onFileChange} id="input" />
-          </Box>
-          <Box p={1}>
             <Button
               onClick={() =>
-                addParkingSpotPlan(formData, enterpriseId).then(() => {
-                  dispatch(
-                    SET_SUCCESS_ALERT({
-                      status: true,
-                      message: 'Parkla plaan lisatud!'
-                    })
-                  );
-                })
+                handleOpenAddParkingLotPlanModal()
               }
               color="primary"
               variant="contained"
@@ -234,7 +267,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
             </Button>
           </Box>
           <Box p={1}>
-            <Button color="primary" variant="contained" onClick={handleopenParkingLotPlanModal}>
+            <Button color="primary" variant="contained" onClick={handleOpenParkingLotPlanModal}>
               Vaata parklaplaani
             </Button>
           </Box>
