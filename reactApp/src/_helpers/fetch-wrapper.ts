@@ -16,15 +16,6 @@ export const get = (url: any) => {
     return fetch(url, requestOptions).then(handleResponse);
 }
 
-export const postParkingLotPlan = (url: any, body:File) => {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'multipart/form-data', ...authHeader(url) } as any,
-        credentials: 'include' as any,
-    };
-    return fetch(url, requestOptions).then(handleResponse);
-}
-
 export const del = (url: any) => {
     const requestOptions = {
         method: 'POST',

@@ -1,14 +1,11 @@
 import { Backdrop, Box, Button, ButtonGroup, CardMedia, createStyles, Fade, Input, InputAdornment, makeStyles, Modal, SvgIcon, TextField, Theme, Tooltip } from '@material-ui/core';
 import { DataGrid, GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
-import axios from 'axios';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
 import { useDispatch, useSelector} from 'react-redux';
 import { AppState } from '../../../../store';
-import { deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
+import { addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
-import { apiUrl } from '../../../../_helpers/apiUrl';
-import { postParkingLotPlan } from '../../../../_helpers/fetch-wrapper';
 import { SET_SUCCESS_ALERT } from '../../../common/siteActions';
 
 type TableProps = {
@@ -23,16 +20,6 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots, updateParkingSpots}) => {
     function getParkingSpotId(params: GridValueGetterParams) {
       return `${params.getValue('id')}`;
     }
-
-    
- const [data,setData] = useState("");
-
- useEffect(() => {
-
-    axios.get(`${apiUrl}/api/enterprises/${enterpriseId}/parkinglotplan`).then(result => {
-      setData(result.data);
-    })
-})
 
     const columns: GridColumns = [
         { field: 'id', headerName : '', hide : true},
@@ -72,17 +59,13 @@ const onFileChange = (e: React.ChangeEvent<HTMLInputElement>):any => {
    if ( e.target.files == null ) {
       throw new Error("Error finding e.target.files"); 
    }
-   //file.name = "Enterprise_" + enterpriseId;
    file = e.target.files[0];
-   console.log(file);
  }
 
  const upload = () =>{
+
   formData.append('parkingLotPlan',file);
-  axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/addparkinglotplan`, formData, {
-    headers: { "Content-Type": 'multipart/form-data' }
-  })
-   
+  addParkingSpotPlan(formData, enterpriseId);
  } 
 
 
@@ -98,7 +81,7 @@ const onFileChange = (e: React.ChangeEvent<HTMLInputElement>):any => {
           onChange={onFileChange}
           id="input"
         />
-        <Button onClick={upload} color="primary" variant="contained">Lisa plaan</Button>
+        <Button onClick={upload} onSubmit={(e)=>e.preventDefault()} color="primary" variant="contained">Lisa plaan</Button>
         <div style={{ width: '100%'}}>
         </div>
         <Box display="flex" justifyContent="flex-end"><Button color="primary" variant="contained">Lisa parklakoht</Button></Box>

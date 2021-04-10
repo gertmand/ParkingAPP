@@ -1,6 +1,6 @@
 import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
-import { del, get, post, postParkingLotPlan } from "../../_helpers/fetch-wrapper"
+import { del, get, post } from "../../_helpers/fetch-wrapper"
 import { ADD_ENTERPRISE_DATA, FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
 import { ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
 
@@ -52,8 +52,8 @@ export const deleteParkingSpot = (parkingSpotId: number) => {
     }
 }
 
-export const addParkingSpotPlan = (file:File, enterpriseId: number) => {
-    return postParkingLotPlan(`${apiUrl}/api/enterprises/${enterpriseId}/addparkinglotplan`, file)
+export const addParkingSpotPlan = async (formData:FormData, enterpriseId: number) => {
+    return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/addparkinglotplan`, formData, {headers: {"Content-Type": "multipart/form-data"}} )
 }
 
 // ADMIN QUERIES

@@ -43,10 +43,8 @@ import Page from '../style/Page';
     // }, [enterpriseParkingSpots, enterpriseId])
 
     const updateParkingSpots = () => {
-      console.log("Test")
       if (enterpriseParkingSpots !== undefined && enterpriseId !== undefined)
       {
-        console.log("TestIF")
         getEnterpriseParkingSpots(enterpriseId).then(result => {
           setEnterpriseParkingSpots(result);
         })

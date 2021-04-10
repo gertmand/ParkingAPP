@@ -18,8 +18,10 @@ namespace API.Controllers
         private readonly IEnterpriseService _enterpriseService;
         private readonly IParkingSpotService _parkingSpotService;
         private readonly IMapper _mapper;
-        private IHostingEnvironment hostEnvironment;
+        [System.Obsolete]
+        private readonly IHostingEnvironment hostEnvironment;
 
+        [System.Obsolete]
         public EnterprisesController(IEnterpriseService enterpriseService, IParkingSpotService parkingSpotService, IMapper mapper, IHostingEnvironment environment)
         {
             _enterpriseService = enterpriseService;
@@ -135,6 +137,7 @@ namespace API.Controllers
             return spotData;
         }
         [HttpPost("{id}/addparkinglotplan")]
+        [System.Obsolete]
         public ActionResult<EnterpriseResponse> AddParkingLotPlan([FromForm] Enterprise e, int id)
         {
             
@@ -143,10 +146,11 @@ namespace API.Controllers
                 var file = HttpContext.Request.Form.Files[0];
                 string path = hostEnvironment.ContentRootPath.Substring(0,(hostEnvironment.ContentRootPath.Length - 14))+"reactApp\\public\\images\\" + "Enterprise_" + id + ".jpg";
                 FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                file.CopyTo(fileStream);
                 fileStream.Dispose();
             }
 
-            return _mapper.Map<EnterpriseResponse>(_enterpriseService.GetById(id));
+            return Ok();
         }
 
         // PARKING METHODS (PARKING, RESERVATION, RELEASE)
