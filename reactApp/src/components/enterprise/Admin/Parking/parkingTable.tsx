@@ -1,10 +1,14 @@
-import { Backdrop, Box, Button, ButtonGroup, CardMedia, createStyles, Fade, InputAdornment, makeStyles, Modal, SvgIcon, TextField, Theme, Tooltip } from '@material-ui/core';
+import { Backdrop, Box, Button, ButtonGroup, CardMedia, createStyles, Fade, Input, InputAdornment, makeStyles, Modal, SvgIcon, TextField, Theme, Tooltip } from '@material-ui/core';
 import { DataGrid, GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
-import React, { FC, useState } from 'react';
+import axios from 'axios';
+import React, { FC, useEffect, useState } from 'react';
 import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
-import { useDispatch} from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
+import { AppState } from '../../../../store';
 import { deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
+import { apiUrl } from '../../../../_helpers/apiUrl';
+import { postParkingLotPlan } from '../../../../_helpers/fetch-wrapper';
 import { SET_SUCCESS_ALERT } from '../../../common/siteActions';
 
 type TableProps = {
@@ -15,10 +19,20 @@ type TableProps = {
 const ParkingTable:FC<TableProps>  = ({parkingSpots, updateParkingSpots}) => {
     const dispatch = useDispatch();
     const[searchTerm, setSearchTerm] = useState('')
-
+    const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
     function getParkingSpotId(params: GridValueGetterParams) {
       return `${params.getValue('id')}`;
     }
+
+    
+ const [data,setData] = useState("");
+
+ useEffect(() => {
+
+    axios.get(`${apiUrl}/api/enterprises/${enterpriseId}/parkinglotplan`).then(result => {
+      setData(result.data);
+    })
+})
 
     const columns: GridColumns = [
         { field: 'id', headerName : '', hide : true},
@@ -52,13 +66,43 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots, updateParkingSpots}) => {
 
   const handleOpen = () => { setOpen(true);};
   const handleClose = () => { setOpen(false);};
+  var formData=new FormData();
+  let file : File;
+const onFileChange = (e: React.ChangeEvent<HTMLInputElement>):any => {
+   if ( e.target.files == null ) {
+      throw new Error("Error finding e.target.files"); 
+   }
+   //file.name = "Enterprise_" + enterpriseId;
+   file = e.target.files[0];
+   console.log(file);
+ }
+
+ const upload = () =>{
+  formData.append('parkingLotPlan',file);
+  axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/addparkinglotplan`, formData, {
+    headers: { "Content-Type": 'multipart/form-data' }
+  })
+   
+ } 
+
+
+
+
 
     return (
       <>
+        <Input 
+          className="inputFieldWidth margins"
+          type="file"
+          name="enterprise_"
+          onChange={onFileChange}
+          id="input"
+        />
+        <Button onClick={upload} color="primary" variant="contained">Lisa plaan</Button>
         <div style={{ width: '100%'}}>
         </div>
-        <Box display="flex" justifyContent="flex-end"><Button color="primary" variant="contained" />Lisa parklakoht</Box>
-        <Box display="flex" justifyContent="flex-end"><Button color="primary" variant="contained" onClick={handleOpen} />Parklaplaan</Box>
+        <Box display="flex" justifyContent="flex-end"><Button color="primary" variant="contained">Lisa parklakoht</Button></Box>
+        <Box display="flex" justifyContent="flex-end"><Button color="primary" variant="contained" onClick={handleOpen} >Parklaplaan</Button></Box>
         <Modal
           className={classes.modal}
           open={open}
@@ -71,7 +115,7 @@ const ParkingTable:FC<TableProps>  = ({parkingSpots, updateParkingSpots}) => {
         >
           <Fade in={open}>
             <div>
-                <CardMedia component="img" image="https://bosch.io/wp-content/uploads/parking-lot-monitoring.jpg" />
+            <CardMedia component="img" src={process.env.PUBLIC_URL + '/images/Enterprise_' + enterpriseId +'.jpg'} /> 
             </div>
           </Fade>
         </Modal>

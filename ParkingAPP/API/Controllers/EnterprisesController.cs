@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
 using API.Models.ParkingSpotDtos;
 using API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 
 namespace API.Controllers
 {
@@ -19,12 +18,15 @@ namespace API.Controllers
         private readonly IEnterpriseService _enterpriseService;
         private readonly IParkingSpotService _parkingSpotService;
         private readonly IMapper _mapper;
+        private IHostingEnvironment hostEnvironment;
 
-        public EnterprisesController(IEnterpriseService enterpriseService, IParkingSpotService parkingSpotService, IMapper mapper)
+        public EnterprisesController(IEnterpriseService enterpriseService, IParkingSpotService parkingSpotService, IMapper mapper, IHostingEnvironment environment)
         {
             _enterpriseService = enterpriseService;
             _parkingSpotService = parkingSpotService;
             _mapper = mapper;
+            hostEnvironment = environment;
+
         }
 
         // ENTERPRISE METHODS
@@ -131,6 +133,20 @@ namespace API.Controllers
             };
 
             return spotData;
+        }
+        [HttpPost("{id}/addparkinglotplan")]
+        public ActionResult<EnterpriseResponse> AddParkingLotPlan([FromForm] Enterprise e, int id)
+        {
+            
+            if (HttpContext.Request.Form.Files.Any())
+            {
+                var file = HttpContext.Request.Form.Files[0];
+                string path = hostEnvironment.ContentRootPath.Substring(0,(hostEnvironment.ContentRootPath.Length - 14))+"reactApp\\public\\images\\" + "Enterprise_" + id + ".jpg";
+                FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                fileStream.Dispose();
+            }
+
+            return _mapper.Map<EnterpriseResponse>(_enterpriseService.GetById(id));
         }
 
         // PARKING METHODS (PARKING, RESERVATION, RELEASE)

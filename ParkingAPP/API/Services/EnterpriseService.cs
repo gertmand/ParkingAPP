@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.Xml;
-using System.Threading.Tasks;
 using API.DAL;
-using API.Helpers;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
-using API.Models.ParkingSpotDtos;
 using AutoMapper;
-using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace API.Services
 {
