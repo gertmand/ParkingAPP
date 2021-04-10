@@ -5,6 +5,11 @@ import {
   ButtonGroup,
   CardMedia,
   createStyles,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Fade,
   Input,
   InputAdornment,
@@ -42,18 +47,28 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
   var formData = new FormData();
   let file: File;
   const [searchTerm, setSearchTerm] = useState('');
-  const [open, setOpen] = React.useState(false);
+  const [parkingSpotId, setParkingSpotId] = useState(0);
+  const [openParkingLotPlanModal, setParkingLotPlanModal] = React.useState(false);
+  const [openParkingLotPlanAddModal, setParkingLotPlanAddModal] = React.useState(false);
+  const [openDeleteConfirmationModal, setDeleteConfirmationModal] = React.useState(false);
   const enterpriseId = useSelector<AppState, number>(
     state => state.user.enterpriseData.id
   );
+  
   function getParkingSpotId(params: GridValueGetterParams) {
     return `${params.getValue('id')}`;
   }
-  const handleOpen = () => {
-    setOpen(true);
+  const handleopenParkingLotPlanModal = () => {
+    setParkingLotPlanModal(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseParkingLotPlanModal = () => {
+    setParkingLotPlanModal(false);
+  };
+  const handleOpenDeleteConfirmationModal = () => {
+    setDeleteConfirmationModal(true);
+  };
+  const handleCloseDeleteConfirmationModal = () => {
+    setDeleteConfirmationModal(false);
   };
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
     if (e.target.files == null) {
@@ -84,6 +99,18 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
       headerAlign: 'center'
     },
     {
+      field: 'reservationStatus',
+      headerName: ' Staatus',
+      width: 200,
+      headerAlign: 'center'
+    },
+    {
+      field: 'availablePeriod',
+      headerName: ' Koht on vaba perioodil',
+      width: 200,
+      headerAlign: 'center'
+    },
+    {
       field: 'tegevused',
       headerName: 'Tegevused',
       sortable: false,
@@ -102,15 +129,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
             <Tooltip title="Kustuta parkimiskoht">
               <Button
                 onClick={() =>
-                  deleteParkingSpot(+getParkingSpotId(params))?.then(() => {
-                    updateParkingSpots();
-                    dispatch(
-                      SET_SUCCESS_ALERT({
-                        status: true,
-                        message: 'Parkimiskoht kustutatud!'
-                      })
-                    );
-                  })
+                  {setParkingSpotId(+getParkingSpotId(params)); handleOpenDeleteConfirmationModal();}
                 }
               >
                 <XCircle color="#e08d8d" />
@@ -124,17 +143,59 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
 
   return (
     <>
+
+
+
+
+      <Dialog
+        open={openDeleteConfirmationModal}
+        onClose={handleCloseDeleteConfirmationModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Kas oled kindel?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Kustutamine lisab parkimiskohale kustutamise kuupäeva kinnitamise hetke kellaajaga.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteConfirmationModal} color="primary">
+            Loobu
+          </Button>
+          <Button
+                onClick={() =>
+                  deleteParkingSpot(parkingSpotId)?.then(() => {
+                    setDeleteConfirmationModal(false);
+                    updateParkingSpots();
+                    dispatch(
+                      SET_SUCCESS_ALERT({
+                        status: true,
+                        message: 'Parkimiskoht kustutatud!'
+                      })
+                    );
+                  })
+                }
+              >Kustuta
+              </Button>
+        </DialogActions>
+      </Dialog>
+
+
+
+
+
     <Modal
         className={classes.modal}
-        open={open}
-        onClose={handleClose}
+        open={openParkingLotPlanModal}
+        onClose={handleCloseParkingLotPlanModal}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500
         }}
       >
-        <Fade in={open}>
+        <Fade in={openParkingLotPlanModal}>
           <div>
             <CardMedia
               component="img"
@@ -148,7 +209,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
           </div>
         </Fade>
       </Modal>
-      
+
       <div style={{ width: '100%' }}>
         <Box display="flex" flexDirection="row" p={1} m={1}>
           <Box p={1}>
@@ -173,7 +234,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
             </Button>
           </Box>
           <Box p={1}>
-            <Button color="primary" variant="contained" onClick={handleOpen}>
+            <Button color="primary" variant="contained" onClick={handleopenParkingLotPlanModal}>
               Vaata parklaplaani
             </Button>
           </Box>
