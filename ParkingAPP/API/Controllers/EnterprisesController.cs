@@ -263,6 +263,29 @@ namespace API.Controllers
             return enterpriseParkingSpots.ToList();
         }
 
+        [HttpGet("{enterpriseId}/admin/parkingspots/mainusers")]
+        public ActionResult<IEnumerable<ParkingSpotMainUserResponse>> GetEnterpriseParkingSpotsMainUsers(int enterpriseId)
+        {
+
+
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+
+            return _parkingSpotService.GetParkingSpotsMainUsers(enterpriseId).ToList();
+        }
+
         // HELPER METHODS
 
         private ActionResult<bool> CheckUser(int enterpriseId)

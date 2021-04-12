@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using API.DAL;
 using API.Helpers;
 using API.Models.Entities;
+using API.Models.JoinedEntities;
 using API.Models.ParkingSpotDtos;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ namespace API.Services
         ParkingSpotStatusType GetParkingSpotStatus(int id);
         ParkingSpotResponse DeleteParkingSpot(int id);
         ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId);
+        IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers (int enterpriseId);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -301,6 +303,29 @@ namespace API.Services
         {
             return _mapper.Map<ParkingSpotResponse>(deleteParkingSpot(id));
 
+        }
+
+        public IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers(int enterpriseId)
+        {
+            List<ParkingSpotMainUserResponse> psmu = new List<ParkingSpotMainUserResponse>();
+            List<int> ps_id_s = new List<int>();
+            ps_id_s.AddRange(_context.ParkingSpots.Where(x=>x.EnterpriseId == enterpriseId).Select(x=>x.Id));
+            List<ParkingSpotAccount> psas = new List<ParkingSpotAccount>();
+            psas.AddRange(_context.ParkingSpotAccounts);
+
+            foreach (int ps_id in ps_id_s)
+            {
+                foreach (var psa in psas)
+                {
+                    if (psa.ParkingSpotId == ps_id)
+                    {
+                        Account a = _context.Accounts.FirstOrDefault(x => x.Id == psa.AccountId);
+                        psmu.Add(new ParkingSpotMainUserResponse() { MainUserFullName = a.FirstName + " " + a.LastName, ParkingSpotId = ps_id });
+                    }
+                }
+            }
+
+            return psmu;
         }
 
 
