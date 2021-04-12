@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
 using API.Models.ParkingSpotDtos;
@@ -183,6 +184,12 @@ namespace API.Controllers
             var response = _parkingSpotService.ReserveParkingSpot(request);
 
             return response;
+        }
+
+        [HttpPost("parkingspots/{id}/add")]
+        public ActionResult<ParkingSpotResponse> AddParkingSpot(ParkingSpotRequest request, int id)
+        {
+            return _parkingSpotService.AddParkingSpot(request, id);
         }
 
         [HttpPost("parkingspots/{id}")]

@@ -25,6 +25,7 @@ namespace API.Services
         List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request);
         ParkingSpotStatusType GetParkingSpotStatus(int id);
         ParkingSpotResponse DeleteParkingSpot(int id);
+        ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -284,6 +285,19 @@ namespace API.Services
             return availableForReservation;
         }
 
+        public ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId)
+        {
+            if (!checkExistingParkingSpotNr(request.Number, enterpriseId))
+            {
+                throw new AppException("Sellise numbriga parkimiskoht on juba olemas!");
+            }
+
+            ParkingSpot ps = new ParkingSpot() {EnterpriseId = enterpriseId, Created = DateTime.Now.ToUniversalTime(), Number = request.Number,};
+            _context.ParkingSpots.Add(ps);
+            _context.SaveChanges();
+
+            return _mapper.Map<ParkingSpotResponse>(ps);
+        }
         public ParkingSpotResponse DeleteParkingSpot(int id)
         {
             return _mapper.Map<ParkingSpotResponse>(deleteParkingSpot(id));
@@ -437,6 +451,16 @@ namespace API.Services
         {
             ParkingSpot ps = _context.ParkingSpots.Find(id);
             return ps;
+        }
+
+        private bool checkExistingParkingSpotNr(int nr, int enterpriseId)
+        {
+            foreach (var ps in _context.ParkingSpots.Where(x=>x.EnterpriseId==enterpriseId))
+            {
+                if (ps.Number == nr && ps.DeletionDate == null) return false;
+            }
+
+            return true;
         }
     }
 }
