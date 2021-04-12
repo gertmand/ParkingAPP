@@ -291,8 +291,7 @@ namespace API.Services
             {
                 throw new AppException("Sellise numbriga parkimiskoht on juba olemas!");
             }
-
-            ParkingSpot ps = new ParkingSpot() {EnterpriseId = enterpriseId, Created = DateTime.Now.ToUniversalTime(), Number = request.Number,};
+            ParkingSpot ps = new ParkingSpot() {EnterpriseId = enterpriseId, Created = DateTime.UtcNow, Number = request.Number,};
             _context.ParkingSpots.Add(ps);
             _context.SaveChanges();
 

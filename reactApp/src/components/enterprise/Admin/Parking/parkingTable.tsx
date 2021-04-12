@@ -30,11 +30,12 @@ import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
 import {
+  addParkingSpot,
   addParkingSpotPlan,
   deleteParkingSpot
 } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
-import { SET_SUCCESS_ALERT } from '../../../common/siteActions';
+import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
 
 type TableProps = {
   parkingSpots: ParkingSpot[];
@@ -49,8 +50,10 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [parkingSpotId, setParkingSpotId] = useState(0);
   const [openParkingLotPlanModal, setParkingLotPlanModal] = React.useState(false);
+  const [openParkingSpotAddModal, setParkingSpotAddModal] = React.useState(false);
   const [openParkingLotPlanAddModal, setParkingLotPlanAddModal] = React.useState(false);
   const [openDeleteConfirmationModal, setDeleteConfirmationModal] = React.useState(false);
+  const [parkingSpotNr, setParkingSpotNr] = useState<number>(0);
   const enterpriseId = useSelector<AppState, number>(
     state => state.user.enterpriseData.id
   );
@@ -77,6 +80,35 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
   const handleCloseAddParkingLotPlanModal = () => {
     setParkingLotPlanAddModal(false);
   };
+
+  const handleOpenAddParkingSpotAddModal = () => {
+    setParkingSpotAddModal(true);
+  };
+  const handleCloseParkingSpotAddModal = () => {
+    setParkingSpotAddModal(false);
+  };
+
+  const parkingSpotNumberChange = (e: any) => {
+    setParkingSpotNr(+e.target.value);
+    console.log(parkingSpotNr);
+  }
+  const submitParkingSpotAdd = () => {
+    if(parkingSpotNr <= 0) return dispatch(SET_ERROR_ALERT({status: true, message: "Palun sisesta 0-st suurem number!"}));
+    parkingSpots.map(x=>x.number).forEach((number) => {
+    if(parkingSpotNr === number) return dispatch(SET_ERROR_ALERT({status: true, message: "Sellise numbriga parkimiskoht on juba olemas!"}));
+    });
+
+    addParkingSpot({number: parkingSpotNr}, enterpriseId).then(() => {
+      setParkingSpotAddModal(false);
+      updateParkingSpots();
+      dispatch(
+        SET_SUCCESS_ALERT({
+          status: true,
+          message: 'Parkimiskoht lisatud!'
+        })
+      );
+    });
+  }
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
     if (e.target.files == null) {
       throw new Error('Error finding e.target.files');
@@ -225,7 +257,31 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
         </DialogActions>
       </Dialog>
 
-
+      <Dialog
+        open={openParkingSpotAddModal}
+        onClose={handleCloseParkingSpotAddModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Sisesta uue parklakoha number"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Sama numbriga parkimiskohta ei ole võimalik lisada. 
+          </DialogContentText>
+          <Input placeholder="Sisesta number..." type="number" inputProps={{min:0}} onChange={parkingSpotNumberChange}/>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseParkingSpotAddModal} color="primary">
+            Loobu
+          </Button>
+          <Button
+                onClick={submitParkingSpotAdd}
+                color="primary"
+                variant="contained"
+              >Lisa parkimiskoht
+              </Button>
+        </DialogActions>
+      </Dialog>
 
 
     <Modal
@@ -272,7 +328,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
             </Button>
           </Box>
           <Box p={1}>
-            <Button color="primary" variant="contained">
+            <Button color="primary" variant="contained" onClick={handleOpenAddParkingSpotAddModal}>
               Lisa parklakoht
             </Button>
           </Box>

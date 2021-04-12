@@ -2,7 +2,7 @@ import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
 import { del, get, post } from "../../_helpers/fetch-wrapper"
 import { ADD_ENTERPRISE_DATA, FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
-import { ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
+import { ParkingSpotRequest, ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
 
 export const getUserEnterprises = async () => {
     return await get(`${apiUrl}/api/enterprises/user`)
@@ -45,6 +45,14 @@ export const getEnterpriseParkingSpotData = async (enterpriseId: number, dispatc
 export const releaseParkingSpot = (request: ReleaseRequest) => {
     return post(`${apiUrl}/api/enterprises/release`, request)
 }
+
+export const addParkingSpot = (request: ParkingSpotRequest, enterpriseId: number) => {
+    return postParkingSpot(request, enterpriseId);
+};
+
+const postParkingSpot = (parkingSpot: ParkingSpotRequest, enterpriseId : number) => {
+    return axios.post(`${apiUrl}/api/enterprises/parkingspots/${enterpriseId}/add`, JSON.stringify(parkingSpot), {headers: {"Content-Type": "application/json"}});
+};
 
 export const deleteParkingSpot = (parkingSpotId: number) => {
     if(parkingSpotId !== undefined){

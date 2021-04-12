@@ -64,8 +64,12 @@ export type ParkingSpot = {
     created: Date,
     updated: Date,
     deletionDate?: Date,
-    number: Number,
+    number: number,
     status: string
+}
+
+export type ParkingSpotRequest = {
+    number : number
 }
 
 export type ReleaseRequest = {
@@ -74,3 +78,4 @@ export type ReleaseRequest = {
     endDate: Date,
     enterpriseId: number
 }
+
