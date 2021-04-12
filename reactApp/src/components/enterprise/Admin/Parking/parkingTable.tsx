@@ -268,7 +268,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
           <DialogContentText id="alert-dialog-description">
             Sama numbriga parkimiskohta ei ole võimalik lisada. 
           </DialogContentText>
-          <Input placeholder="Sisesta number..." type="number" inputProps={{min:0}} onChange={parkingSpotNumberChange}/>
+          <Input placeholder="Sisesta number..." type="number" inputProps={{min:1}} onChange={parkingSpotNumberChange}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseParkingSpotAddModal} color="primary">
