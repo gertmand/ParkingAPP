@@ -73,7 +73,8 @@ namespace API.DAL
                     AcceptTerms = true,
                     Role = Role.Admin,
                     VerificationToken = null,
-                    Verified = new DateTime(2020, 02, 01)
+                    Verified = new DateTime(2020, 02, 01),
+                    Avatar = "kev.png"
                 });
 
             modelBuilder.Entity<Enterprise>().HasData(
