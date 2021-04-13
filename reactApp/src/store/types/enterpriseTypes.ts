@@ -72,7 +72,7 @@ export type ParkingSpotRequest = {
     number : number
 }
 
-export type ParkingSpotMainUsers = {
+export type ParkingSpotMainUser = {
     parkingSpotId : number,
     mainUserFullName : string
 }

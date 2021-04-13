@@ -16,6 +16,7 @@ import {
   makeStyles,
   Modal,
   SvgIcon,
+  TableCell,
   TextField,
   Theme,
   Tooltip
@@ -34,15 +35,16 @@ import {
   addParkingSpotPlan,
   deleteParkingSpot
 } from '../../../../store/queries/enterpriseQueries';
-import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
+import { ParkingSpot, ParkingSpotMainUser } from '../../../../store/types/enterpriseTypes';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
 
 type TableProps = {
   parkingSpots: ParkingSpot[];
+  parkingSpotMainUsers: ParkingSpotMainUser[];
   updateParkingSpots(): any;
 };
 
-const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
+const ParkingTable: FC<TableProps> = ({ parkingSpots, parkingSpotMainUsers, updateParkingSpots }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   var formData = new FormData();
@@ -129,7 +131,13 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
       field: 'mainUser',
       headerName: 'Peakasutaja(d)',
       width: 200,
-      headerAlign: 'center'
+      headerAlign: 'center',
+      valueGetter: getParkingSpotId,
+      renderCell:(params: GridValueGetterParams)=>{
+        return <TableCell style={{whiteSpace: "normal",wordWrap: "break-word"}}>
+                  {parkingSpotMainUsers.filter(x=>x.parkingSpotId === +getParkingSpotId(params)).map(x=>x.mainUserFullName)}
+               </TableCell>;
+      }
     },
     {
       field: 'carNumber',
@@ -140,12 +148,6 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
     {
       field: 'reservationStatus',
       headerName: ' Staatus',
-      width: 200,
-      headerAlign: 'center'
-    },
-    {
-      field: 'availablePeriod',
-      headerName: ' Koht on vaba perioodil',
       width: 200,
       headerAlign: 'center'
     },
@@ -359,6 +361,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, updateParkingSpots }) => {
           footerRowSelected: count => `${count.toLocaleString()} rida valitud`
         }}
         autoHeight
+        
         rows={parkingSpots.filter(ps => {
           if (searchTerm === '') {
             return ps;
@@ -389,6 +392,10 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       width: '1200px',
       margin: 'auto'
+    },
+    rows: {
+      whiteSpace: 'normal',
+      wordBreak: 'break-word'
     }
   })
 );

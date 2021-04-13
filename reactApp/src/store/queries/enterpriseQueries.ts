@@ -73,3 +73,7 @@ export const getEnterpriseUsers = async (enterpriseId: number) => {
 export const getEnterpriseParkingSpots = async (enterpriseId: number) => {
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots`)
 }
+
+export const getParkingSpotMainUsers = async (enterpriseId: number) => {
+    return await get(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/mainusers`)
+}
