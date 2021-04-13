@@ -28,6 +28,7 @@ namespace API.Services
         ParkingSpotResponse DeleteParkingSpot(int id);
         ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId);
         IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers (int enterpriseId);
+        ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -338,6 +339,10 @@ namespace API.Services
             return psmu;
         }
 
+        public ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request)
+        {
+            return _mapper.Map<ParkingSpotMainUserResponse>(addParkingSpotMainUser(request));
+        }
 
         // helper methods
 
@@ -485,6 +490,24 @@ namespace API.Services
         {
             ParkingSpot ps = _context.ParkingSpots.Find(id);
             return ps;
+        }
+
+        private ParkingSpotMainUserResponse addParkingSpotMainUser(ParkingSpotMainUserRequest request)
+        {
+            ParkingSpotAccount temp = new ParkingSpotAccount()
+            {
+                AccountId = request.AccountId,
+                ParkingSpotId = request.ParkingSpotId
+            };
+            _context.ParkingSpotAccounts.Add(temp);
+            _context.SaveChanges();
+            Account account = _context.Accounts.Find(temp.AccountId);
+            ParkingSpotMainUserResponse response = new ParkingSpotMainUserResponse()
+            {
+                ParkingSpotId = temp.ParkingSpotId,
+                MainUserFullName = account.FirstName + " " + account.LastName
+            };
+            return response;
         }
 
         private bool checkExistingParkingSpotNr(int nr, int enterpriseId)

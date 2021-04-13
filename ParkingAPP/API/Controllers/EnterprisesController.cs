@@ -286,6 +286,13 @@ namespace API.Controllers
             return _parkingSpotService.GetParkingSpotsMainUsers(enterpriseId).ToList();
         }
 
+        [HttpPost("{enterpriseId}/admin/parkingspots/adduser")]
+        public ActionResult<ParkingSpotMainUserResponse> AddParkingSpotMainUser(ParkingSpotMainUserRequest request)
+        {
+            return _parkingSpotService.AddParkingSpotMainUser(request);
+        }
+
+
         // HELPER METHODS
 
         private ActionResult<bool> CheckUser(int enterpriseId)
