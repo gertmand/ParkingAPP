@@ -1,15 +1,12 @@
-import { TableHead, TableRow, TableCell, TableBody, Table, Tooltip, Button, makeStyles, Box, InputAdornment, SvgIcon, TextField, ButtonGroup, Theme, Avatar } from '@material-ui/core'
-import clsx from 'clsx'
+import { Tooltip, Button, makeStyles, InputAdornment, SvgIcon, TextField, ButtonGroup, Theme, Avatar } from '@material-ui/core'
 import React from 'react'
 import { User } from '../../../../store/types/userType';
-import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
+import { PlusCircle, Search as SearchIcon } from 'react-feather';
 import { useState } from 'react';
 import { DataGrid, GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import { createStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import theme from '../../../../style/theme';
-import { count } from 'node:console';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
 type TableProps = {
     users: User[];
   };
@@ -17,9 +14,6 @@ type TableProps = {
 const UsersTable: React.FC<TableProps> = ({users}) => {
     const classes = useStyles();
     const [searchTerm, setSearchTerm] = useState('');
-    // function getAvatar(params: GridValueGetterParams) {
-    //   return `${params.getValue('avatar') || ''}`;
-    // }
     const columns: GridColumns = [
         { field: 'id', headerName: '', hide: true },
         {
@@ -28,12 +22,6 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
           width: 190,
           align: 'center',
           headerAlign: 'center',
-          // valueGetter: getAvatar,
-          // renderCell: (params: GridValueGetterParams) => {
-          //   return (
-          //     <Avatar className={classes.avatar} component={RouterLink} src={"images/" + {getAvatar(Avatar)}} to="/profile"/>
-          //   );
-          // },
           renderCell: (params: GridValueGetterParams) => (
               <Avatar className={classes.avatar} style={{ margin: 'auto' }} src={"images/" + params.getValue('avatar')} />
           ),
@@ -69,7 +57,6 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
           width: 150,
           disableClickEventBubbling: true,
           headerAlign: 'center',
-        //   valueGetter: getParkingSpotId,
           renderCell: (params: GridValueGetterParams) => {
             return (
               <ButtonGroup>
@@ -78,15 +65,6 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
                     <PlusCircle color="#77d18f" />
                   </Button>
                 </Tooltip>
-                {/* <Tooltip title="Kustuta parkimiskoht">
-                  <Button
-                    onClick={() =>
-                      {setParkingSpotId(+getParkingSpotId(params)); handleOpenDeleteConfirmationModal();}
-                    }
-                  >
-                    <XCircle color="#e08d8d" />
-                  </Button>
-                </Tooltip> */}
               </ButtonGroup>
             );
           }
