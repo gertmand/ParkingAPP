@@ -35,12 +35,12 @@ import {
   addParkingSpotPlan,
   deleteParkingSpot
 } from '../../../../store/queries/enterpriseQueries';
-import { ParkingSpot, ParkingSpotMainUser } from '../../../../store/types/enterpriseTypes';
+import { ParkingSpot, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
 
 type TableProps = {
   parkingSpots: ParkingSpot[];
-  parkingSpotMainUsers: ParkingSpotMainUser[];
+  parkingSpotMainUsers: ParkingSpotMainUserResponse[];
   updateParkingSpots(): any;
 };
 
@@ -111,6 +111,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, parkingSpotMainUsers, upda
       );
     });
   }
+  
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
     if (e.target.files == null) {
       throw new Error('Error finding e.target.files');

@@ -46,23 +46,6 @@ export const releaseParkingSpot = (request: ReleaseRequest) => {
     return post(`${apiUrl}/api/enterprises/release`, request)
 }
 
-export const addParkingSpot = (request: ParkingSpotRequest, enterpriseId: number) => {
-    return postParkingSpot(request, enterpriseId);
-};
-
-const postParkingSpot = (parkingSpot: ParkingSpotRequest, enterpriseId : number) => {
-    return axios.post(`${apiUrl}/api/enterprises/parkingspots/${enterpriseId}/add`, JSON.stringify(parkingSpot), {headers: {"Content-Type": "application/json"}});
-};
-
-export const deleteParkingSpot = (parkingSpotId: number) => {
-    if(parkingSpotId !== undefined){
-        return del(`${apiUrl}/api/enterprises/parkingspots/${parkingSpotId}`)
-    }
-}
-
-export const addParkingSpotPlan = async (formData:FormData, enterpriseId: number) => {
-    return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/addparkinglotplan`, formData, {headers: {"Content-Type": "multipart/form-data"}} )
-}
 
 // ADMIN QUERIES
 
@@ -76,4 +59,26 @@ export const getEnterpriseParkingSpots = async (enterpriseId: number) => {
 
 export const getParkingSpotMainUsers = async (enterpriseId: number) => {
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/mainusers`)
+}
+
+export const addParkingSpotPlan = async (formData:FormData, enterpriseId: number) => {
+    return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/addparkinglotplan`, formData, {headers: {"Content-Type": "multipart/form-data"}} )
+}
+
+export const addParkingSpotMainUser = async (formData:FormData, enterpriseId: number) => {
+    return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/adduser`, formData, {headers: {"Content-Type": "multipart/form-data"}} )
+}
+
+export const addParkingSpot = (request: ParkingSpotRequest, enterpriseId: number) => {
+    return postParkingSpot(request, enterpriseId);
+};
+
+const postParkingSpot = (parkingSpot: ParkingSpotRequest, enterpriseId : number) => {
+    return axios.post(`${apiUrl}/api/enterprises/parkingspots/${enterpriseId}/add`, JSON.stringify(parkingSpot), {headers: {"Content-Type": "application/json"}});
+};
+
+export const deleteParkingSpot = (parkingSpotId: number) => {
+    if(parkingSpotId !== undefined){
+        return del(`${apiUrl}/api/enterprises/parkingspots/${parkingSpotId}`)
+    }
 }

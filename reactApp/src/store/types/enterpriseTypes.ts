@@ -72,9 +72,14 @@ export type ParkingSpotRequest = {
     number : number
 }
 
-export type ParkingSpotMainUser = {
+export type ParkingSpotMainUserResponse = {
     parkingSpotId : number,
     mainUserFullName : string
+}
+
+export type ParkingSpotMainUserRequest = {
+    parkingSpotId: number,
+    accountId : number
 }
 
 export type ReleaseRequest = {
