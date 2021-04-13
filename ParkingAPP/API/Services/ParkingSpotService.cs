@@ -442,7 +442,7 @@ namespace API.Services
             var parkingSpot = _context.ParkingSpots
                 .Include(x => x.ParkingSpotAccounts)
                 .ThenInclude(x => x.Account)
-                .SingleOrDefault(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId));
+                .FirstOrDefault(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId));
 
             return parkingSpot;
         }

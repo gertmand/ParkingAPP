@@ -72,6 +72,11 @@ export type ParkingSpotRequest = {
     number : number
 }
 
+export type ParkingSpotMainUsers = {
+    parkingSpotId : number,
+    mainUserFullName : string
+}
+
 export type ReleaseRequest = {
     parkingSpaceId: number,
     startDate: Date,
