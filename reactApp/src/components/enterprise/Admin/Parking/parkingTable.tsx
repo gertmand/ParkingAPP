@@ -131,6 +131,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, parkingSpotMainUsers, upda
       field: 'mainUser',
       headerName: 'Peakasutaja(d)',
       width: 200,
+      flex: 75,
       headerAlign: 'center',
       valueGetter: getParkingSpotId,
       renderCell:(params: GridValueGetterParams)=>{
@@ -143,6 +144,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, parkingSpotMainUsers, upda
       field: 'carNumber',
       headerName: ' Auto reg. number',
       width: 200,
+      flex: 75,
       headerAlign: 'center'
     },
     {
