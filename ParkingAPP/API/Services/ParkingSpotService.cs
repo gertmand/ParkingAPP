@@ -320,7 +320,17 @@ namespace API.Services
                     if (psa.ParkingSpotId == ps_id)
                     {
                         Account a = _context.Accounts.FirstOrDefault(x => x.Id == psa.AccountId);
-                        psmu.Add(new ParkingSpotMainUserResponse() { MainUserFullName = a.FirstName + " " + a.LastName, ParkingSpotId = ps_id });
+                        if (psmu.Contains(psmu.FirstOrDefault(x => x.ParkingSpotId == ps_id)))
+                        {
+                            ParkingSpotMainUserResponse temp_psmu = psmu.FirstOrDefault(x => x.ParkingSpotId == ps_id);
+                            temp_psmu.MainUserFullName += ", " + a.FirstName + " " + a.LastName;
+                            psmu.Remove(psmu.FirstOrDefault(x => x.ParkingSpotId == ps_id));
+                            psmu.Add(temp_psmu);
+                        }
+                        else
+                        {
+                            psmu.Add(new ParkingSpotMainUserResponse() { MainUserFullName = a.FirstName + " " + a.LastName, ParkingSpotId = ps_id });
+                        }
                     }
                 }
             }
