@@ -16,7 +16,12 @@ import {
   makeStyles,
   Modal,
   SvgIcon,
+  Table,
+  TableBody,
   TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
   TextField,
   Theme,
   Tooltip
@@ -51,10 +56,12 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, parkingSpotMainUsers, upda
   let file: File;
   const [searchTerm, setSearchTerm] = useState('');
   const [parkingSpotId, setParkingSpotId] = useState(0);
+  const [parkingSpotIdForUserAdd, setParkingSpotIdForUserAdd] = useState(0);
   const [openParkingLotPlanModal, setParkingLotPlanModal] = React.useState(false);
   const [openParkingSpotAddModal, setParkingSpotAddModal] = React.useState(false);
   const [openParkingLotPlanAddModal, setParkingLotPlanAddModal] = React.useState(false);
   const [openDeleteConfirmationModal, setDeleteConfirmationModal] = React.useState(false);
+  const [openParkingSpotMainUserAddModal, setParkingSpotMainUserAddModal] = React.useState(false);
   const [parkingSpotNr, setParkingSpotNr] = useState<number>(0);
   const enterpriseId = useSelector<AppState, number>(
     state => state.user.enterpriseData.id
@@ -90,6 +97,14 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, parkingSpotMainUsers, upda
     setParkingSpotAddModal(false);
   };
 
+  const handleOpenParkingSpotMainUserAddModal = (parkingSpotIdForAdd : number) => {
+    setParkingSpotIdForUserAdd(parkingSpotIdForAdd);
+    setParkingSpotMainUserAddModal(true);
+  };
+  const handleCloseParkingSpotMainUserAddModal = () => {
+    setParkingSpotMainUserAddModal(false);
+  };
+
   const parkingSpotNumberChange = (e: any) => {
     setParkingSpotNr(+e.target.value);
     console.log(parkingSpotNr);
@@ -99,7 +114,6 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, parkingSpotMainUsers, upda
     parkingSpots.map(x=>x.number).forEach((number) => {
     if(parkingSpotNr === number) return dispatch(SET_ERROR_ALERT({status: true, message: "Sellise numbriga parkimiskoht on juba olemas!"}));
     });
-
     addParkingSpot({number: parkingSpotNr}, enterpriseId).then(() => {
       setParkingSpotAddModal(false);
       updateParkingSpots();
@@ -166,7 +180,7 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, parkingSpotMainUsers, upda
         return (
           <ButtonGroup>
             <Tooltip title="Lisa peakasutaja">
-              <Button>
+              <Button onClick={() => handleOpenParkingSpotMainUserAddModal(+getParkingSpotId(params))}>
                 <PlusCircle color="#77d18f" />
               </Button>
             </Tooltip>
@@ -225,6 +239,59 @@ const ParkingTable: FC<TableProps> = ({ parkingSpots, parkingSpotMainUsers, upda
         </DialogActions>
       </Dialog>
 
+
+      <Dialog
+        open={openParkingSpotMainUserAddModal}
+        onClose={handleCloseParkingSpotMainUserAddModal}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Lisa või eemalda parkimiskoha peakasutajaid."}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Lisada saab vaid kasutajaid, kellel ei ole juba parkimiskohta. 
+          </DialogContentText>
+          <Input disableUnderline type="file" onChange={onFileChange} id="input" />
+
+          <TableContainer>
+      <Table aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Parkimiskoha peakasutajad:</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {parkingSpotMainUsers.filter(x=>x.parkingSpotId === parkingSpotIdForUserAdd).map((row) => (
+            <TableRow>
+              <TableCell component="th" scope="row">
+                {row.mainUserFullName}
+              </TableCell>
+              <TableCell component="th" scope="row">
+              <Tooltip title="Eemalda kasutaja">
+              <Button>
+                <XCircle color="#e08d8d" />
+              </Button>
+            </Tooltip>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+
+
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseParkingSpotMainUserAddModal} color="primary">
+            Loobu
+          </Button>
+          <Button>
+            Lisa plaan
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Dialog
         open={openParkingLotPlanAddModal}
