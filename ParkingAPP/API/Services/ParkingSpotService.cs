@@ -514,7 +514,7 @@ namespace API.Services
         {
             foreach (var ps in _context.ParkingSpots.Where(x=>x.EnterpriseId==enterpriseId))
             {
-                if (ps.Number == nr && ps.DeletionDate == null) return false;
+                if (ps.Number == nr && ps.DeletionDate == null ) return false;
             }
 
             return true;

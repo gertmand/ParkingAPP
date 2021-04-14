@@ -11,7 +11,7 @@ import SuccessAlert from '../components/common/successAlert';
 import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
 import UsersTable from '../components/enterprise/Admin/UsersTable/usersTable';
 import { AppState } from '../store';
-import { getEnterpriseParkingSpots, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
+import { getAccountsWithoutSpot, getEnterpriseParkingSpots, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
 import { SiteAlert } from '../store/types/siteTypes';
 import Page from '../style/Page';
 
@@ -24,6 +24,7 @@ import Page from '../style/Page';
     const [enterpriseUsers, setEnterpriseUsers] = useState([]);
     const [parkingSpotMainUsers, setParkingSpotMainUsers] = useState([]);
     const [enterpriseParkingSpots, setEnterpriseParkingSpots] = useState([]);
+    const [regularUsers, setRegularUsers] = useState([]);
     const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
   
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -31,7 +32,7 @@ import Page from '../style/Page';
     };
   
     useEffect(() => {
-      if (enterpriseUsers !== undefined && enterpriseUsers.length === 0 && parkingSpotMainUsers !== undefined && parkingSpotMainUsers.length === 0 && enterpriseId !== undefined)
+      if (enterpriseUsers !== undefined && enterpriseUsers.length === 0 && parkingSpotMainUsers !== undefined && parkingSpotMainUsers.length === 0 && regularUsers.length === 0 && enterpriseId !== undefined)
       {
         getEnterpriseUsers(enterpriseId).then(result => {
           setEnterpriseUsers(result);
@@ -39,8 +40,9 @@ import Page from '../style/Page';
         getParkingSpotMainUsers(enterpriseId).then(result => {
           setParkingSpotMainUsers(result);
         })
+        getAccountsWithoutSpot(enterpriseId).then(data => setRegularUsers(data));
       }
-    }, [enterpriseUsers,parkingSpotMainUsers, enterpriseId])
+    }, [enterpriseUsers,parkingSpotMainUsers, regularUsers, enterpriseId])
 
     // useEffect(() => {
     //   updateParkingSpots()
@@ -77,7 +79,7 @@ import Page from '../style/Page';
                     <Typography>Uudised</Typography>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <ParkingTable parkingSpots = {enterpriseParkingSpots} parkingSpotMainUsers= {parkingSpotMainUsers} updateParkingSpots={updateParkingSpots}/>
+                    <ParkingTable parkingSpots = {enterpriseParkingSpots} parkingSpotMainUsers= {parkingSpotMainUsers} regularUsers={regularUsers} updateParkingSpots={updateParkingSpots}/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <UsersTable users = {enterpriseUsers}/>

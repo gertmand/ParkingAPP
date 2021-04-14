@@ -106,6 +106,7 @@ export const ParkingSpotTableComponent: FC<Props> = ({parkingSpotMainUsers,parki
 
       <DataGrid
         disableColumnMenu
+        disableSelectionOnClick
         localeText={{
           noRowsLabel: 'Andmed puuduvad!',
           footerRowSelected: count => `${count.toLocaleString()} rida valitud`
