@@ -26,6 +26,8 @@ import Page from '../style/Page';
     const [enterpriseParkingSpots, setEnterpriseParkingSpots] = useState([]);
     const [regularUsers, setRegularUsers] = useState([]);
     const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
+
+    const [parkingLoading, setParkingLoading] = useState(false)
   
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
       setValue(newValue);
@@ -48,11 +50,16 @@ import Page from '../style/Page';
     //   updateParkingSpots()
     // }, [enterpriseParkingSpots, enterpriseId])
 
-    const updateParkingSpots = () => {
+    const updateParkingSpots = async () => {
+      setParkingLoading(true)
       if (enterpriseParkingSpots !== undefined && enterpriseId !== undefined)
       {
-        getEnterpriseParkingSpots(enterpriseId).then(result => {
-          setEnterpriseParkingSpots(result);
+        await getEnterpriseParkingSpots(enterpriseId).then(async result => {
+          await setEnterpriseParkingSpots(result);
+          setParkingLoading(false)
+        }).catch((e: any) => {
+          console.log(e)
+          setParkingLoading(false)
         })
       }
     }
@@ -79,7 +86,7 @@ import Page from '../style/Page';
                     <Typography>Uudised</Typography>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <ParkingTable parkingSpots = {enterpriseParkingSpots} parkingSpotMainUsers= {parkingSpotMainUsers} regularUsers={regularUsers} updateParkingSpots={updateParkingSpots}/>
+                    <ParkingTable parkingSpotLoading={parkingLoading} parkingSpots = {enterpriseParkingSpots} parkingSpotMainUsers= {parkingSpotMainUsers} regularUsers={regularUsers} updateParkingSpots={updateParkingSpots}/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <UsersTable users = {enterpriseUsers}/>

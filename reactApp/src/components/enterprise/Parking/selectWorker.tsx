@@ -54,6 +54,7 @@ export const SelectWorker:FC<Workers> = ( { data, onUserChange }) => {
             //onUserChange(option.userId)
             return option.firstName + " " + option.lastName 
         } }
+      loadingText={"Laen andmeid.."}
       options={options}
       loading={loading}
       onChange={onUserChange}

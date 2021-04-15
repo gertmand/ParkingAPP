@@ -14,9 +14,10 @@ type TableProps = {
   parkingSpotMainUsers: ParkingSpotMainUserResponse[];
   regularUsers : SelectedUser[],
   updateParkingSpots(): any;
+  parkingSpotLoading: boolean;
 };
 
-const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regularUsers, updateParkingSpots}) => {
+const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regularUsers, updateParkingSpots, parkingSpotLoading}) => {
 
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -193,12 +194,14 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
           <Box p={1}><Button color="primary" variant="contained" onClick={handleOpenAddParkingSpotAddModal}>Lisa parklakoht</Button></Box>
         </Box>
       </div>
+
       <ParkingSpotTableComponent
         parkingSpots={parkingSpots}
         parkingSpotMainUsers={parkingSpotMainUsers}
         handleOpenDeleteConfirmationModal={handleOpenDeleteConfirmationModal}
         setParkingSpotId={setParkingSpotId}
         handleOpenParkingSpotMainUserAddModal={handleOpenParkingSpotMainUserAddModal}
+        parkingSpotLoading={parkingSpotLoading}
       />
     </>
   );

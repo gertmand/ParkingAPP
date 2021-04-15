@@ -10,9 +10,10 @@ type Props = {
   handleOpenParkingSpotMainUserAddModal(id: number): any;
   handleOpenDeleteConfirmationModal(): any;
   setParkingSpotId(parkingSpotId: number): any;
+  parkingSpotLoading: boolean
 };
 
-export const ParkingSpotTableComponent: FC<Props> = ({parkingSpotMainUsers,parkingSpots,handleOpenParkingSpotMainUserAddModal,handleOpenDeleteConfirmationModal,setParkingSpotId}) => {
+export const ParkingSpotTableComponent: FC<Props> = ({parkingSpotMainUsers,parkingSpots,handleOpenParkingSpotMainUserAddModal,handleOpenDeleteConfirmationModal,setParkingSpotId, parkingSpotLoading}) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   function getParkingSpotId(params: GridValueGetterParams) {
@@ -112,6 +113,7 @@ export const ParkingSpotTableComponent: FC<Props> = ({parkingSpotMainUsers,parki
 
       <DataGrid
         disableColumnMenu
+        loading={parkingSpotLoading}
         disableSelectionOnClick
         localeText={{
           noRowsLabel: 'Andmed puuduvad!',
