@@ -137,22 +137,7 @@ namespace API.Controllers
 
             return spotData;
         }
-        [HttpPost("{id}/addparkinglotplan")]
-        [System.Obsolete]
-        public ActionResult<EnterpriseResponse> AddParkingLotPlan([FromForm] Enterprise e, int id)
-        {
-            
-            if (HttpContext.Request.Form.Files.Any())
-            {
-                var file = HttpContext.Request.Form.Files[0];
-                string path = hostEnvironment.ContentRootPath.Substring(0,(hostEnvironment.ContentRootPath.Length - 14))+"reactApp\\public\\images\\" + "Enterprise_" + id + ".jpg";
-                FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                file.CopyTo(fileStream);
-                fileStream.Dispose();
-            }
-
-            return Ok();
-        }
+        
 
         // PARKING METHODS (PARKING, RESERVATION, RELEASE)
 
@@ -184,19 +169,6 @@ namespace API.Controllers
             var response = _parkingSpotService.ReserveParkingSpot(request);
 
             return response;
-        }
-
-        [HttpPost("parkingspots/{id}/add")]
-        public ActionResult<ParkingSpotResponse> AddParkingSpot(ParkingSpotRequest request, int id)
-        {
-            return _parkingSpotService.AddParkingSpot(request, id);
-        }
-
-        [HttpPost("parkingspots/{id}")]
-        public ActionResult<ParkingSpotResponse> DeleteParkingSpot(int id)
-        {
-            _parkingSpotService.DeleteParkingSpot(id);
-            return Ok(_parkingSpotService.GetById(id));
         }
 
         [HttpGet("available-dates")]
@@ -235,7 +207,6 @@ namespace API.Controllers
 
             return enterpriseUsers.ToList();
         }
-
 
         [HttpGet("{enterpriseId}/admin/parkingspots")]
         public ActionResult<IEnumerable<ParkingSpotResponse>> GetEnterpriseParkingSpots(int enterpriseId)
@@ -286,10 +257,98 @@ namespace API.Controllers
             return _parkingSpotService.GetParkingSpotsMainUsers(enterpriseId).ToList();
         }
 
-        [HttpPost("{enterpriseId}/admin/parkingspots/adduser")]
-        public ActionResult<ParkingSpotMainUserResponse> AddParkingSpotMainUser(ParkingSpotMainUserRequest request)
+        [HttpPost("{enterpriseId}/admin/parkingspots/add")]
+        public ActionResult<ParkingSpotResponse> AddParkingSpot(ParkingSpotRequest request, int enterpriseId)
         {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+            return _parkingSpotService.AddParkingSpot(request, enterpriseId);
+        }
+
+        [HttpPost("{enterpriseId}/admin/parkingspots/adduser")]
+        public ActionResult<ParkingSpotMainUserResponse> AddParkingSpotMainUser(ParkingSpotMainUserRequest request, int enterpriseId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
             return _parkingSpotService.AddParkingSpotMainUser(request);
+        }
+
+        [HttpPost("{enterpriseId}/admin/parkingspots/{id}/delete")]
+        public ActionResult<ParkingSpotResponse> DeleteParkingSpot(int enterpriseId, int id)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+            _parkingSpotService.DeleteParkingSpot(id);
+            return Ok(_parkingSpotService.GetById(id));
+        }
+        [HttpPost("{enterpriseId}/admin/addparkinglotplan")]
+        [System.Obsolete]
+        public ActionResult<EnterpriseResponse> AddParkingLotPlan([FromForm] Enterprise e, int enterpriseId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+            if (HttpContext.Request.Form.Files.Any())
+            {
+                var file = HttpContext.Request.Form.Files[0];
+                string path = hostEnvironment.ContentRootPath.Substring(0, (hostEnvironment.ContentRootPath.Length - 14)) + "reactApp\\public\\images\\" + "Enterprise_" + enterpriseId + ".jpg";
+                FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                file.CopyTo(fileStream);
+                fileStream.Dispose();
+            }
+
+            return Ok();
         }
 
 

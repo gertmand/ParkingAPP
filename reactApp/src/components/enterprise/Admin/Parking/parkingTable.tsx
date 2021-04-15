@@ -56,7 +56,7 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
   const parkingSpotNumberChange = (e: any) => {setParkingSpotNr(+e.target.value);};
 
   const confirmDeleteParkingSpot = () => {
-    deleteParkingSpot(parkingSpotId)?.then(() => {
+    deleteParkingSpot(parkingSpotId, enterpriseId)?.then(() => {
       setDeleteConfirmationModal(false);
       updateParkingSpots();
       dispatch(

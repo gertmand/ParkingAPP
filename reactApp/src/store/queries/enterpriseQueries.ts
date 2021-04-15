@@ -1,6 +1,6 @@
 import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
-import { del, get, post } from "../../_helpers/fetch-wrapper"
+import { authHeader, del, get, post } from "../../_helpers/fetch-wrapper"
 import { ADD_ENTERPRISE_DATA, FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
 import { ParkingSpotRequest, ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
 
@@ -62,11 +62,11 @@ export const getParkingSpotMainUsers = async (enterpriseId: number) => {
 }
 
 export const addParkingSpotPlan = async (formData:FormData, enterpriseId: number) => {
-    return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/addparkinglotplan`, formData, {headers: {"Content-Type": "multipart/form-data"}} )
+    return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/addparkinglotplan`, formData, {headers: {"Content-Type": "multipart/form-data", ...authHeader()}} )
 }
 
 export const addParkingSpotMainUser = async (formData:FormData, enterpriseId: number) => {
-    return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/adduser`, formData, {headers: {"Content-Type": "multipart/form-data"}} )
+    return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/adduser`, formData, {headers: {"Content-Type": "multipart/form-data", ...authHeader()}} )
 }
 
 export const addParkingSpot = (request: ParkingSpotRequest, enterpriseId: number) => {
@@ -74,11 +74,12 @@ export const addParkingSpot = (request: ParkingSpotRequest, enterpriseId: number
 };
 
 const postParkingSpot = (parkingSpot: ParkingSpotRequest, enterpriseId : number) => {
-    return axios.post(`${apiUrl}/api/enterprises/parkingspots/${enterpriseId}/add`, JSON.stringify(parkingSpot), {headers: {"Content-Type": "application/json"}});
+    return axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/add`, JSON.stringify(parkingSpot), {headers: {"Content-Type": "application/json", ...authHeader()}});
 };
 
-export const deleteParkingSpot = (parkingSpotId: number) => {
+export const deleteParkingSpot = (parkingSpotId: number, enterpriseId : number) => {
     if(parkingSpotId !== undefined){
-        return del(`${apiUrl}/api/enterprises/parkingspots/${parkingSpotId}`)
+        return del(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/${parkingSpotId}/delete`)
     }
 }
+
