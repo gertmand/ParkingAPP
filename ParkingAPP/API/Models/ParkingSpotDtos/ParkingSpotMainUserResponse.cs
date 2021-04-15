@@ -8,6 +8,7 @@ namespace API.Models.ParkingSpotDtos
     public class ParkingSpotMainUserResponse
     {
         public int ParkingSpotId { get; set; }
+        public int AccountId { get; set; }
         public string MainUserFullName { get; set; }
     }
 }
