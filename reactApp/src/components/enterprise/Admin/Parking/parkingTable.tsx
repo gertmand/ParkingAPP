@@ -80,11 +80,11 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
   }
 
   const selectedUserChange = () => {
-    //TODO
+    //TODO:
   }
 
   const addMainUser = () => {
-    //TODO
+    //TODO:
   }
   
   const submitParkingSpotAdd = () => {
@@ -193,7 +193,6 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
           <Box p={1}><Button color="primary" variant="contained" onClick={handleOpenAddParkingSpotAddModal}>Lisa parklakoht</Button></Box>
         </Box>
       </div>
-
       <ParkingSpotTableComponent
         parkingSpots={parkingSpots}
         parkingSpotMainUsers={parkingSpotMainUsers}

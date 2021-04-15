@@ -1,4 +1,4 @@
-import {InputAdornment,SvgIcon,TableCell,TextField,Tooltip,Button,ButtonGroup} from '@material-ui/core';
+import {InputAdornment,SvgIcon,TableCell,TableBody,Table,TextField,Tooltip,Button,ButtonGroup, TableRow} from '@material-ui/core';
 import {DataGrid,GridColumns,GridValueGetterParams} from '@material-ui/data-grid';
 import React, { FC, useState } from 'react';
 import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
@@ -41,11 +41,17 @@ export const ParkingSpotTableComponent: FC<Props> = ({parkingSpotMainUsers,parki
       valueGetter: getParkingSpotId,
       renderCell: (params: GridValueGetterParams) => {
         return (
-          <TableCell style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
-            {parkingSpotMainUsers
-              .filter(x => x.parkingSpotId === +getParkingSpotId(params))
-              .map(x => x.mainUserFullName)}
-          </TableCell>
+          <Table>
+            <TableBody>
+              <TableRow>
+              <TableCell style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+                {parkingSpotMainUsers
+                  .filter(x => x.parkingSpotId === +getParkingSpotId(params))
+                  .map(x => x.mainUserFullName)}
+              </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         );
       }
     },
