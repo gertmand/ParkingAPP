@@ -1,7 +1,7 @@
 export const post = (url: any, body: any) => {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeader(url) } as any,
+        headers: { 'Content-Type': 'application/json', ...authHeader() } as any,
         credentials: 'include' as any,
         body: JSON.stringify(body)
     };
@@ -11,7 +11,7 @@ export const post = (url: any, body: any) => {
 export const get = (url: any) => {
     const requestOptions = {
         method: 'GET',
-        headers: authHeader(url) as any
+        headers: authHeader() as any
     };
     return fetch(url, requestOptions).then(handleResponse);
 }
@@ -19,14 +19,14 @@ export const get = (url: any) => {
 export const del = (url: any) => {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeader(url) } as any,
+        headers: { 'Content-Type': 'application/json', ...authHeader() } as any,
         credentials: 'include' as any,
     };
     return fetch(url, requestOptions).then(handleResponse);
 }
 
 
-const authHeader = (url: any) => {
+export const authHeader = () => {
     var token = localStorage.getItem('token');
 
     if (token) {

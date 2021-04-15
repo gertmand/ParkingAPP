@@ -24,8 +24,9 @@ type Props = {
   parkingSpotIdForUserAdd?: number,
 };
 
-export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}: any) => {
+export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}) => {
 
+  
   return (
     <>
       <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
@@ -44,11 +45,11 @@ export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectW
               {inputFieldFileBoolean? (<Input
               disableUnderline
               type="file"
-              onChange={onFileChange}
+              onChange={()=> onFileChange}
               id="input"
             />):''}
         
-          {selectWorker?(<SelectWorker data={regularUsers} onUserChange={selectedUserChange}/>) : ''}
+          {selectWorker?(<SelectWorker data={regularUsers!} onUserChange={selectedUserChange!}/>) : ''}
           {existingUsers? (<TableContainer>
             <Table aria-label="simple table">
               <TableHead>
@@ -58,16 +59,16 @@ export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectW
                 </TableRow>
               </TableHead>
               <TableBody>
-                {parkingSpotMainUsers
-                  .filter((x: { parkingSpotId: any; }) => x.parkingSpotId === parkingSpotIdForUserAdd)
-                  .map((row: { mainUserFullName: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
-                    <TableRow>
+                {parkingSpotMainUsers && parkingSpotMainUsers
+                  .filter(x => x.parkingSpotId === parkingSpotIdForUserAdd)
+                  .map(row => (
+                    <TableRow key={row.accountId}>
                       <TableCell component="th" scope="row">
                         {row.mainUserFullName}
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Tooltip title="Eemalda kasutaja">
-                          <Button>
+                          <Button onClick={() => console.log(row.accountId)}>
                             <XCircle color="#e08d8d" />
                           </Button>
                         </Tooltip>

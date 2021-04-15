@@ -321,9 +321,7 @@ namespace API.Services
                     if (psa.ParkingSpotId == ps_id)
                     {
                         Account a = _context.Accounts.FirstOrDefault(x => x.Id == psa.AccountId);
-                        
-                            psmu.Add(new ParkingSpotMainUserResponse() { MainUserFullName = a.FirstName + " " + a.LastName, ParkingSpotId = ps_id });
-                        
+                        psmu.Add(new ParkingSpotMainUserResponse() { MainUserFullName = a.FirstName + " " + a.LastName, ParkingSpotId = ps_id, AccountId = a.Id});
                     }
                 }
             }

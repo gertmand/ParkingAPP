@@ -44,11 +44,11 @@ export const ParkingSpotTableComponent: FC<Props> = ({parkingSpotMainUsers,parki
         return (
           <Table>
             <TableBody>
-              <TableRow>
+              <TableRow >
               <TableCell style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
                 {parkingSpotMainUsers
                   .filter(x => x.parkingSpotId === +getParkingSpotId(params))
-                  .map(x => x.mainUserFullName)}
+                  .map(x => x.mainUserFullName).join(", ")}
               </TableCell>
               </TableRow>
             </TableBody>
