@@ -1,12 +1,14 @@
 import { Tooltip, Button, makeStyles, InputAdornment, SvgIcon, TextField, ButtonGroup, Theme, Avatar } from '@material-ui/core'
 import React from 'react'
 import { User } from '../../../../store/types/userType';
-import { PlusCircle, Search as SearchIcon } from 'react-feather';
+import { Info, PlusCircle, Search as SearchIcon } from 'react-feather';
 import { useState } from 'react';
 import { DataGrid, GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import { createStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import theme from '../../../../style/theme';
+import UsersTableComponent from './usersTableComponent';
+import UsersDialogComponent from './usersDialogComponent';
 type TableProps = {
     users: User[];
   };
@@ -14,113 +16,31 @@ type TableProps = {
 const UsersTable: React.FC<TableProps> = ({users}) => {
     const classes = useStyles();
     const [searchTerm, setSearchTerm] = useState('');
-    const columns: GridColumns = [
-        { field: 'id', headerName: '', hide: true },
-        {
-          field: 'Avatar',
-          headerName: '',
-          width: 190,
-          align: 'center',
-          headerAlign: 'center',
-          renderCell: (params: GridValueGetterParams) => (
-              <Avatar className={classes.avatar} style={{ margin: 'auto' }} src={"images/" + params.getValue('avatar')} />
-          ),
-        },
-        {
-            field: 'fullName',
-            headerName: 'Nimi',
-            width: 190,
-            align: 'center',
-            headerAlign: 'center',
-            valueGetter: (params: GridValueGetterParams) =>
-            `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,
-          },
-          {
-            field: 'email',
-            headerName: 'E-mail',
-            width: 200,
-            flex: 75,
-            align: 'center',
-            headerAlign: 'center'
-          },
-        {
-            field: 'carNumber',
-            headerName: ' Auto reg. number',
-            width: 200,
-            flex: 75,
-            headerAlign: 'center'
-          },
-        {
-          field: 'tegevused',
-          headerName: 'Tegevused',
-          sortable: false,
-          width: 150,
-          disableClickEventBubbling: true,
-          headerAlign: 'center',
-          renderCell: (params: GridValueGetterParams) => {
-            return (
-              <ButtonGroup>
-                <Tooltip title="Lisa peakasutaja">
-                  <Button>
-                    <PlusCircle color="#77d18f" />
-                  </Button>
-                </Tooltip>
-              </ButtonGroup>
-            );
-          }
-        }
-      ];
+    const [userIdForDetails, setUserIdForDetails] = useState(0);
+    const [openUserDetailsModal,setOpenUserDetailsModal] = React.useState(false);
+    const handleOpenUserDetailsModal = (userId: number) => {
+      setUserIdForDetails(userIdForDetails);
+      setOpenUserDetailsModal(true);
+    };
+    const handleCloseUserDetailsModal = () => {setOpenUserDetailsModal(false);};
+
     return (
-        <><Grid container spacing={3} style={{padding: theme.spacing(2)}}>
-            <Grid item xs={11}>
-        
-        <TextField
-        variant="standard"
-        onChange={event => {
-          setSearchTerm(event.target.value);
-        }}
-        placeholder="Otsi liiget..."
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SvgIcon fontSize="small" color="action">
-                <SearchIcon />
-              </SvgIcon>
-            </InputAdornment>
-          )
-        }}
-      /></Grid>
-      <Grid item xs={1}>
-            <Button color="primary" variant="contained">
-                Lisa liige
-            </Button>
-        </Grid>
-        </Grid>
-        <DataGrid
-        disableColumnMenu
-        localeText={{
-          noRowsLabel: 'Andmed puuduvad!',
-          footerRowSelected: count => `${count.toLocaleString()} rida valitud`
-        }}
-        autoHeight
-        
-        rows={users.filter(ps => {
-          if (searchTerm === '') {
-            return ps;
-          } else if (
-            (ps.firstName + ' ' + ps.lastName)
-              .toString()
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())
-          ) {
-            return ps;
-          }
-          return null;
-        })}
-        columns={columns}
-        pageSize={10}
-      />
-        </>
+      <>
+      {/* Parkimiskoha kustutamise modaal */}
+      <UsersDialogComponent 
+        open={openUserDetailsModal} 
+        handleClose={handleCloseUserDetailsModal}
+        //onSubmit={confirmDeleteParkingSpot} 
+        dialogTitle='Kasutaja info'
+        //dialogContextText="Tere tere vana kere!"
+        //confirmButton="Tagasi"
+        />
+
+      <UsersTableComponent
+       handleOpenUserDetailsModal={handleOpenUserDetailsModal}
+       users={users}
+        />
+      </>
     )
 }
 const useStyles = makeStyles((theme: Theme) =>
@@ -132,18 +52,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '1200px',
       margin: 'auto'
     },
-    rows: {
-      whiteSpace: 'normal',
-      wordBreak: 'break-word'
-    },
-    root: {
-        marginTop: "15px"
-      },
-      avatar: {
-        cursor: 'pointer',
-        width: 40,
-        height: 40,
-      }
   })
 );
 export default UsersTable

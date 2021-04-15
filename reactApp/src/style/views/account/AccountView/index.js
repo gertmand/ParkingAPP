@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Account = () => {
   const classes = useStyles();
-
   return (
     <Page
       className={classes.root}
@@ -31,7 +30,7 @@ const Account = () => {
             <Profile />
           </Grid>
           <Grid item lg={8} md={6} xs={12} >
-            <ProfileDetails />
+            <ProfileDetails/>
           </Grid>
         </Grid>
       </Container>

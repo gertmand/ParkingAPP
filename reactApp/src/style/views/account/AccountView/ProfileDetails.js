@@ -37,10 +37,7 @@ const ProfileDetails = ({ className, ...rest }) => {
     });
   };
 
-  useEffect(() => {
-    setValues({ ...values });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData]);
+
 
   return (
     <form
