@@ -1,14 +1,8 @@
-import { Tooltip, Button, makeStyles, InputAdornment, SvgIcon, TextField, ButtonGroup, Theme, Avatar } from '@material-ui/core'
-import React from 'react'
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import React, { useState } from 'react';
 import { User } from '../../../../store/types/userType';
-import { Info, PlusCircle, Search as SearchIcon } from 'react-feather';
-import { useState } from 'react';
-import { DataGrid, GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
-import { createStyles } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
-import theme from '../../../../style/theme';
-import UsersTableComponent from './usersTableComponent';
 import UsersDialogComponent from './usersDialogComponent';
+import UsersTableComponent from './usersTableComponent';
 type TableProps = {
     users: User[];
   };

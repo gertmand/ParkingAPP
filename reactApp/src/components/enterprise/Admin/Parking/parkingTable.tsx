@@ -1,11 +1,11 @@
-import {Backdrop, Box, Button, CardMedia, createStyles, Fade, makeStyles, Modal, Theme,} from '@material-ui/core';
+import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, makeStyles, Modal, Theme } from '@material-ui/core';
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
-import { addParkingSpot, addParkingSpotPlan, deleteParkingSpot} from '../../../../store/queries/enterpriseQueries';
-import { ParkingSpot, ParkingSpotMainUserResponse} from '../../../../store/types/enterpriseTypes';
+import { addParkingSpot, addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
+import { ParkingSpot, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
-import { SET_ERROR_ALERT, SET_SUCCESS_ALERT} from '../../../common/siteActions';
+import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
 import DialogComponent from './dialogComponent';
 import ParkingSpotTableComponent from './parkingSpotTableComponent';
 
@@ -129,20 +129,21 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
 
   return (
     <>
-    {/* Parkimiskoha kustutamise modaal */}
-      <DialogComponent 
-        open={openDeleteConfirmationModal} 
+      {/* Parkimiskoha kustutamise modaal */}
+      <DialogComponent
+        open={openDeleteConfirmationModal}
         handleClose={handleCloseDeleteConfirmationModal}
-        onSubmit={confirmDeleteParkingSpot} 
-        dialogTitle='Kas oled kindel?'
+        onSubmit={confirmDeleteParkingSpot}
+        dialogTitle="Kas oled kindel?"
         dialogContextText="Kustutamine lisab parkimiskohale kustutamise kuupäeva kinnitamise hetke kellaajaga."
-        confirmButton="Kustuta"/>
-    {/* Parkimiskoha peakasutaja lisamise/eemaldamise modaal */}
-      <DialogComponent 
-        open={openParkingSpotMainUserAddModal} 
+        confirmButton="Kustuta"
+      />
+      {/* Parkimiskoha peakasutaja lisamise/eemaldamise modaal */}
+      <DialogComponent
+        open={openParkingSpotMainUserAddModal}
         handleClose={handleCloseParkingSpotMainUserAddModal}
-        onSubmit={addMainUser} 
-        dialogTitle='Lisa või eemalda parkimiskoha peakasutajaid'
+        onSubmit={addMainUser}
+        dialogTitle="Lisa või eemalda parkimiskoha peakasutajaid"
         dialogContextText="Lisada saab vaid kasutajaid, kellel ei ole juba parkimiskohta."
         confirmButton="Lisa peakasutaja"
         selectWorker
@@ -151,28 +152,30 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
         regularUsers={regularUsers}
         selectedUserChange={selectedUserChange}
         parkingSpotIdForUserAdd={parkingSpotIdForUserAdd}
-        />  
-    {/* Parkimismaja plaani lisamise modaal */}  
-      <DialogComponent 
-        open={openParkingLotPlanAddModal} 
+      />
+      {/* Parkimismaja plaani lisamise modaal */}
+      <DialogComponent
+        open={openParkingLotPlanAddModal}
         handleClose={handleCloseAddParkingLotPlanModal}
-        onSubmit={confirmAddParkingSpotPlan} 
-        inputOnChange={parkingSpotNumberChange} 
+        onSubmit={confirmAddParkingSpotPlan}
+        inputOnChange={parkingSpotNumberChange}
         inputFieldFileBoolean
         onFileChange={onFileChange}
-        dialogTitle='Vali fail ja kinnita.'
+        dialogTitle="Vali fail ja kinnita."
         dialogContextText="Uue plaani lisamisel kirjutatakse vanad väärtused üle."
-        confirmButton="Lisa plaan"/>
-    {/* Parkimiskoha lisamise modaal */}
-      <DialogComponent 
-        open={openParkingSpotAddModal} 
+        confirmButton="Lisa plaan"
+      />
+      {/* Parkimiskoha lisamise modaal */}
+      <DialogComponent
+        open={openParkingSpotAddModal}
         handleClose={handleCloseParkingSpotAddModal}
-        onSubmit={submitParkingSpotAdd} 
-        inputOnChange={parkingSpotNumberChange} 
+        onSubmit={submitParkingSpotAdd}
+        inputOnChange={parkingSpotNumberChange}
         inputFieldNumberBoolean
-        dialogTitle='Sisesta uue parklakoha number' 
+        dialogTitle="Sisesta uue parklakoha number"
         dialogContextText="Sama numbriga parkimiskohta ei ole võimalik lisada."
-        confirmButton="Lisa parkimiskoht"/>
+        confirmButton="Lisa parkimiskoht"
+      />
 
       <Modal
         className={classes.modal}
@@ -184,16 +187,34 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
           timeout: 500
         }}
       >
-        <Fade in={openParkingLotPlanModal}><div><CardMedia component="img" src={process.env.PUBLIC_URL + '/images/Enterprise_' + enterpriseId + '.jpg'}/></div></Fade>
+        <Fade in={openParkingLotPlanModal}>
+          <div>
+          <Button fullWidth onClick={() => handleOpenAddParkingLotPlanModal()} color="primary" variant="contained">Lisa uus parklaplaan</Button>
+            <CardMedia
+              component="img"
+              src={
+                process.env.PUBLIC_URL +
+                '/images/Enterprise_' +
+                enterpriseId +
+                '.jpg'
+              }
+            />
+          </div>
+        </Fade>
       </Modal>
 
-      <div style={{ width: '100%' }}>
-        <Box display="flex" flexDirection="row" p={1} m={1}>
-          <Box p={1}><Button onClick={() => handleOpenAddParkingLotPlanModal()} color="primary" variant="contained">Lisa uus parklaplaan</Button></Box>
-          <Box p={1}><Button color="primary" variant="contained" onClick={handleOpenParkingLotPlanModal}>Vaata parklaplaani</Button></Box>
-          <Box p={1}><Button color="primary" variant="contained" onClick={handleOpenAddParkingSpotAddModal}>Lisa parklakoht</Button></Box>
-        </Box>
-      </div>
+      <Grid container justify="flex-end" spacing={1}>
+        <Grid item>
+          <Button color="primary" variant="contained" onClick={handleOpenParkingLotPlanModal}>
+            Vaata parklaplaani
+          </Button>
+        </Grid>
+        <Grid item>
+          <Button color="primary" variant="contained" onClick={handleOpenAddParkingSpotAddModal}>
+            Lisa parklakoht
+          </Button>
+        </Grid>
+      </Grid>
 
       <ParkingSpotTableComponent
         parkingSpots={parkingSpots}
@@ -217,6 +238,6 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       width: '1200px',
       margin: 'auto'
-    }
+    },
   })
 );
