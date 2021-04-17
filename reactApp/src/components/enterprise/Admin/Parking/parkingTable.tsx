@@ -65,6 +65,7 @@ const ParkingTable: FC<TableProps> = ({
 
   const parkingSpotNumberChange = (e: any) => {setParkingSpotNr(+e.target.value);};
 
+  //TODO:Parkimiskoha kustutamisel tuleb kustutada ka seoses töötaja ja parkimiskoha vahel
   const confirmDeleteParkingSpot = () => {
     deleteParkingSpot(parkingSpotId, enterpriseId)?.then(() => {
       setDeleteConfirmationModal(false);
