@@ -1,15 +1,16 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import React, { useState } from 'react';
 import { User } from '../../../../store/types/userType';
 import UsersDialogComponent from './usersDialogComponent';
 import UsersTableComponent from './usersTableComponent';
+//import { createStyles, makeStyles, Theme } from '@material-ui/core';
+
 type TableProps = {
     users: User[];
   };
 
 const UsersTable: React.FC<TableProps> = ({users}) => {
-    const classes = useStyles();
-    const [searchTerm, setSearchTerm] = useState('');
+    //const classes = useStyles();
+    //const [searchTerm, setSearchTerm] = useState('');
     const [userIdForDetails, setUserIdForDetails] = useState(0);
     const [openUserDetailsModal,setOpenUserDetailsModal] = React.useState(false);
     const handleOpenUserDetailsModal = (userId: number) => {
@@ -37,15 +38,16 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
       </>
     )
 }
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    modal: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: '1200px',
-      margin: 'auto'
-    },
-  })
-);
+// const useStyles = makeStyles((theme: Theme) =>
+//   createStyles({
+//     modal: {
+//       display: 'flex',
+//       alignItems: 'center',
+//       justifyContent: 'center',
+//       width: '1200px',
+//       margin: 'auto'
+//     },
+//   })
+// );
+
 export default UsersTable
