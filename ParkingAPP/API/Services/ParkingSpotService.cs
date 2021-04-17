@@ -288,6 +288,7 @@ namespace API.Services
             return availableForReservation;
         }
 
+        // ADMIN METHODS
         public ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId)
         {
             if (!checkExistingParkingSpotNr(request.Number, enterpriseId))
