@@ -2,7 +2,7 @@ import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
 import { authHeader, del, get, post } from "../../_helpers/fetch-wrapper"
 import { ADD_ENTERPRISE_DATA, FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
-import { ParkingSpotRequest, ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
+import { ParkingSpotMainUserRequest, ParkingSpotRequest, ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
 
 export const getUserEnterprises = async () => {
     return await get(`${apiUrl}/api/enterprises/user`)
@@ -65,9 +65,14 @@ export const addParkingSpotPlan = async (formData:FormData, enterpriseId: number
     return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/addparkinglotplan`, formData, {headers: {"Content-Type": "multipart/form-data", ...authHeader()}} )
 }
 
-export const addParkingSpotMainUser = async (formData:FormData, enterpriseId: number) => {
-    return await axios.post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/adduser`, formData, {headers: {"Content-Type": "multipart/form-data", ...authHeader()}} )
+export const addParkingSpotMainUser = (request: ParkingSpotMainUserRequest, enterpriseId: number) => {
+    return post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/adduser`, request)
 }
+
+export const changeCanBook = async (entepriseId: number, accountId: number) => {
+    return await axios.post(`${apiUrl}/api/enterprises/${entepriseId}/admin/parkingspots/mainusers/${accountId}/canBook`,null,  {headers: {"Content-Type": "application/json",...authHeader()}} )
+}
+
 
 export const addParkingSpot = (request: ParkingSpotRequest, enterpriseId: number) => {
     return postParkingSpot(request, enterpriseId);

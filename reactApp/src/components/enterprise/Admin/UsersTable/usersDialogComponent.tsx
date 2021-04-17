@@ -1,10 +1,8 @@
-import {Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip} from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import React, { FC } from 'react';
-import { XCircle } from 'react-feather';
 import { ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
 import ProfileDetails from '../../../../style/views/account/AccountView/ProfileDetails';
-import SelectWorker from '../../Parking/selectWorker';
 
 type Props = {
   open: boolean;

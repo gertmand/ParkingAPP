@@ -1,6 +1,7 @@
-import {Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip} from '@material-ui/core';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@material-ui/core';
 import React, { FC } from 'react';
 import { XCircle } from 'react-feather';
+import { changeCanBook } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
 import SelectWorker from '../../Parking/selectWorker';
@@ -19,14 +20,18 @@ type Props = {
   confirmButton: string,
   parkingSpotMainUsers?: ParkingSpotMainUserResponse[];
   regularUsers? : SelectedUser[],
-  onFileChange?(event: any, values: any) : any,
+  onFileChange?(event: any) : any,
   selectedUserChange?(event: any, values: any) : any,
   parkingSpotIdForUserAdd?: number,
 };
 
 export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}) => {
 
-  
+  const handleBookingBool = async (enterpriseId:number, accountId: number) => {
+    console.log(enterpriseId);
+      changeCanBook(enterpriseId, accountId);
+  }
+
   return (
     <>
       <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
@@ -41,20 +46,25 @@ export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectW
               type="number"
               inputProps={{ min: 1 }}
               onChange={inputOnChange}/>):''}
-
               {inputFieldFileBoolean? (<Input
               disableUnderline
               type="file"
-              onChange={()=> onFileChange}
+              onChange={onFileChange!}
               id="input"
             />):''}
         
           {selectWorker?(<SelectWorker data={regularUsers!} onUserChange={selectedUserChange!}/>) : ''}
-          {existingUsers? (<TableContainer>
-            <Table aria-label="simple table">
+          {existingUsers? (
+            
+            
+            
+            
+            <TableContainer>
+            <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Parkimiskoha peakasutajad:</TableCell>
+                  <TableCell>Broneerimisõigus</TableCell>
+                  <TableCell>Parkimiskoha peakasutaja(d):</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -63,12 +73,15 @@ export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectW
                   .filter(x => x.parkingSpotId === parkingSpotIdForUserAdd)
                   .map(row => (
                     <TableRow key={row.accountId}>
+                      <TableCell>
+                        <Checkbox defaultChecked={row.canBook} disableRipple onChange={()=>handleBookingBool(row.enterpriseId, row.accountId)}/>
+                      </TableCell>
                       <TableCell component="th" scope="row">
                         {row.mainUserFullName}
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Tooltip title="Eemalda kasutaja">
-                          <Button onClick={() => console.log(row.accountId)}>
+                          <Button>
                             <XCircle color="#e08d8d" />
                           </Button>
                         </Tooltip>
@@ -77,7 +90,7 @@ export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectW
                   ))}
               </TableBody>
             </Table>
-          </TableContainer>): ''}  
+                  </TableContainer>): ''}  
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -93,3 +106,4 @@ export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectW
 };
 
 export default DialogComponent;
+

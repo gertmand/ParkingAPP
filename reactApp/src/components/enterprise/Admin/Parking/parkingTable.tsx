@@ -2,7 +2,7 @@ import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, makeStyles, Moda
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
-import { addParkingSpot, addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
+import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
@@ -32,6 +32,7 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
   const [openDeleteConfirmationModal,setDeleteConfirmationModal] = React.useState(false);
   const [openParkingSpotMainUserAddModal,setParkingSpotMainUserAddModal] = React.useState(false);
   const [parkingSpotNr, setParkingSpotNr] = useState<number>(0);
+  const [regularUserId, setRegularUserId] = useState<number>(0);
 
   const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id);
 
@@ -70,6 +71,7 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
 
   const confirmAddParkingSpotPlan = () => {
     addParkingSpotPlan(formData, enterpriseId).then(() => {
+      handleCloseParkingLotPlanModal();
       handleCloseAddParkingLotPlanModal();
       dispatch(
         SET_SUCCESS_ALERT({
@@ -80,12 +82,14 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
     })
   }
 
-  const selectedUserChange = () => {
-    //TODO:
+  const selectedUserChange = (event: any, values: any) => {
+    if (values) {
+      setRegularUserId(values.id);
+    }
   }
 
   const addMainUser = () => {
-    //TODO:
+    addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd}, enterpriseId);
   }
   
   const submitParkingSpotAdd = () => {
@@ -125,6 +129,7 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
     }
     file = e.target.files[0];
     formData.append('parkingLotPlan', file);
+    console.log(e.target.files[0])
   };
 
   return (

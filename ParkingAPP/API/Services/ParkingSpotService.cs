@@ -320,8 +320,8 @@ namespace API.Services
                 {
                     if (psa.ParkingSpotId == ps_id)
                     {
-                        Account a = _context.Accounts.FirstOrDefault(x => x.Id == psa.AccountId);
-                        psmu.Add(new ParkingSpotMainUserResponse() { MainUserFullName = a.FirstName + " " + a.LastName, ParkingSpotId = ps_id, AccountId = a.Id});
+                        Account a = _context.Accounts.Include(x=>x.EnterpriseAccounts).FirstOrDefault(x => x.Id == psa.AccountId);
+                        psmu.Add(new ParkingSpotMainUserResponse() { MainUserFullName = a.FirstName + " " + a.LastName, ParkingSpotId = ps_id, AccountId = a.Id, CanBook = a.EnterpriseAccounts.FirstOrDefault(x=>x.AccountId == a.Id).CanBook, EnterpriseId = enterpriseId});
                     }
                 }
             }
@@ -495,7 +495,8 @@ namespace API.Services
             ParkingSpotMainUserResponse response = new ParkingSpotMainUserResponse()
             {
                 ParkingSpotId = temp.ParkingSpotId,
-                MainUserFullName = account.FirstName + " " + account.LastName
+                MainUserFullName = account.FirstName + " " + account.LastName,
+                CanBook = request.CanBook,
             };
             return response;
         }

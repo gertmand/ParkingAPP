@@ -1,6 +1,3 @@
-import React, { useState, useEffect } from 'react';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
 import {
   Box,
   Button,
@@ -9,9 +6,12 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField,
-  makeStyles
+
+  makeStyles, TextField
 } from '@material-ui/core';
+import clsx from 'clsx';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({

@@ -4,8 +4,11 @@ using System.Linq;
 using API.DAL;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
+using API.Models.JoinedEntities;
+using API.Models.ParkingSpotDtos;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace API.Services
 {
@@ -21,6 +24,8 @@ namespace API.Services
         bool CheckUserEnterprise(int userId, int enterpriseId);
         bool GetEnterpriseAdmin(int enterpriseId, int userId);
         bool GetEnterpriseData(int enterpriseId, int userId);
+
+        bool ChangeCanBookStatus(int enterpriseId, int accountId);
     }
 
 
@@ -118,6 +123,15 @@ namespace API.Services
         }
 
         // ADMIN METHODS
+
+        public bool ChangeCanBookStatus(int enterpriseId, int accountId)
+        {
+            var ea = _context.EnterpriseAccounts.Find( accountId, enterpriseId);
+            ea.CanBook = !ea.CanBook;
+            _context.SaveChanges();
+
+            return ea.CanBook;
+        }
 
         public IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId)
         {

@@ -257,6 +257,27 @@ namespace API.Controllers
             return _parkingSpotService.GetParkingSpotsMainUsers(enterpriseId).ToList();
         }
 
+        [HttpPost("{enterpriseId}/admin/parkingspots/mainusers/{accountId}/canBook")]
+        public ActionResult<bool> ChangeCanBookStatus(int enterpriseId, int accountId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+
+            return _enterpriseService.ChangeCanBookStatus(enterpriseId,accountId);
+        }
+
         [HttpPost("{enterpriseId}/admin/parkingspots/add")]
         public ActionResult<ParkingSpotResponse> AddParkingSpot(ParkingSpotRequest request, int enterpriseId)
         {

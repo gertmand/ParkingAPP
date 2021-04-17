@@ -75,7 +75,9 @@ export type ParkingSpotRequest = {
 export type ParkingSpotMainUserResponse = {
     parkingSpotId : number,
     accountId: number,
-    mainUserFullName : string
+    mainUserFullName : string,
+    canBook: boolean,
+    enterpriseId: number
 }
 
 export type ParkingSpotMainUserRequest = {

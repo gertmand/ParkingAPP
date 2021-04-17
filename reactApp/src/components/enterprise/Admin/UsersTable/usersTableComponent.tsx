@@ -1,11 +1,10 @@
-import {InputAdornment,SvgIcon,TableCell,TableBody,Table,TextField,Tooltip,Button,ButtonGroup, TableRow, Avatar} from '@material-ui/core';
-import {DataGrid,GridColumns,GridValueGetterParams} from '@material-ui/data-grid';
+import { Avatar, Button, ButtonGroup, InputAdornment, SvgIcon, TextField, Tooltip } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import { DataGrid, GridColumns, GridValueGetterParams } from '@material-ui/data-grid';
 import React, { FC, useState } from 'react';
-import { Info, PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
-import {ParkingSpot,ParkingSpotMainUserResponse} from '../../../../store/types/enterpriseTypes';
+import { Info, Search as SearchIcon } from 'react-feather';
 import { User } from '../../../../store/types/userType';
 import theme from '../../../../style/theme';
-import Grid from '@material-ui/core/Grid';
 
 type Props = {
     users: User[];
