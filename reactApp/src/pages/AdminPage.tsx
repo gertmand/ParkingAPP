@@ -56,7 +56,7 @@ import Page from '../style/Page';
           getEnterpriseUserData(enterpriseId, dispatch, false); 
           getEnterpriseParkingSpotData(enterpriseId, dispatch, false); 
       }
-  }
+    }
     const updateParkingSpots = async () => {
       setParkingLoading(true)
       if (enterpriseParkingSpots !== undefined && enterpriseId !== undefined)
@@ -70,7 +70,6 @@ import Page from '../style/Page';
         })
       }
     }
-
     const updateParkingSpotMainUsers = async () => {
       setParkingLoading(true)
       if (parkingSpotMainUsers !== undefined && regularUsers!==undefined && enterpriseId !== undefined)

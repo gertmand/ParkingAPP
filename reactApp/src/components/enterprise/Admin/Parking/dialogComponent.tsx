@@ -1,5 +1,5 @@
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Grid, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@material-ui/core';
-import React, { FC, useState } from 'react';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@material-ui/core';
+import React, { FC } from 'react';
 import { XCircle } from 'react-feather';
 import { useDispatch } from 'react-redux';
 import { changeCanBook } from '../../../../store/queries/enterpriseQueries';
@@ -31,7 +31,28 @@ type Props = {
   updateSpotTable?(): any,
 };
 
-export const DialogComponent: FC<Props> = ({open,checked,setChecked,updateSpotTable,updateParkingSpotMainUsers, inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}) => {
+export const DialogComponent: FC<Props> = ({
+  open,
+  checked,
+  setChecked,
+  updateSpotTable,
+  updateParkingSpotMainUsers, 
+  inputFieldNumberBoolean,
+  selectWorker,
+  inputFieldFileBoolean,
+  onFileChange, 
+  selectedUserChange,
+  parkingSpotIdForUserAdd, 
+  existingUsers, 
+  handleClose,
+  onSubmit,
+  inputOnChange, 
+  dialogTitle, 
+  dialogContextText, 
+  confirmButton, 
+  parkingSpotMainUsers,
+  regularUsers}) => {
+
   const dispatch = useDispatch();
   const handleBookingRight = async (enterpriseId:number, accountId: number) => {
       changeCanBook(enterpriseId, accountId).then(()=>{
@@ -56,6 +77,7 @@ export const DialogComponent: FC<Props> = ({open,checked,setChecked,updateSpotTa
           <DialogContentText id="alert-dialog-description">
             {dialogContextText}
           </DialogContentText>
+
           {inputFieldNumberBoolean ? (
             <Input
               placeholder="Sisesta number..."
@@ -72,12 +94,9 @@ export const DialogComponent: FC<Props> = ({open,checked,setChecked,updateSpotTa
           control={<Checkbox color="primary" checked={checked} onChange={() => setChecked(!checked)}/>}
           label="kasutaja saab endiselt broneerida vabu kohti"
           labelPlacement="end"
-        />
-          </>
+          /></> ) : ''}
 
-          ) : ''}
           {existingUsers? (
-      
             <TableContainer>
             <Table>
               <TableHead>
@@ -110,6 +129,7 @@ export const DialogComponent: FC<Props> = ({open,checked,setChecked,updateSpotTa
               </TableBody>
             </Table>
                   </TableContainer>): ''}  
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

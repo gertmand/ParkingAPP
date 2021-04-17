@@ -19,7 +19,14 @@ type TableProps = {
   updateSpotTable(): any;
 };
 
-const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regularUsers,updateSpotTable,updateParkingSpotMainUsers, updateParkingSpots, parkingSpotLoading}) => {
+const ParkingTable: FC<TableProps> = ({
+  parkingSpots,
+  parkingSpotMainUsers,
+  regularUsers,
+  updateSpotTable,
+  updateParkingSpotMainUsers, 
+  updateParkingSpots, 
+  parkingSpotLoading}) => {
 
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -36,7 +43,6 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
   const [parkingSpotNr, setParkingSpotNr] = useState<number>(0);
   const [regularUserId, setRegularUserId] = useState<number>(0);
   const [checked, setChecked] = useState(false);
-
   const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id);
 
   const handleOpenParkingLotPlanModal = () => {setParkingLotPlanModal(true);};
@@ -54,7 +60,7 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
   const handleOpenParkingSpotMainUserAddModal = (parkingSpotIdForAdd: number) => {
     setParkingSpotIdForUserAdd(parkingSpotIdForAdd);
     setParkingSpotMainUserAddModal(true);
-  };
+};
   const handleCloseParkingSpotMainUserAddModal = () => {setParkingSpotMainUserAddModal(false);};
 
   const parkingSpotNumberChange = (e: any) => {setParkingSpotNr(+e.target.value);};
@@ -71,7 +77,6 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
       );
     })
   }
-
   const confirmAddParkingSpotPlan = () => {
     addParkingSpotPlan(formData, enterpriseId).then(() => {
       handleCloseParkingLotPlanModal();
@@ -84,13 +89,11 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
       );
     })
   }
-
   const selectedUserChange = (event: any, values: any) => {
     if (values) {
       setRegularUserId(values.id);
     }
   }
-
   const addMainUser = () => {
     addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd, canBook:checked}, enterpriseId).then(() => 
     {
@@ -104,7 +107,6 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
       );
     });
   }
-  
   const submitParkingSpotAdd = () => {
     if (parkingSpotNr <= 0)
       return dispatch(
@@ -135,7 +137,6 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
       );
     });
   };
-
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
     if (e.target.files == null) {
       throw new Error('Error finding e.target.files');
