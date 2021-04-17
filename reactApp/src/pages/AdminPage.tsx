@@ -5,19 +5,20 @@ import { makeStyles, Theme } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ErrorAlert from '../components/common/errorAlert';
 import SuccessAlert from '../components/common/successAlert';
 import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
 import UsersTable from '../components/enterprise/Admin/UsersTable/usersTable';
 import { AppState } from '../store';
-import { getAccountsWithoutSpot, getEnterpriseParkingSpots, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
+import { getAccountsWithoutSpot, getEnterpriseParkingSpotData, getEnterpriseParkingSpots, getEnterpriseUserData, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
 import { SiteAlert } from '../store/types/siteTypes';
 import Page from '../style/Page';
 
 
   export const AdminPage = (props: any) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const successAlert = useSelector<AppState, SiteAlert>(state => state.site.successAlert);
     const errorAlert = useSelector<AppState, SiteAlert>(state => state.site.errorAlert);
     const [value, setValue] = React.useState(0);
@@ -50,12 +51,40 @@ import Page from '../style/Page';
     //   updateParkingSpots()
     // }, [enterpriseParkingSpots, enterpriseId])
 
+    const updateSpotTable = () => {
+      if(enterpriseId !== undefined) {            
+          getEnterpriseUserData(enterpriseId, dispatch, false); 
+          getEnterpriseParkingSpotData(enterpriseId, dispatch, false); 
+      }
+  }
     const updateParkingSpots = async () => {
       setParkingLoading(true)
       if (enterpriseParkingSpots !== undefined && enterpriseId !== undefined)
       {
         await getEnterpriseParkingSpots(enterpriseId).then(async result => {
           await setEnterpriseParkingSpots(result);
+          setParkingLoading(false)
+        }).catch((e: any) => {
+          console.log(e)
+          setParkingLoading(false)
+        })
+      }
+    }
+
+    const updateParkingSpotMainUsers = async () => {
+      setParkingLoading(true)
+      if (parkingSpotMainUsers !== undefined && regularUsers!==undefined && enterpriseId !== undefined)
+      {
+        await getParkingSpotMainUsers(enterpriseId).then(async result => {
+          await setParkingSpotMainUsers(result);
+          setParkingLoading(false)
+        }).catch((e: any) => {
+          console.log(e)
+          setParkingLoading(false)
+        })
+
+        await getAccountsWithoutSpot(enterpriseId).then(async result => {
+          await setRegularUsers(result);
           setParkingLoading(false)
         }).catch((e: any) => {
           console.log(e)
@@ -87,7 +116,7 @@ import Page from '../style/Page';
                     <Typography>Uudised</Typography>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <ParkingTable parkingSpotLoading={parkingLoading} parkingSpots = {enterpriseParkingSpots} parkingSpotMainUsers= {parkingSpotMainUsers} regularUsers={regularUsers} updateParkingSpots={updateParkingSpots}/>
+                    <ParkingTable parkingSpotLoading={parkingLoading} updateSpotTable={updateSpotTable} updateParkingSpotMainUsers={updateParkingSpotMainUsers} parkingSpots = {enterpriseParkingSpots} parkingSpotMainUsers= {parkingSpotMainUsers} regularUsers={regularUsers} updateParkingSpots={updateParkingSpots}/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <UsersTable users = {enterpriseUsers}/>

@@ -15,9 +15,11 @@ type TableProps = {
   regularUsers : SelectedUser[],
   updateParkingSpots(): any;
   parkingSpotLoading: boolean;
+  updateParkingSpotMainUsers(): any;
+  updateSpotTable(): any;
 };
 
-const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regularUsers, updateParkingSpots, parkingSpotLoading}) => {
+const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regularUsers,updateSpotTable,updateParkingSpotMainUsers, updateParkingSpots, parkingSpotLoading}) => {
 
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -33,6 +35,7 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
   const [openParkingSpotMainUserAddModal,setParkingSpotMainUserAddModal] = React.useState(false);
   const [parkingSpotNr, setParkingSpotNr] = useState<number>(0);
   const [regularUserId, setRegularUserId] = useState<number>(0);
+  const [checked, setChecked] = useState(false);
 
   const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id);
 
@@ -89,7 +92,17 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
   }
 
   const addMainUser = () => {
-    addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd}, enterpriseId);
+    addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd, canBook:checked}, enterpriseId).then(() => 
+    {
+      handleCloseParkingSpotMainUserAddModal();
+      updateParkingSpotMainUsers();
+      dispatch(
+        SET_SUCCESS_ALERT({
+          status: true,
+          message: 'Peakasutaja lisatud!'
+        })
+      );
+    });
   }
   
   const submitParkingSpotAdd = () => {
@@ -151,6 +164,10 @@ const ParkingTable: FC<TableProps> = ({parkingSpots,parkingSpotMainUsers,regular
         dialogTitle="Lisa või eemalda parkimiskoha peakasutajaid"
         dialogContextText="Lisada saab vaid kasutajaid, kellel ei ole juba parkimiskohta."
         confirmButton="Lisa peakasutaja"
+        checked={checked}
+        setChecked={setChecked}
+        updateParkingSpotMainUsers={updateParkingSpotMainUsers}
+        updateSpotTable={updateSpotTable}
         selectWorker
         existingUsers
         parkingSpotMainUsers={parkingSpotMainUsers}

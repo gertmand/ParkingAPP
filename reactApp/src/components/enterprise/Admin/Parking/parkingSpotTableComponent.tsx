@@ -1,5 +1,5 @@
 import {InputAdornment,SvgIcon,TableCell,TableBody,Table,TextField,Tooltip,Button,ButtonGroup, TableRow} from '@material-ui/core';
-import {DataGrid,GridColumns,GridValueGetterParams} from '@material-ui/data-grid';
+import {DataGrid,GridColumns,GridSortDirection,GridValueGetterParams} from '@material-ui/data-grid';
 import React, { FC, useState } from 'react';
 import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
 import {ParkingSpot,ParkingSpotMainUserResponse} from '../../../../store/types/enterpriseTypes';
@@ -115,6 +115,12 @@ export const ParkingSpotTableComponent: FC<Props> = ({parkingSpotMainUsers,parki
         disableColumnMenu
         loading={parkingSpotLoading}
         disableSelectionOnClick
+        sortModel={[
+          {
+            field: 'number',
+            sort: 'asc' as GridSortDirection,
+          },
+        ]}
         localeText={{
           noRowsLabel: 'Andmed puuduvad!',
           footerRowSelected: count => `${count.toLocaleString()} rida valitud`

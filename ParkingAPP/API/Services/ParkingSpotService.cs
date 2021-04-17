@@ -489,6 +489,7 @@ namespace API.Services
                 AccountId = request.AccountId,
                 ParkingSpotId = request.ParkingSpotId
             };
+            _context.EnterpriseAccounts.FirstOrDefault(x => x.AccountId == request.AccountId).CanBook = request.CanBook;
             _context.ParkingSpotAccounts.Add(temp);
             _context.SaveChanges();
             Account account = _context.Accounts.Find(temp.AccountId);

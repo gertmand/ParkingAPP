@@ -1,13 +1,17 @@
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@material-ui/core';
-import React, { FC } from 'react';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Grid, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@material-ui/core';
+import React, { FC, useState } from 'react';
 import { XCircle } from 'react-feather';
+import { useDispatch } from 'react-redux';
 import { changeCanBook } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
+import { SET_SUCCESS_ALERT } from '../../../common/siteActions';
 import SelectWorker from '../../Parking/selectWorker';
 
 type Props = {
   open: boolean;
+  checked?: boolean;
+  setChecked?:any
   inputFieldNumberBoolean?: boolean;
   inputFieldFileBoolean?: boolean;
   selectWorker? : boolean,
@@ -23,14 +27,26 @@ type Props = {
   onFileChange?(event: any) : any,
   selectedUserChange?(event: any, values: any) : any,
   parkingSpotIdForUserAdd?: number,
+  updateParkingSpotMainUsers?() : any,
+  updateSpotTable?(): any,
 };
 
-export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}) => {
+export const DialogComponent: FC<Props> = ({open,checked,setChecked,updateSpotTable,updateParkingSpotMainUsers, inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}) => {
+  const dispatch = useDispatch();
+  const handleBookingRight = async (enterpriseId:number, accountId: number) => {
+      changeCanBook(enterpriseId, accountId).then(()=>{
+        updateParkingSpotMainUsers!();
+        updateSpotTable!();
+        dispatch(
+          SET_SUCCESS_ALERT({
+            status: true,
+            message: 'Kasutaja õigus broneerida muudetud!'
+          })
+        );
 
-  const handleBookingBool = async (enterpriseId:number, accountId: number) => {
-    console.log(enterpriseId);
-      changeCanBook(enterpriseId, accountId);
+      });
   }
+
 
   return (
     <>
@@ -46,19 +62,22 @@ export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectW
               type="number"
               inputProps={{ min: 1 }}
               onChange={inputOnChange}/>):''}
-              {inputFieldFileBoolean? (<Input
-              disableUnderline
-              type="file"
-              onChange={onFileChange!}
-              id="input"
-            />):''}
+              {inputFieldFileBoolean? (<Input disableUnderline type="file" onChange={onFileChange!} id="input"/>):''}
         
-          {selectWorker?(<SelectWorker data={regularUsers!} onUserChange={selectedUserChange!}/>) : ''}
+          {selectWorker?(
+          <>  
+          <SelectWorker data={regularUsers!} onUserChange={selectedUserChange!}/>
+          <FormControlLabel
+          value="end"
+          control={<Checkbox color="primary" checked={checked} onChange={() => setChecked(!checked)}/>}
+          label="kasutaja saab endiselt broneerida vabu kohti"
+          labelPlacement="end"
+        />
+          </>
+
+          ) : ''}
           {existingUsers? (
-            
-            
-            
-            
+      
             <TableContainer>
             <Table>
               <TableHead>
@@ -74,7 +93,7 @@ export const DialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectW
                   .map(row => (
                     <TableRow key={row.accountId}>
                       <TableCell>
-                        <Checkbox defaultChecked={row.canBook} disableRipple onChange={()=>handleBookingBool(row.enterpriseId, row.accountId)}/>
+                        <Checkbox defaultChecked={row.canBook} disableRipple onChange={()=>handleBookingRight(row.enterpriseId, row.accountId)}/>
                       </TableCell>
                       <TableCell component="th" scope="row">
                         {row.mainUserFullName}
