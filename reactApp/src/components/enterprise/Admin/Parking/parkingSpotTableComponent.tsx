@@ -25,8 +25,6 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
     handleOpenDeleteConfirmationModal();
   };
 
-  console.log(parkingSpots)
-
   const columns: GridColumns = [
     { field: 'id', headerName: '', hide: true },
     {
@@ -105,10 +103,25 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
     }
   ];
 
+  const handleChange = () => {
+    parkingSpots.filter(ps => {
+      if (searchTerm === '') {
+        return ps;
+      } else if (ps.number.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps;
+      } else if (ps.staatus.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps 
+      } else if (parkingSpotMainUsers.filter(mu => {
+        if(mu.parkingSpotId === ps.id && mu.mainUserFullName.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+          return ps;
+        }
+      }))
+      return null;
+    })
+
+    //console.log(parkingSpots)
+  }
+
   return (
     <>
-      
-
       <DataGrid
         disableColumnMenu
         loading={parkingSpotLoading}
@@ -128,14 +141,13 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
         rows={parkingSpots.filter(ps => {
           if (searchTerm === '') {
             return ps;
-          } else if (
-            ps.number
-              .toString()
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())
-          ) {
-            return ps;
-          }
+          } else if (ps.number.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps;
+          } else if (ps.staatus.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps 
+          } else if (parkingSpotMainUsers.filter(mu => {
+            if(mu.parkingSpotId === ps.id && mu.mainUserFullName.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+              return ps;
+            }
+          }))
           return null;
         })}
         columns={columns}
