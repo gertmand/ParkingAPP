@@ -19,16 +19,14 @@ namespace API.Controllers
     {
         private readonly IEnterpriseService _enterpriseService;
         private readonly IParkingSpotService _parkingSpotService;
-        private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         [System.Obsolete]
         private readonly IHostingEnvironment hostEnvironment;
 
         [System.Obsolete]
-        public EnterprisesController(IEnterpriseService enterpriseService, IParkingSpotService parkingSpotService, IMapper mapper, IHostingEnvironment environment, IAccountService accountService)
+        public EnterprisesController(IEnterpriseService enterpriseService, IParkingSpotService parkingSpotService, IMapper mapper, IHostingEnvironment environment)
         {
             _enterpriseService = enterpriseService;
-            _accountService = accountService;
             _parkingSpotService = parkingSpotService;
             _mapper = mapper;
             hostEnvironment = environment;
@@ -207,10 +205,7 @@ namespace API.Controllers
             }
 
             var enterpriseUsers = _enterpriseService.GetEnterpriseAccounts(enterpriseId);
-            foreach (var user in enterpriseUsers)
-            {
-                user.AccountCars = _accountService.GetCarsByAccountId(user.Id);
-            }
+
             return enterpriseUsers.ToList();
         }
 
@@ -401,26 +396,6 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("{enterpriseId}/admin/users/{accountId}")]
-        public ActionResult<AccountResponse> GetUserData(int enterpriseId, int accountId)
-        {
-            if (Account == null)
-            {
-                return Unauthorized();
-            }
-
-            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
-            {
-                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
-            }
-
-            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
-            {
-                return Unauthorized();
-            }
-
-            return _enterpriseService.GetUserData(accountId);
-        }
 
         // HELPER METHODS
 
