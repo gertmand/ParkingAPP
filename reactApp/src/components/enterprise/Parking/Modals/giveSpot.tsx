@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../../store';
-import { addReservation } from '../../../store/queries/enterpriseQueries';
-import { ParkingSpot } from '../../../store/types/enterpriseTypes';
-import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../common/siteActions';
+import { AppState } from '../../../../store';
+import { addReservation } from '../../../../store/queries/enterpriseQueries';
+import { ParkingSpot } from '../../../../store/types/enterpriseTypes';
+import { SET_SUCCESS_ALERT, SET_ERROR_ALERT } from '../../../common/siteActions';
 import GiveModal from './giveModal';
 
 type Props = {

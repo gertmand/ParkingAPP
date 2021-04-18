@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ErrorAlert from '../components/common/errorAlert';
 import SuccessAlert from '../components/common/successAlert';
 import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
-import UsersTable from '../components/enterprise/Admin/UsersTable/usersTable';
+import UsersTable from '../components/enterprise/Admin/Users/usersTable';
 import { AppState } from '../store';
 import { getAccountsWithoutSpot, getEnterpriseParkingSpotData, getEnterpriseParkingSpots, getEnterpriseUserData, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
 import { SiteAlert } from '../store/types/siteTypes';

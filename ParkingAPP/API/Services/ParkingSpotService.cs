@@ -372,7 +372,7 @@ namespace API.Services
                     }
                     dEndDate = datesToReserve[i].Date;
 
-                    AvailableDatesResponse response = new AvailableDatesResponse { StartDate = dStartDate, EndDate = dEndDate, ParkingSpotId = parkingSpotId, ReleasedSpotId = releasedSpotId, Days = daysCount };
+                    AvailableDatesResponse response = new AvailableDatesResponse { Id = parkingSpotId * daysCount + 15, StartDate = dStartDate, EndDate = dEndDate, ParkingSpotNumber = GetById(parkingSpotId).Number, Days = daysCount };
                     responses.Add(response);
 
                     dStartDate = new DateTime();

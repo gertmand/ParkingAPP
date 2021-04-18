@@ -1,9 +1,11 @@
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '../../../store';
-import { releaseParkingSpot } from '../../../store/queries/enterpriseQueries';
-import { Enterprise, ParkingSpot } from '../../../store/types/enterpriseTypes';
-import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../common/siteActions';
+import { AppState } from '../../../../store';
+import { releaseParkingSpot } from '../../../../store/queries/enterpriseQueries';
+import { ParkingSpot, Enterprise } from '../../../../store/types/enterpriseTypes';
+import { SET_SUCCESS_ALERT, SET_ERROR_ALERT } from '../../../common/siteActions';
+
+
 import ReleaseModal from './releaseModal';
 
 type Props = {

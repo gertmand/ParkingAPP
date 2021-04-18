@@ -46,6 +46,10 @@ export const releaseParkingSpot = (request: ReleaseRequest) => {
     return post(`${apiUrl}/api/enterprises/release`, request)
 }
 
+export const getAvailableSpotsForReservation = async (startDate: Date, endDate: Date) => {
+    return await post(`${apiUrl}/api/enterprises/available-dates`, {startDate, endDate})
+}
+
 
 // ADMIN QUERIES
 

@@ -30,7 +30,7 @@ const Toolbar:FC<Props> = ({addReservationButton, handleGiveSpot, handleRelease,
             }
                 {addReservationButton === true || canBook === true ? 
                     <Button color="primary" variant="contained" onClick={() => handleBook(true)}>
-                        LISA BRONEERING
+                        OTSI KOHTA
                     </Button> : null
                 }
             </Box>

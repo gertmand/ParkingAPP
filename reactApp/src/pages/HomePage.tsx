@@ -41,8 +41,6 @@ const HomePage = (props: any) => {
     }
   }, [userData])
 
-  console.log(localStorage.getItem('enterprise'))
-
   if (localStorage.getItem('enterprise') === "0" || localStorage.getItem('enterprise') === null) {
     return <Redirect to='/enterprise' />
   }

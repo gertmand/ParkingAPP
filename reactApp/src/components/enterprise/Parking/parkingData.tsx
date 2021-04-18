@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../store';
 import { getAccountsWithoutSpot, getEnterpriseParkingSpotData, getEnterpriseUserData } from '../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotListData, Reservation } from '../../../store/types/enterpriseTypes';
-import BookSpotModal from './bookSpotModal';
-import GiveSpot from './giveSpot';
-import ReleaseSpot from './releaseSpot';
+import BookingModal from './Modals/BookingModal';
+import BookSpotModal from './Modals/bookSpotModal';
+import GiveSpot from './Modals/giveSpot';
+import ReleaseSpot from './Modals/releaseSpot';
 import SpotData from './spotData';
 import SpotTable from './spotTable';
 import Toolbar from './toolbar';
@@ -82,6 +83,7 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
         <GiveSpot updateSpotData={updateSpotTable} giveSpotModal={giveSpotModal} setGiveSpotModal={handleGiveSpot} regularUsers={regularUsers} />
         <ReleaseSpot updateSpotData={updateSpotTable} releaseModal={releaseModal} setReleaseModal={handleRelease} />
         <BookSpotModal bookModal={bookModal} setBookModal={handleBookModal} />
+        <BookingModal />
         </>
     )
 }

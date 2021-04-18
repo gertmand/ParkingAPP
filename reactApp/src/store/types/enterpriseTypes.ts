@@ -93,3 +93,11 @@ export type ReleaseRequest = {
     enterpriseId: number
 }
 
+export type AvailableDatesResponse = {
+    id: number,
+    parkingSpotNumber: number,
+    days: number,
+    startDate: Date,
+    endDate: Date,
+    checked: boolean
+}

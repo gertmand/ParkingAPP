@@ -1,8 +1,8 @@
-import {InputAdornment,SvgIcon,TableCell,TableBody,Table,TextField,Tooltip,Button,ButtonGroup, TableRow} from '@material-ui/core';
-import {DataGrid,GridColumns,GridSortDirection,GridValueGetterParams} from '@material-ui/data-grid';
-import React, { FC, useState } from 'react';
-import { PlusCircle, Search as SearchIcon, XCircle } from 'react-feather';
-import {ParkingSpot,ParkingSpotMainUserResponse} from '../../../../store/types/enterpriseTypes';
+import { Button, ButtonGroup, Table, TableBody, TableCell, TableRow, Tooltip } from '@material-ui/core';
+import { DataGrid, GridColumns, GridSortDirection, GridValueGetterParams } from '@material-ui/data-grid';
+import React, { FC } from 'react';
+import { PlusCircle, XCircle } from 'react-feather';
+import { ParkingSpot, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 
 type Props = {
   parkingSpotMainUsers: ParkingSpotMainUserResponse[];
@@ -10,11 +10,12 @@ type Props = {
   handleOpenParkingSpotMainUserAddModal(id: number): any;
   handleOpenDeleteConfirmationModal(): any;
   setParkingSpotId(parkingSpotId: number): any;
-  parkingSpotLoading: boolean
+  parkingSpotLoading: boolean,
+  searchTerm: string,
 };
 
-export const ParkingSpotTableComponent: FC<Props> = ({parkingSpotMainUsers,parkingSpots,handleOpenParkingSpotMainUserAddModal,handleOpenDeleteConfirmationModal,setParkingSpotId, parkingSpotLoading}) => {
-  const [searchTerm, setSearchTerm] = useState('');
+export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMainUsers,parkingSpots,handleOpenParkingSpotMainUserAddModal,handleOpenDeleteConfirmationModal,setParkingSpotId, parkingSpotLoading}) => {
+  
 
   function getParkingSpotId(params: GridValueGetterParams) {
     return `${params.getValue('id')}`;
@@ -104,17 +105,13 @@ export const ParkingSpotTableComponent: FC<Props> = ({parkingSpotMainUsers,parki
 
   return (
     <>
-      <TextField
-        variant="standard"
-        onChange={event => {setSearchTerm(event.target.value);}}
-        placeholder="otsi parkimiskohta..."
-        InputProps={{startAdornment: (<InputAdornment position="start"><SvgIcon fontSize="small" color="action"><SearchIcon /></SvgIcon></InputAdornment>)}}
-      />
+      
 
       <DataGrid
         disableColumnMenu
         loading={parkingSpotLoading}
         disableSelectionOnClick
+        
         sortModel={[
           {
             field: 'number',

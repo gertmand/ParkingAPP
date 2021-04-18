@@ -171,7 +171,7 @@ namespace API.Controllers
             return response;
         }
 
-        [HttpGet("available-dates")]
+        [HttpPost("available-dates")]
         public ActionResult<IEnumerable<AvailableDatesResponse>> GetAvailableDatesForReservation(AvailableDatesRequest request)
         {
             if (Account == null)

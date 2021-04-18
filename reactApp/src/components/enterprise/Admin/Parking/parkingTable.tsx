@@ -1,4 +1,4 @@
-import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, makeStyles, Modal, Theme } from '@material-ui/core';
+import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, InputAdornment, makeStyles, Modal, SvgIcon, TextField, Theme } from '@material-ui/core';
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
@@ -8,6 +8,8 @@ import { SelectedUser } from '../../../../store/types/userType';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
 import DialogComponent from './dialogComponent';
 import ParkingSpotTableComponent from './parkingSpotTableComponent';
+import { Search as SearchIcon } from 'react-feather';
+import theme from '../../../../style/theme';
 
 type TableProps = {
   parkingSpots: ParkingSpot[];
@@ -33,6 +35,7 @@ const ParkingTable: FC<TableProps> = ({
   var formData = new FormData();
   let file: File;
 
+  const [searchTerm, setSearchTerm] = useState('');
   const [parkingSpotId, setParkingSpotId] = useState(0);
   const [parkingSpotIdForUserAdd, setParkingSpotIdForUserAdd] = useState(0);
   const [openParkingLotPlanModal, setParkingLotPlanModal] = React.useState(false);
@@ -225,22 +228,34 @@ const ParkingTable: FC<TableProps> = ({
             />
           </div>
         </Fade>
-      </Modal>
+      </Modal>      
+      
 
-      <Grid container justify="flex-end" spacing={1}>
-        <Grid item>
-          <Button color="primary" variant="contained" onClick={handleOpenParkingLotPlanModal}>
-            Vaata parklaplaani
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button color="primary" variant="contained" onClick={handleOpenAddParkingSpotAddModal}>
-            Lisa parklakoht
-          </Button>
-        </Grid>
+      <Grid container direction="row" spacing={3} style={{ padding: theme.spacing(2) }} >
+          <Grid item xs={6}>
+              <TextField
+              variant="standard"
+              onChange={event => {setSearchTerm(event.target.value);}}
+              placeholder="Otsi.."
+              InputProps={{startAdornment: (<InputAdornment position="start"><SvgIcon fontSize="small" color="action"><SearchIcon /></SvgIcon></InputAdornment>)}}
+            />
+          </Grid>
+          <Grid container item xs={6} spacing={3} style={{ padding: theme.spacing(2) }} justify="flex-end">
+            <Grid item>
+              <Button color="primary" variant="contained" onClick={handleOpenParkingLotPlanModal} >
+                Vaata parklaplaani
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button color="primary" variant="contained" onClick={handleOpenAddParkingSpotAddModal} >
+                Lisa parklakoht
+              </Button>
+            </Grid>
+          </Grid>
       </Grid>
 
       <ParkingSpotTableComponent
+        searchTerm={searchTerm}
         parkingSpots={parkingSpots}
         parkingSpotMainUsers={parkingSpotMainUsers}
         handleOpenDeleteConfirmationModal={handleOpenDeleteConfirmationModal}

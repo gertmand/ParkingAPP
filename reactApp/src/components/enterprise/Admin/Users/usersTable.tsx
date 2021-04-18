@@ -31,10 +31,7 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
         //confirmButton="Tagasi"
         />
 
-      <UsersTableComponent
-       handleOpenUserDetailsModal={handleOpenUserDetailsModal}
-       users={users}
-        />
+      <UsersTableComponent handleOpenUserDetailsModal={handleOpenUserDetailsModal} users={users} />
       </>
     )
 }

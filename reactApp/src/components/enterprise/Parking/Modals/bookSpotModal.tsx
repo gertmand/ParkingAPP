@@ -1,8 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Typography } from '@material-ui/core'
 import React, { FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import SelectBookDate from '../../common/SelectBookDate'
-import { SET_ERROR_ALERT } from '../../common/siteActions'
+import { getAvailableSpotsForReservation } from '../../../../store/queries/enterpriseQueries'
+import SelectBookDate from '../../../common/SelectBookDate'
+import { SET_ERROR_ALERT } from '../../../common/siteActions'
+
 
 type Props = {
     bookModal: boolean,
@@ -28,14 +30,9 @@ const BookSpotModal:FC<Props> = ({bookModal, setBookModal}) => {
 
     const submitSearch = () => {
         if(startDateSet && endDateSet && startDate && endDate && startDate <= endDate) {
-            // findReservation({startDate, endDate}).then(response => {
-            //     findUserReservations(userData.id, dispatch);
-            //     dispatch(SET_SUCCESS_ALERT({ status: true, message: "Broneering lisatud!"}));
-            //     setStartDate(null);
-            //     setEndDate(null);
-            //     setStartDateSet(false);
-            //     setEndDateSet(false);
-            //     console.log(response);
+            getAvailableSpotsForReservation(startDate, endDate).then(response => {
+                console.table(response);
+            })
             // }).catch(err => {
             //     if(err.response)
             //         dispatch(SET_ERROR_ALERT({ status: true, message: err.response.data.message}));

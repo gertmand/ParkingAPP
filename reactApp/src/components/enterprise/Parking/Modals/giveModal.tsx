@@ -1,7 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, DialogContentText, Grid, DialogActions, Button } from '@material-ui/core';
 import React, { FC } from 'react'
-import SelectBookDate from '../../common/SelectBookDate';
-import { SelectWorker } from './selectWorker';
+import SelectBookDate from '../../../common/SelectBookDate';
+import { SelectWorker } from './../selectWorker';
 
 type ModalProps = {
     open: boolean,
