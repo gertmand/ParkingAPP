@@ -45,13 +45,62 @@ namespace API.Services
         public IEnumerable<ParkingSpotResponse> GetAll(int enterpriseId)
         {
             var parkingspots = getAllParkingSpots(enterpriseId);
-            return _mapper.Map<IList<ParkingSpotResponse>>(parkingspots);
+            var responses = _mapper.Map<IList<ParkingSpotResponse>>(parkingspots);
+
+            foreach (var response in responses)
+            {
+                response.Status = GetParkingSpotStatus(response.Id);
+                switch (response.Status)
+                {
+                    case ParkingSpotStatusType.Active:
+                        response.Staatus = "Aktiivne";
+                        break;
+                    case ParkingSpotStatusType.Assigned:
+                        response.Staatus = "Laenatud";
+                        break;
+                    case ParkingSpotStatusType.Reserved:
+                        response.Staatus = "Broneeritud";
+                        break;
+                    case ParkingSpotStatusType.Released:
+                        response.Staatus = "Vabastatud";
+                        break;
+                    default:
+                        response.Staatus = "katki";
+                        break;
+                }
+            }
+
+            return responses;
         }
 
         public ParkingSpotResponse GetById(int id)
         {
             ParkingSpot ps = getById(id);
-            return _mapper.Map<ParkingSpotResponse>(ps);
+            
+            var data = _mapper.Map<ParkingSpotResponse>(ps);
+
+            data.Status = GetParkingSpotStatus(data.Id);
+
+            switch (data.Status)
+            {
+                case ParkingSpotStatusType.Active:
+                    data.Staatus = "Aktiivne";
+                    break;
+                case ParkingSpotStatusType.Assigned:
+                    data.Staatus = "Laenatud";
+                    break;
+                case ParkingSpotStatusType.Reserved:
+                    data.Staatus = "Broneeritud";
+                    break;
+                case ParkingSpotStatusType.Released:
+                    data.Staatus = "Vabastatud";
+                    break;
+                default:
+                    data.Staatus = "katki";
+                    break;
+            }
+
+            return data;
         }
 
         public IEnumerable<ReservationResponse> GetUserReservations(int enterpriseId, int userId)

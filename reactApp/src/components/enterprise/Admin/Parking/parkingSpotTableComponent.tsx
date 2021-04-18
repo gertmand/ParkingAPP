@@ -65,10 +65,10 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
       headerAlign: 'center'
     },
     {
-      field: 'reservationStatus',
+      field: 'staatus',
       headerName: ' Staatus',
       width: 200,
-      headerAlign: 'center'
+      headerAlign: 'center',
     },
     {
       field: 'tegevused',

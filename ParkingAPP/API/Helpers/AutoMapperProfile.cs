@@ -44,7 +44,7 @@ namespace API.Helpers
             CreateMap<Enterprise, EnterpriseResponse>();
 
             CreateMap<ParkingSpot, ParkingSpotResponse>();
-
+                
             CreateMap<Reservation, ReservationResponse>()
                 .ForMember(x => x.ReserverName, opt => opt.MapFrom(src => src.ReserverAccount.FirstName + " " + src.ReserverAccount.LastName))
                 .ForMember(x => x.ParkingSpotOwner, opt => opt.MapFrom(src => src.SpotAccount.FirstName + " " + src.SpotAccount.LastName));
