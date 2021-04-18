@@ -132,10 +132,6 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
             ps.number
               .toString()
               .toLowerCase()
-              .includes(searchTerm.toLowerCase()),
-            ps.staatus
-              .toString()
-              .toLowerCase()
               .includes(searchTerm.toLowerCase())
           ) {
             return ps;
@@ -149,19 +145,5 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
   );
 };
 
-const handleFilter = (searchTerm: string, obj: Object) => {
-  // for (const [key, value] of Object.entries(obj)) {
-  //   value.toString()
-  //   .toLowerCase()
-  //   .includes(searchTerm.toLowerCase())
-  // }
-
-  const filtered = Object.keys(obj)
-  .filter(value => value.toLowerCase().includes(searchTerm.toLowerCase())) as any
-  
-  console.log(filtered)
-
-  return filtered;
-}
 
 export default ParkingSpotTableComponent;
