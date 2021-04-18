@@ -79,29 +79,15 @@ export const UsersTableComponent: FC<Props> = ({
       headerAlign: 'center'
     },
     {
-      field: 'carNumber',
+      field: 'accountCars',
       headerName: ' Auto reg. number',
       width: 200,
       flex: 75,
-      headerAlign: 'center'
-      // valueGetter: getUserId,
-      //   renderCell: (params: GridValueGetterParams) => {
-      //     return (
-      //       <ButtonGroup style={{ margin: 'auto' }}>
-      //         <Tooltip title="Kustuta">
-      //           <Button>
-      //             <DeleteIcon/>
-      //           </Button>
-      //         </Tooltip>
-      //         {/* <Tooltip title="Kustuta parkimiskoht">
-      //           <Button onClick={() => handleDeleteButtonClick(params)}>
-      //             <XCircle color="#e08d8d" />
-      //           </Button>
-      //         </Tooltip> */}
-      //       </ButtonGroup>
-      //     );
-      //   }
-    },
+      headerAlign: 'center',
+      align: 'center',
+      valueGetter: (params: GridValueGetterParams) =>
+        `${params.row.accountCars.map((x: { regNr: string; }) => '[' + x.regNr + '] ') || ''}`
+  },
     {
       field: 'tegevused',
       headerName: 'Tegevused',
