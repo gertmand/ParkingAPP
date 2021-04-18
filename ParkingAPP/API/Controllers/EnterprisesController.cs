@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using API.Models.AccountDtos;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
 using API.Models.ParkingSpotDtos;
@@ -393,6 +394,27 @@ namespace API.Controllers
             }
             _parkingSpotService.DeteleParkingSpotMainUser(accountId,parkingSpotId);
             return Ok();
+        }
+
+        [HttpPost("{enterpriseId}/admin/users/{accountId}")]
+        public ActionResult<AccountResponse> GetUserData(int enterpriseId, int accountId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+
+            return _enterpriseService.GetUserData(accountId);
         }
 
         // HELPER METHODS
