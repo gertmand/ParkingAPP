@@ -36,8 +36,8 @@ const BookSpotModal:FC<Props> = ({bookModal, setBookModal, setSpotsForReservatio
     }
 
     const submitSearch = () => {
-        setButtonDisabled(true)
         if(startDateSet && endDateSet && startDate && endDate && startDate <= endDate) {
+            setButtonDisabled(true)
             getAvailableSpotsForReservation(startDate, endDate, enterpriseId).then(response => {
                 setSpotsForReservation(response)
                 if(response.length > 0) {

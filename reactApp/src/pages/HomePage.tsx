@@ -2,9 +2,6 @@ import { Container, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
-import ErrorAlert from '../components/common/errorAlert';
-import { SiteAlert } from '../components/common/siteTypes';
-import SuccessAlert from '../components/common/successAlert';
 import ParkingData from '../components/enterprise/Parking/parkingData';
 import { AppState } from '../store';
 import { EnterpriseParkingSpotData, EnterpriseUserData, Reservation } from '../store/types/enterpriseTypes';
@@ -14,9 +11,6 @@ const HomePage = (props: any) => {
   const classes = useStyles();
   const userData = useSelector<AppState, EnterpriseUserData>(state => state.user.enterpriseUserData);
   const parkingSpotData = useSelector<AppState, EnterpriseParkingSpotData>(state => state.user.enterpriseParkingSpotData);
-  //const enterprise = useSelector<AppState, Enterprise>(state => state.user.enterpriseData);
-  const successAlert = useSelector<AppState, SiteAlert>(state => state.site.successAlert);
-  const errorAlert = useSelector<AppState, SiteAlert>(state => state.site.errorAlert);
   const [reservationSpot, setReservationSpot] = useState<Reservation>()
 
   useEffect(() => {
@@ -50,8 +44,8 @@ const HomePage = (props: any) => {
       {...props.children}
       className={classes.root}
       title="Parking Solutions - Esileht">
-      {successAlert.status ? <SuccessAlert /> : null}
-      {errorAlert.status ? <ErrorAlert /> : null}
+      {/* {successAlert.status ? <SuccessAlert /> : null}
+      {errorAlert.status ? <ErrorAlert /> : null} */}
       <Container maxWidth={false}>
         {userData.parkingSpot !== null && userData.parkingSpot?.number !== undefined ? (
           <ParkingData parkingSpot={userData.parkingSpot} parkingSpotDataList={parkingSpotData.spotListData} addReservationButton={false} spotButtons={true} />
