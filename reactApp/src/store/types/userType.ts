@@ -9,7 +9,8 @@ export type User = {
     role: string,
     title: string,
     phoneNr: string,
-    avatar: string
+    avatar: string,
+    accountCars: Car[]
 }
 
 export type SelectedUser = {

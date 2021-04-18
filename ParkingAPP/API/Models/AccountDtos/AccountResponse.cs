@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using API.Models.Entities;
 using API.Models.JoinedEntities;
 
 namespace API.Models.AccountDtos
@@ -17,5 +18,6 @@ namespace API.Models.AccountDtos
         public bool IsVerified { get; set; }
         public string Avatar { get; set; }
         public string PhoneNr { get; set; }
+        public IEnumerable<Car>? AccountCars { get; set; }
     }
 }

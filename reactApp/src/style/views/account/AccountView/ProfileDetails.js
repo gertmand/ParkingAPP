@@ -93,15 +93,16 @@ const ProfileDetails = ({ className, ...rest }) => {
         </CardContent>
         <Card>
         <CardHeader title="Sõidukid" />
-        <Divider />
+        
         <UserCars/>
-        </Card>
-        <Divider />
         <Box display="flex" justifyContent="flex-end" p={2}>
           <Button color="primary" variant="contained">
             Salvesta andmed
           </Button>
         </Box>
+        </Card>
+        
+        
       </Card>
       
     </form>
