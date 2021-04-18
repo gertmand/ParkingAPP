@@ -65,7 +65,8 @@ export type ParkingSpot = {
     updated: Date,
     deletionDate?: Date,
     number: number,
-    status: string
+    status: string,
+    staatus: string
 }
 
 export type ParkingSpotRequest = {

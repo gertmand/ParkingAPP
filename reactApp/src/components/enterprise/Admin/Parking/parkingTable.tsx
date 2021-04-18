@@ -1,5 +1,5 @@
 import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, InputAdornment, makeStyles, Modal, SvgIcon, TextField, Theme } from '@material-ui/core';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
 import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
@@ -82,6 +82,7 @@ const ParkingTable: FC<TableProps> = ({
       );
     })
   }
+
   const confirmAddParkingSpotPlan = () => {
     addParkingSpotPlan(formData, enterpriseId).then(() => {
       handleCloseParkingLotPlanModal();
@@ -94,11 +95,13 @@ const ParkingTable: FC<TableProps> = ({
       );
     })
   }
+
   const selectedUserChange = (event: any, values: any) => {
     if (values) {
       setRegularUserId(values.id);
     }
   }
+
   const addMainUser = () => {
     addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd, canBook:checked, created: new Date()}, enterpriseId).then(() => 
     {
@@ -113,6 +116,7 @@ const ParkingTable: FC<TableProps> = ({
       );
     });
   }
+
   const submitParkingSpotAdd = () => {
     if (parkingSpotNr <= 0)
       return dispatch(
@@ -143,6 +147,7 @@ const ParkingTable: FC<TableProps> = ({
       );
     });
   };
+
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
     if (e.target.files == null) {
       throw new Error('Error finding e.target.files');
