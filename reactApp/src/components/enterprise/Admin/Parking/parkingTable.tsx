@@ -73,6 +73,7 @@ const ParkingTable: FC<TableProps> = ({
       setDeleteConfirmationModal(false);
       updateParkingSpots();
       updateParkingSpotMainUsers();
+      updateSpotTable();
       dispatch(
         SET_SUCCESS_ALERT({
           status: true,
@@ -103,6 +104,7 @@ const ParkingTable: FC<TableProps> = ({
     {
       handleCloseParkingSpotMainUserAddModal();
       updateParkingSpotMainUsers();
+      updateSpotTable();
       dispatch(
         SET_SUCCESS_ALERT({
           status: true,

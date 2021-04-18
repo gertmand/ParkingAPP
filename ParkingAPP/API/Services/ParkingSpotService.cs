@@ -350,6 +350,7 @@ namespace API.Services
         // ADMIN METHODS
         public ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId)
         {
+            //TODO: Parklakoht kui on kustutatud, siis uut parklakohta sama numbriga lisada ei lase
             if (!checkExistingParkingSpotNr(request.Number, enterpriseId))
             {
                 throw new AppException("Sellise numbriga parkimiskoht on juba olemas!");
@@ -497,7 +498,7 @@ namespace API.Services
             var parkingSpot = _context.ParkingSpots
                 .Include(x => x.ParkingSpotAccounts)
                 .ThenInclude(x => x.Account)
-                .FirstOrDefault(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId));
+                .FirstOrDefault(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId && x.Deleted == null));
 
             return parkingSpot;
         }

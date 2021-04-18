@@ -21,7 +21,7 @@ import Page from '../style/Page';
     const dispatch = useDispatch();
     const successAlert = useSelector<AppState, SiteAlert>(state => state.site.successAlert);
     const errorAlert = useSelector<AppState, SiteAlert>(state => state.site.errorAlert);
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(1);
     const [enterpriseUsers, setEnterpriseUsers] = useState([]);
     const [parkingSpotMainUsers, setParkingSpotMainUsers] = useState([]);
     const [enterpriseParkingSpots, setEnterpriseParkingSpots] = useState([]);
