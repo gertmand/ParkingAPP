@@ -375,7 +375,7 @@ namespace API.Services
             List<int> ps_id_s = new List<int>();
             ps_id_s.AddRange(_context.ParkingSpots.Where(x=>x.EnterpriseId == enterpriseId).Select(x=>x.Id));
             List<ParkingSpotAccount> psas = new List<ParkingSpotAccount>();
-            psas.AddRange(_context.ParkingSpotAccounts.Where(x=>x.Deleted==null));
+            psas.AddRange(_context.ParkingSpotAccounts);
 
             foreach (int ps_id in ps_id_s)
             {
@@ -505,7 +505,7 @@ namespace API.Services
             var parkingSpot = _context.ParkingSpots
                 .Include(x => x.ParkingSpotAccounts)
                 .ThenInclude(x => x.Account)
-                .FirstOrDefault(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId && x.Deleted == null));
+                .FirstOrDefault(x => x.EnterpriseId == enterpriseId && x.ParkingSpotAccounts.Any(x => x.AccountId == userId));
 
             return parkingSpot;
         }
@@ -542,7 +542,8 @@ namespace API.Services
             psa.AddRange(_context.ParkingSpotAccounts.Where(x=>x.ParkingSpotId==id));
             foreach (var item in psa)
             {
-                _context.ParkingSpotAccounts.Find(item.AccountId,item.ParkingSpotId).Deleted=DateTime.UtcNow;
+                var temp = _context.ParkingSpotAccounts.Find(item.AccountId,item.ParkingSpotId);
+                _context.ParkingSpotAccounts.Remove(temp);
             }
             ParkingSpot ps = _context.ParkingSpots.Find(id);
             ps.DeletionDate = DateTime.UtcNow;
@@ -562,7 +563,6 @@ namespace API.Services
             {
                 AccountId = request.AccountId,
                 ParkingSpotId = request.ParkingSpotId,
-                Created = request.Created
             };
             _context.EnterpriseAccounts.FirstOrDefault(x => x.AccountId == request.AccountId).CanBook = request.CanBook;
             _context.ParkingSpotAccounts.Add(temp);
@@ -580,7 +580,7 @@ namespace API.Services
         private ParkingSpotMainUserResponse deleteParkingSpotMainUser(int accountId, int parkingSpotId)
         {
             ParkingSpotAccount psa = _context.ParkingSpotAccounts.Find(accountId,parkingSpotId);
-            psa.Deleted = DateTime.UtcNow;
+            _context.ParkingSpotAccounts.Remove(psa);
             _context.SaveChanges();
             Account account = _context.Accounts.Find(accountId);
             ParkingSpotMainUserResponse response = new ParkingSpotMainUserResponse()

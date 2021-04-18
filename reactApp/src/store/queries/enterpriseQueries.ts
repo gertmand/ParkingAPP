@@ -69,7 +69,6 @@ export const addParkingSpotPlan = async (formData:FormData, enterpriseId: number
 }
 
 export const addParkingSpotMainUser = (request: ParkingSpotMainUserRequest, enterpriseId: number) => {
-    request.created = new Date(Date.UTC(request.created.getFullYear(), request.created.getMonth(), request.created.getDate(), request.created.getHours(), request.created.getMinutes()))
     return post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/adduser`, request)
 }
 

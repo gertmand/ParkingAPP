@@ -103,7 +103,7 @@ const ParkingTable: FC<TableProps> = ({
   }
 
   const addMainUser = () => {
-    addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd, canBook:checked, created: new Date()}, enterpriseId).then(() => 
+    addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd, canBook:checked}, enterpriseId).then(() => 
     {
       handleCloseParkingSpotMainUserAddModal();
       updateParkingSpotMainUsers();

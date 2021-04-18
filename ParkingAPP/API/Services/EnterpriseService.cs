@@ -84,7 +84,7 @@ namespace API.Services
         {
             var regularUsersList = new List<EnterpriseAccountsResponse>();
 
-            var spotUsers = _context.ParkingSpotAccounts.Where(x=>x.Deleted == null).ToListAsync().Result.Select(x => x.AccountId);
+            var spotUsers = _context.ParkingSpotAccounts.ToListAsync().Result.Select(x => x.AccountId);
 
             var enterpriseUsers = _context.EnterpriseAccounts
                 .Include(x => x.Account)
