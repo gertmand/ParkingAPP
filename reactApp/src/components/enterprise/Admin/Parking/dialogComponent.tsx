@@ -29,6 +29,7 @@ type Props = {
   parkingSpotIdForUserAdd?: number,
   updateParkingSpotMainUsers?() : any,
   updateSpotTable?(): any,
+  redButton?: boolean
 };
 
 export const DialogComponent: FC<Props> = ({
@@ -51,7 +52,8 @@ export const DialogComponent: FC<Props> = ({
   dialogContextText, 
   confirmButton, 
   parkingSpotMainUsers,
-  regularUsers}) => {
+  regularUsers,
+  redButton}) => {
 
   const dispatch = useDispatch();
   const handleBookingRight = async (enterpriseId:number, accountId: number) => {
@@ -135,9 +137,14 @@ export const DialogComponent: FC<Props> = ({
           <Button onClick={handleClose} color="primary">
             Loobu
           </Button>
-          <Button onClick={onSubmit} color="primary" variant="contained">
-            {confirmButton}
-          </Button>
+          { redButton ? 
+            <Button style={{backgroundColor: "#F40B0B"}} onClick={onSubmit} color="primary" variant="contained">
+              {confirmButton}
+            </Button> 
+          : 
+            <Button onClick={onSubmit} color="primary" variant="contained">
+              {confirmButton}
+            </Button>}
         </DialogActions>
       </Dialog>
     </>

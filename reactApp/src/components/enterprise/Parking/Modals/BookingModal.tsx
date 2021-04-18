@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import React, { FC, useEffect, useState } from 'react';
 import { AvailableDatesResponse } from '../../../../store/types/enterpriseTypes';
+import { DialogComponent } from '../../Admin/Parking/dialogComponent';
 import BookingSpotBox from './BookingSpotBox';
 
 
@@ -91,12 +92,11 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
     const [scroll] = React.useState<DialogProps['scroll']>('paper');
     const [maxWidth] = React.useState<DialogProps['maxWidth']>('sm');
     const [parkingData, setParkingData] = useState(availableData)
-
     const [uniqueDates] = useState<Date[]>([])
-
     const [activatedSpots, setActivatedSpots] = useState<AvailableDatesResponse[]>([])
-
     const [, setDays] = useState(0)
+
+    const [cancelModal, setCancelModal] = useState(false)
 
     const handleClose = () => {
         setActivatedSpots([])
@@ -108,16 +108,12 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
 
     useEffect(() => {
         if(availableData.length > 0) {
-            setTimeout(() =>  {
-                
-            })
             setParkingData(availableData)
         }
     }, [availableData])
 
     const handleSpotClick = async (e: any, id: number) => {
         let spots = parkingData
-
         spots.forEach(async spot => {
             if(spot.id === id) {
                 spot.checked = !spot.checked
@@ -130,6 +126,19 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
         })
 
         setParkingData(spots)
+    }
+
+    const handleCancelModalTrue = () => {
+        setCancelModal(false)
+        handleClose()
+    }
+
+    const handleCancelModalFalse = () => {
+        setCancelModal(false)
+    }
+
+    const handleCloseModal = () => {
+        setCancelModal(true)
     }
 
     useEffect(() => {
@@ -157,6 +166,7 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
     }
 
     return (
+    <>
         <Dialog open={modal} disableBackdropClick={true} onClose={handleClose} scroll={scroll} aria-labelledby="scroll-dialog-title" aria-describedby="scroll-dialog-description" fullWidth={true} maxWidth={maxWidth} >
             {activatedSpots.length > 0 ? 
                 <DialogTitle className={classes.dialogTitle} id="scroll-dialog-title">Päevade arv: { uniqueDates.length } </DialogTitle> 
@@ -169,14 +179,25 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
                 ) : <CircularProgress />}
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleCloseModal} color="primary">
                     Tühista
-          </Button>
+                 </Button>
                 <Button disabled={uniqueDates.length > 0 ? false : true} onClick={handleClose} color="primary">
                     Broneeri
-          </Button>
+                </Button>
             </DialogActions>
         </Dialog>
+
+        <DialogComponent
+        open={cancelModal}
+        handleClose={handleCancelModalFalse}
+        onSubmit={handleCancelModalTrue}
+        dialogTitle="Kas oled kindel?"
+        dialogContextText="Tühistamisel lähestatakse päring."
+        confirmButton="Tühista"
+        redButton={true}
+      />
+    </>
     );
 }
 
