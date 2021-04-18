@@ -7,7 +7,9 @@ export type User = {
     isVerified: boolean,
     jwtToken: string,
     role: string,
-    title: string
+    title: string,
+    phoneNr: string,
+    avatar: string
 }
 
 export type SelectedUser = {
@@ -16,4 +18,10 @@ export type SelectedUser = {
     firstName: string,
     lastName: string,
     email: string
+}
+
+export type Car = {
+    id: number,
+    regNr: string,
+    temporary: boolean
 }

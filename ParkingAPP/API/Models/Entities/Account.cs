@@ -25,6 +25,8 @@ namespace API.Models.Entities
         public DateTime? Updated { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; }
         public string? Avatar { get; set; }
+        public string? PhoneNr { get; set; }
+        public IEnumerable<AccountCars>? AccountCars { get; set; }
 
         public bool OwnsToken(string token) 
         {

@@ -29,7 +29,7 @@ export const UsersTableComponent: FC<Props> = ({
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
-  function getParkingSpotId(params: GridValueGetterParams) {
+  function getUserId(params: GridValueGetterParams) {
     return `${params.getValue('id')}`;
   }
   //   const handleDeleteButtonClick = (params: GridValueGetterParams) => {
@@ -71,6 +71,14 @@ export const UsersTableComponent: FC<Props> = ({
       headerAlign: 'center'
     },
     {
+      field: 'phoneNr',
+      headerName: 'Telefoni nr',
+      width: 200,
+      flex: 75,
+      align: 'center',
+      headerAlign: 'center'
+    },
+    {
       field: 'carNumber',
       headerName: ' Auto reg. number',
       width: 200,
@@ -85,14 +93,14 @@ export const UsersTableComponent: FC<Props> = ({
       disableClickEventBubbling: true,
       headerAlign: 'center',
       flex: 75,
-      valueGetter: getParkingSpotId,
+      valueGetter: getUserId,
       renderCell: (params: GridValueGetterParams) => {
         return (
           <ButtonGroup style={{ margin: 'auto' }}>
             <Tooltip title="Detailid">
               <Button
                 onClick={() =>
-                  handleOpenUserDetailsModal(+getParkingSpotId(params))
+                  handleOpenUserDetailsModal(+getUserId(params))
                 }
               >
                 <Info color="#C0C0C0" />

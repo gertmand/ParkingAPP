@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using API.DAL;
+using API.Models.AccountDtos;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
 using API.Models.JoinedEntities;
@@ -21,6 +22,7 @@ namespace API.Services
         IEnumerable<Reservation> GetReservations();
         IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId);
         IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccountsWithoutParkingspots(int enterpriseId);
+        AccountResponse GetUserData(int userId);
         bool CheckUserEnterprise(int userId, int enterpriseId);
         bool GetEnterpriseAdmin(int enterpriseId, int userId);
         bool GetEnterpriseData(int enterpriseId, int userId);
@@ -139,6 +141,13 @@ namespace API.Services
                 .Where(x => x.EnterpriseId == enterpriseId).Select(x => x.Account).ToList();
 
             return _mapper.Map<IList<EnterpriseAccountsResponse>>(enterpriseUsers);
+        }
+
+        public AccountResponse GetUserData(int userId)
+        {
+            var user = _context.Accounts.Find(userId);
+
+            return _mapper.Map<AccountResponse>(user);
         }
 
         // helper methods

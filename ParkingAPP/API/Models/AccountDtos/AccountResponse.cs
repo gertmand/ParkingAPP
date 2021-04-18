@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using API.Models.JoinedEntities;
 
 namespace API.Models.AccountDtos
 {
@@ -14,5 +16,6 @@ namespace API.Models.AccountDtos
         public DateTime? Updated { get; set; }
         public bool IsVerified { get; set; }
         public string Avatar { get; set; }
+        public string PhoneNr { get; set; }
     }
 }

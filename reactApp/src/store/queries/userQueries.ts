@@ -12,3 +12,6 @@ export const getUserData = async (dispatch: any) => {
     dispatch(FETCH_USER_DATA_START())
     return await get(`${apiUrl}/api/accounts/data`).then((data) => dispatch(FETCH_USER_DATA_SUCCESS(data)))
 }
+export const getUserCarsData = async (dispatch: any) => {
+    return await get(`${apiUrl}/api/accounts/cars`)
+}

@@ -13,6 +13,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import UserCars from '../../../../components/profile/userCars';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -20,16 +21,8 @@ const useStyles = makeStyles(() => ({
 
 const ProfileDetails = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [values, setValues] = useState({
-    firstName: 'Katarina',
-    lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
-  });
   const userData = useSelector(state => state.user.userData);
-
+  const [values, setValues] = useState();
   const handleChange = event => {
     setValues({
       ...values,
@@ -54,7 +47,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                helperText="Palun täpsustage eesnimi"
+                //helperText="Palun täpsustage eesnimi"
                 label="Eesnimi"
                 name="firstName"
                 onChange={handleChange}
@@ -77,7 +70,7 @@ const ProfileDetails = ({ className, ...rest }) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="E-mail Aadress"
+                label="E-mail"
                 name="email"
                 onChange={handleChange}
                 required
@@ -88,15 +81,21 @@ const ProfileDetails = ({ className, ...rest }) => {
             <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
-                label="Telefon"
+                label="Telefoni nr"
                 name="phone"
                 onChange={handleChange}
-                value={values.phone || ''}
+                required
+                value={userData.phoneNr || ''}
                 variant="outlined"
               />
             </Grid>
           </Grid>
         </CardContent>
+        <Card>
+        <CardHeader title="Sõidukid" />
+        <Divider />
+        <UserCars/>
+        </Card>
         <Divider />
         <Box display="flex" justifyContent="flex-end" p={2}>
           <Button color="primary" variant="contained">
@@ -104,6 +103,7 @@ const ProfileDetails = ({ className, ...rest }) => {
           </Button>
         </Box>
       </Card>
+      
     </form>
   );
 };

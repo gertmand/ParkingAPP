@@ -1,8 +1,16 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import React, { FC } from 'react';
-import { ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
-import { SelectedUser } from '../../../../store/types/userType';
+import { AppBar, Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps, DialogTitle, Grid, makeStyles, Paper, Tab, Tabs, Theme, Typography } from '@material-ui/core';
+import clsx from 'clsx';
+import React, { FC, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../../../store';
+import { getUserDetails } from '../../../../store/queries/enterpriseQueries';
+import { getUserData } from '../../../../store/queries/userQueries';
+import { EnterpriseUserData, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
+import { SelectedUser, User } from '../../../../store/types/userType';
 import ProfileDetails from '../../../../style/views/account/AccountView/ProfileDetails';
+import ParkingTable from '../Parking/parkingTable';
+import UsersDetails from './usersDetailsComponent';
+import UsersTable from './usersTable';
 
 type Props = {
   open: boolean;
@@ -20,20 +28,73 @@ type Props = {
   regularUsers? : SelectedUser[],
   onFileChange?(event: any, values: any) : any,
   selectedUserChange?(event: any, values: any) : any,
-  parkingSpotIdForUserAdd?: number,
+  userIdForDetails: number | undefined
 };
 
-export const UsersDialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}: any) => {
+export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}: any) => {
+  const [userData, setUserData] = useState<User>();
+  const [value, setValue] = React.useState(0);
+  const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id);
+  const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
+  };
+
+  const classes = useStyles();
+
+  useEffect(() => {
+    if (userIdForDetails != undefined)
+    {
+    getUserDetails(userIdForDetails, enterpriseId)
+    .then((result: any) => {
+      setUserData(result);
+      console.log(result)
+    }).catch(err => {
+      console.log(err)
+  })
+}
+  }, [userData, userIdForDetails])
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description" classes={{ paper: classes.dialogPaper }} fullWidth={true} maxWidth={maxWidth} >
         <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+        <DialogContent >
+          <DialogContentText id="alert-dialog-description" >
             {dialogContextText}
           </DialogContentText>
-          <ProfileDetails className=''/>
+
+          <Container maxWidth={false} >
+          <Grid container spacing={1} >
+            <Grid item xs={12}>
+              <div className={classes.root}>
+                <Paper>
+                  <AppBar position="static">
+                    <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="off" aria-label="scrollable prevent tabs example">
+                      <Tab label="Kontaktandmed" aria-label="contact" {...a11yProps(0)} />
+                      <Tab label="Broneeringud" aria-label="bron" {...a11yProps(1)} />
+                      <Tab label="Logid" aria-label="logs" {...a11yProps(2)} />
+                    </Tabs>
+                  </AppBar>
+                  <TabPanel value={value} index={0}>
+                  {userData === undefined ? '' : 
+                  <UsersDetails userData={userData} className=''/>}
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                  <Typography>Broneeringud</Typography>
+                  </TabPanel>
+                  <TabPanel value={value} index={2}>
+                    <Typography>Logid</Typography>
+                  </TabPanel>
+                </Paper>
+              </div>
+            </Grid>
+          </Grid>
+        </Container>
+
+    
+          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -47,8 +108,68 @@ export const UsersDialogComponent: FC<Props> = ({open,inputFieldNumberBoolean,se
           
         </DialogActions>
       </Dialog>
+    
+      
     </>
   );
+
+  interface TabPanelProps {
+    children?: React.ReactNode;
+    index: any;
+    value: any;
+  }
+  
+  function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`scrollable-prevent-tabpanel-${index}`}
+        aria-labelledby={`scrollable-prevent-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box p={3}>
+            <div>{children}</div>
+          </Box>
+        )}
+      </div>
+    );
+  }
+  
+  function a11yProps(index: any) {
+    return {
+      id: `scrollable-prevent-tab-${index}`,
+      'aria-controls': `scrollable-prevent-tabpanel-${index}`,
+    };
+  }
 };
+
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    flexGrow: 1,
+    width: '100%',
+    
+    minHeight: '100%',
+  paddingBottom: theme.spacing(3),
+  paddingTop: theme.spacing(3)
+  },
+  height: {
+      maxHeight: '25%',
+      marginLeft: -12,
+      margin: 0
+  },
+  card: {
+      margin: 0,
+      marginLeft: 7,
+      color: theme.palette.text.secondary,
+  },
+  dialogPaper: {
+    minHeight: "50vh",
+    maxHeight: "50vh"
+  }
+}));
 
 export default UsersDialogComponent;

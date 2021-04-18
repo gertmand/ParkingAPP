@@ -11,9 +11,9 @@ type TableProps = {
 const UsersTable: React.FC<TableProps> = ({users}) => {
     //const classes = useStyles();
     //const [searchTerm, setSearchTerm] = useState('');
-    const [userIdForDetails, setUserIdForDetails] = useState(0);
+    const [userIdForDetails, setUserIdForDetails] = useState<number>();
     const [openUserDetailsModal,setOpenUserDetailsModal] = React.useState(false);
-    const handleOpenUserDetailsModal = (userId: number) => {
+    const handleOpenUserDetailsModal = (userIdForDetails: number) => {
       setUserIdForDetails(userIdForDetails);
       setOpenUserDetailsModal(true);
     };
@@ -23,7 +23,8 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
       <>
       {/* Parkimiskoha kustutamise modaal */}
       <UsersDialogComponent 
-        open={openUserDetailsModal} 
+        open={openUserDetailsModal}
+        userIdForDetails={userIdForDetails} 
         handleClose={handleCloseUserDetailsModal}
         //onSubmit={confirmDeleteParkingSpot} 
         dialogTitle='Kasutaja info'

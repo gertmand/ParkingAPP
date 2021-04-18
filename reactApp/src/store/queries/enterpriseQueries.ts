@@ -91,3 +91,7 @@ export const deleteParkingSpot = (parkingSpotId: number, enterpriseId : number) 
     }
 }
 
+export const getUserDetails = async (userId: number, enterpriseId : number) => {
+    return await post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/users/${userId}`, null)
+}
+

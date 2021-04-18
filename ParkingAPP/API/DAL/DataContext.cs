@@ -27,6 +27,8 @@ namespace API.DAL
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Car>().ToTable("Cars").HasKey(x => x.Id);
+            modelBuilder.Entity<AccountCars>().ToTable("AccountCars").HasKey(key => new { key.AccountId, key.CarId });
             modelBuilder.Entity<EnterpriseAccount>().ToTable("EnterpriseAccounts")
                 .HasKey(key => new {key.AccountId, key.EnterpriseId});
             modelBuilder.Entity<ParkingSpotAccount>().ToTable("ParkingSpotAccount")
@@ -47,7 +49,8 @@ namespace API.DAL
                     Role = Role.Admin,
                     VerificationToken = null,
                     Verified = new DateTime(2020, 02, 01),
-                    Avatar = "gert3.png"
+                    Avatar = "gert3.png",
+                    PhoneNr = "+372 5123 1231"
                 },
                 new Account
                 {
@@ -60,7 +63,8 @@ namespace API.DAL
                     AcceptTerms = true,
                     Role = Role.Admin,
                     VerificationToken = null,
-                    Verified = new DateTime(2020, 02, 01)
+                    Verified = new DateTime(2020, 02, 01),
+                    PhoneNr = "+372 5122 1876"
                 },
                 new Account
                 {
@@ -74,7 +78,8 @@ namespace API.DAL
                     Role = Role.Admin,
                     VerificationToken = null,
                     Verified = new DateTime(2020, 02, 01),
-                    Avatar = "kev.png"
+                    Avatar = "kev.png",
+                    PhoneNr = "+372 512 1014"
                 });
             for (int i = 4; i <= 24; i++)
             {
@@ -91,7 +96,8 @@ namespace API.DAL
                         Role = Role.Admin,
                         VerificationToken = null,
                         Verified = new DateTime(2020, 02, 01),
-                        Avatar = ""
+                        Avatar = "",
+                        PhoneNr = "+372 5122 10" + i.ToString()
                     });
             }
             for (int i = 25; i <= 40; i++)
@@ -109,11 +115,31 @@ namespace API.DAL
                         Role = Role.User,
                         VerificationToken = null,
                         Verified = new DateTime(2020, 02, 01),
-                        Avatar = ""
+                        Avatar = "",
+                        PhoneNr = "+372 5600 77" + i.ToString()
                     });
             }
 
-           
+            modelBuilder.Entity<Car>().HasData(
+                new Car { Id = 1, RegNr = "699BJG", Temporary = false },
+                new Car { Id = 2, RegNr = "111AAA", Temporary = false },
+                new Car { Id = 3, RegNr = "222BBB", Temporary = false },
+                new Car { Id = 4, RegNr = "333CCC", Temporary = false },
+                new Car { Id = 5, RegNr = "444DDD", Temporary = false },
+                new Car { Id = 6, RegNr = "CityBee", Temporary = true },
+                new Car { Id = 7, RegNr = "Lambine", Temporary = true }
+            );
+
+            modelBuilder.Entity<AccountCars>().HasData(
+                new AccountCars { AccountId = 1, CarId = 1 },
+                new AccountCars { AccountId = 2, CarId = 2 },
+                new AccountCars { AccountId = 3, CarId = 3 },
+                new AccountCars { AccountId = 4, CarId = 4 },
+                new AccountCars { AccountId = 5, CarId = 5 },
+                new AccountCars { AccountId = 6, CarId = 6 },
+                new AccountCars { AccountId = 11, CarId = 5 },
+                new AccountCars { AccountId = 12, CarId = 5 },
+                new AccountCars { AccountId = 13, CarId = 5 });
 
             modelBuilder.Entity<Enterprise>().HasData(
                 new Enterprise

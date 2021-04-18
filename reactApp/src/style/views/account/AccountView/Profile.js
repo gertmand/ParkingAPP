@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
 const Profile = ({ className, ...rest }) => {
   const classes = useStyles();
   const userData = useSelector(state => state.user.userData);
-
+  
   const handleUploadClick = (event) => {
     
   };

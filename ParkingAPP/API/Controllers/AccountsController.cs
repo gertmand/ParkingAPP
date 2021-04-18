@@ -104,6 +104,7 @@ namespace API.Controllers
             if (Account != null)
             {
                 var response = _mapper.Map<AuthenticateResponse>(Account);
+                response.AccountCars = _accountService.GetCarsByAccountId(Account.Id);
                 return Ok(response);
             }
 

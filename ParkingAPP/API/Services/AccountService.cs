@@ -9,7 +9,9 @@ using API.DAL;
 using API.Helpers;
 using API.Models.AccountDtos;
 using API.Models.Entities;
+using API.Models.JoinedEntities;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using BC = BCrypt.Net.BCrypt;
@@ -26,6 +28,7 @@ namespace API.Services
         void ForgotPassword(ForgotPasswordRequest model, string origin);
         void ValidateResetToken(ValidateResetTokenRequest model);
         void ResetPassword(ResetPasswordRequest model);
+        public IList<Car> GetCarsByAccountId(int id);
         IEnumerable<AccountResponse> GetAll();
         AccountResponse GetById(int id);
         AccountResponse Create(CreateRequest model);
@@ -268,7 +271,7 @@ namespace API.Services
 
         private Account getAccount(int id)
         {
-            var account = _context.Accounts.Find(id);
+            var account = _context.Accounts.Include(x => x.AccountCars).ThenInclude(x => x.Car).Where(x => x.Id == id).First();
             if (account == null) throw new KeyNotFoundException("Account not found");
             return account;
         }
@@ -387,6 +390,11 @@ namespace API.Services
             );
         }
 
-
+        public IList<Car> GetCarsByAccountId(int id)
+        {
+            var account = getAccount(id);
+            var cars = account.AccountCars.Select(x => x.Car);
+            return cars.ToList();
+        }
     }
 }

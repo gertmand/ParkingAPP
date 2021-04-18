@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using API.Models.Entities;
+using API.Models.JoinedEntities;
 
 namespace API.Models.AccountDtos
 {
@@ -19,5 +22,8 @@ namespace API.Models.AccountDtos
 
         [JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; }
+        public string PhoneNr { get; set; }
+        public IEnumerable<Car>? AccountCars { get; set; }
+
     }
 }
