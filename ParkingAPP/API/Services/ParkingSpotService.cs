@@ -8,6 +8,7 @@ using API.Models.Entities;
 using API.Models.JoinedEntities;
 using API.Models.ParkingSpotDtos;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Math.EC.Rfc7748;
 using RIK_parkimise_rakendus.Helpers;
@@ -29,6 +30,7 @@ namespace API.Services
         ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId);
         IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers (int enterpriseId);
         ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request);
+        ParkingSpotMainUserResponse DeteleParkingSpotMainUser(int accountId, int parkingSpotId);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -373,7 +375,7 @@ namespace API.Services
             List<int> ps_id_s = new List<int>();
             ps_id_s.AddRange(_context.ParkingSpots.Where(x=>x.EnterpriseId == enterpriseId).Select(x=>x.Id));
             List<ParkingSpotAccount> psas = new List<ParkingSpotAccount>();
-            psas.AddRange(_context.ParkingSpotAccounts);
+            psas.AddRange(_context.ParkingSpotAccounts.Where(x=>x.Deleted==null));
 
             foreach (int ps_id in ps_id_s)
             {
@@ -393,6 +395,11 @@ namespace API.Services
         public ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request)
         {
             return _mapper.Map<ParkingSpotMainUserResponse>(addParkingSpotMainUser(request));
+        }
+
+        public ParkingSpotMainUserResponse DeteleParkingSpotMainUser(int accountId, int parkingSpotId)
+        {
+            return _mapper.Map<ParkingSpotMainUserResponse>(deleteParkingSpotMainUser(accountId, parkingSpotId));
         }
 
         // helper methods
@@ -566,6 +573,20 @@ namespace API.Services
                 ParkingSpotId = temp.ParkingSpotId,
                 MainUserFullName = account.FirstName + " " + account.LastName,
                 CanBook = request.CanBook,
+            };
+            return response;
+        }
+
+        private ParkingSpotMainUserResponse deleteParkingSpotMainUser(int accountId, int parkingSpotId)
+        {
+            ParkingSpotAccount psa = _context.ParkingSpotAccounts.Find(accountId,parkingSpotId);
+            psa.Deleted = DateTime.UtcNow;
+            _context.SaveChanges();
+            Account account = _context.Accounts.Find(accountId);
+            ParkingSpotMainUserResponse response = new ParkingSpotMainUserResponse()
+            {
+                ParkingSpotId = parkingSpotId,
+                MainUserFullName = account.FirstName + " " + account.LastName,
             };
             return response;
         }
