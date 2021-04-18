@@ -91,7 +91,6 @@ import Page from '../style/Page';
         })
       }
     }
-
     
     return (
       <Page {...props.children} className={classes.root} title="Parking Solutions - Admin">

@@ -84,6 +84,7 @@ export type ParkingSpotMainUserRequest = {
     parkingSpotId: number,
     accountId : number,
     canBook :boolean,
+    created :Date
 }
 
 export type ReleaseRequest = {

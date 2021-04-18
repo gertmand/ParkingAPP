@@ -530,6 +530,12 @@ namespace API.Services
 
         private ParkingSpot deleteParkingSpot(int id)
         {
+            List<ParkingSpotAccount> psa = new List<ParkingSpotAccount>();
+            psa.AddRange(_context.ParkingSpotAccounts.Where(x=>x.ParkingSpotId==id));
+            foreach (var item in psa)
+            {
+                _context.ParkingSpotAccounts.Find(item.AccountId,item.ParkingSpotId).Deleted=DateTime.UtcNow;
+            }
             ParkingSpot ps = _context.ParkingSpots.Find(id);
             ps.DeletionDate = DateTime.UtcNow;
             _context.SaveChanges();
@@ -547,7 +553,8 @@ namespace API.Services
             ParkingSpotAccount temp = new ParkingSpotAccount()
             {
                 AccountId = request.AccountId,
-                ParkingSpotId = request.ParkingSpotId
+                ParkingSpotId = request.ParkingSpotId,
+                Created = request.Created
             };
             _context.EnterpriseAccounts.FirstOrDefault(x => x.AccountId == request.AccountId).CanBook = request.CanBook;
             _context.ParkingSpotAccounts.Add(temp);

@@ -10,5 +10,6 @@ namespace API.Models.ParkingSpotDtos
         public int ParkingSpotId { get; set; }
         public int AccountId { get; set; }
         public bool CanBook { get; set; }
+        public DateTime Created { get; set; }
     }
 }

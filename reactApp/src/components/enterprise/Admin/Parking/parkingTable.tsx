@@ -68,11 +68,11 @@ const ParkingTable: FC<TableProps> = ({
 
   const parkingSpotNumberChange = (e: any) => {setParkingSpotNr(+e.target.value);};
 
-  //TODO:Parkimiskoha kustutamisel tuleb kustutada ka seoses töötaja ja parkimiskoha vahel
   const confirmDeleteParkingSpot = () => {
     deleteParkingSpot(parkingSpotId, enterpriseId)?.then(() => {
       setDeleteConfirmationModal(false);
       updateParkingSpots();
+      updateParkingSpotMainUsers();
       dispatch(
         SET_SUCCESS_ALERT({
           status: true,
@@ -99,7 +99,7 @@ const ParkingTable: FC<TableProps> = ({
     }
   }
   const addMainUser = () => {
-    addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd, canBook:checked}, enterpriseId).then(() => 
+    addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd, canBook:checked, created: new Date}, enterpriseId).then(() => 
     {
       handleCloseParkingSpotMainUserAddModal();
       updateParkingSpotMainUsers();
