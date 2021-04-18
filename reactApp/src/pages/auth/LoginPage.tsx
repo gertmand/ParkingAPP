@@ -1,10 +1,11 @@
-import { Box, Button, Container, makeStyles, TextField, Typography } from '@material-ui/core';
+import { Box, Button, Container, Grid, Icon, makeStyles, TextField, Typography } from '@material-ui/core';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import Page from '../../style/Page';
 import { User } from '../../store/types/userType';
 import { login } from '../../store/queries/userQueries';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const LoginPage = (props: any) => {
   const classes = useStyles();
@@ -42,9 +43,6 @@ const LoginPage = (props: any) => {
 
   return (
     <Page {...props.children} className={classes.root} title="Login">
-      <Box>
-        <Button>  </Button>
-      </Box>
       <Box
         display="flex"
         flexDirection="column"
@@ -68,10 +66,13 @@ const LoginPage = (props: any) => {
             {({ errors, handleBlur, handleSubmit, touched
             }) => (
               <form onSubmit={handleSubmit}>
-                <Box mb={2}>
-                  <Typography color="textPrimary" variant="h2">Logi sisse</Typography>
-                  <Typography className={classes.margin} color="textSecondary" gutterBottom variant="body2" >Sisesta email ja parool</Typography>
-                </Box>
+                  <Grid container>
+                    <Grid item><Typography color="textPrimary" variant="h2">Logi sisse</Typography></Grid>
+                  </Grid>
+                  <Grid container justify="space-between">
+                    <Grid item><Typography className={classes.margin} color="textSecondary" gutterBottom variant="body2" >Sisesta email ja parool</Typography></Grid>
+                    <Grid item><Button title="Registreeri uus kasutaja"><PersonAddIcon color="primary" /></Button></Grid>
+                  </Grid>
                 <TextField error={Boolean(touched.email && errors.email)} fullWidth helperText={touched.email && errors.email} label="E-posti aadress" margin="normal"  name="email" onBlur={handleBlur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {onEmailChange(e.target.value); }} type="email" value={email} variant="outlined" />
                 <TextField error={Boolean(touched.password && errors.password)} fullWidth helperText={touched.password && errors.password} label="Parool" margin="normal" name="password" onBlur={handleBlur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {onPasswordChange(e.target.value); }} type="password" value={password} variant="outlined"/>
                 <Box my={1}>
