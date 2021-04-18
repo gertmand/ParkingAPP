@@ -143,6 +143,13 @@ const ParkingTable: FC<TableProps> = ({
       );
     });
   };
+
+  const removeParkingSpotMainUser = () => {
+    
+
+  }
+
+
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
     if (e.target.files == null) {
       throw new Error('Error finding e.target.files');
@@ -175,6 +182,7 @@ const ParkingTable: FC<TableProps> = ({
         setChecked={setChecked}
         updateParkingSpotMainUsers={updateParkingSpotMainUsers}
         updateSpotTable={updateSpotTable}
+        removeParkingSpotMainUser={removeParkingSpotMainUser}
         selectWorker
         existingUsers
         parkingSpotMainUsers={parkingSpotMainUsers}

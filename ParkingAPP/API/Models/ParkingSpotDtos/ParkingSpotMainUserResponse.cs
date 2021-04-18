@@ -11,6 +11,6 @@ namespace API.Models.ParkingSpotDtos
         public int AccountId { get; set; }
         public string MainUserFullName { get; set; }
         public int EnterpriseId { get; set; }
-        public bool CanBook { get; set; }
+        public bool? CanBook { get; set; }
     }
 }

@@ -29,7 +29,8 @@ type Props = {
   parkingSpotIdForUserAdd?: number,
   updateParkingSpotMainUsers?() : any,
   updateSpotTable?(): any,
-  redButton?: boolean
+  redButton?: boolean,
+  removeParkingSpotMainUser?(): any
 };
 
 export const DialogComponent: FC<Props> = ({
@@ -38,6 +39,7 @@ export const DialogComponent: FC<Props> = ({
   setChecked,
   updateSpotTable,
   updateParkingSpotMainUsers, 
+  removeParkingSpotMainUser,
   inputFieldNumberBoolean,
   selectWorker,
   inputFieldFileBoolean,
@@ -121,7 +123,7 @@ export const DialogComponent: FC<Props> = ({
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Tooltip title="Eemalda kasutaja">
-                          <Button>
+                          <Button onClick={removeParkingSpotMainUser}>
                             <XCircle color="#e08d8d" />
                           </Button>
                         </Tooltip>

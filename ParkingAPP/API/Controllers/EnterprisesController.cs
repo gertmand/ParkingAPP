@@ -299,7 +299,7 @@ namespace API.Controllers
             return _parkingSpotService.AddParkingSpot(request, enterpriseId);
         }
 
-        [HttpPost("{enterpriseId}/admin/parkingspots/adduser")]
+        [HttpPost("{enterpriseId}/admin/parkingspots/adduser")] 
         public ActionResult<ParkingSpotMainUserResponse> AddParkingSpotMainUser(ParkingSpotMainUserRequest request, int enterpriseId)
         {
             if (Account == null)
@@ -319,28 +319,7 @@ namespace API.Controllers
             }
             return _parkingSpotService.AddParkingSpotMainUser(request);
         }
-
-        [HttpPost("{enterpriseId}/admin/parkingspots/{id}/delete")]
-        public ActionResult<ParkingSpotResponse> DeleteParkingSpot(int enterpriseId, int id)
-        {
-            if (Account == null)
-            {
-                return Unauthorized();
-
-            }
-
-            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
-            {
-                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
-            }
-
-            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
-            {
-                return Unauthorized();
-            }
-            _parkingSpotService.DeleteParkingSpot(id);
-            return Ok(_parkingSpotService.GetById(id));
-        }
+        
         [HttpPost("{enterpriseId}/admin/addparkinglotplan")]
         [System.Obsolete]
         public ActionResult<EnterpriseResponse> AddParkingLotPlan([FromForm] Enterprise e, int enterpriseId)
@@ -372,6 +351,49 @@ namespace API.Controllers
             return Ok();
         }
 
+        [HttpPost("{enterpriseId}/admin/parkingspots/{id}/delete")]
+        public ActionResult<ParkingSpotResponse> DeleteParkingSpot(int enterpriseId, int id)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+            _parkingSpotService.DeleteParkingSpot(id);
+            return Ok(_parkingSpotService.GetById(id));
+        }
+
+        [HttpPost("{enterpriseId}/admin/parkingspots/{parkingSpotId}/user/{accountId}/delete")]
+        public ActionResult<ParkingSpotMainUserResponse> DeleteParkingSpotMainUser(int enterpriseId, int accountId, int parkingSpotId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+            _parkingSpotService.DeteleParkingSpotMainUser(accountId,parkingSpotId);
+            return Ok();
+        }
 
         // HELPER METHODS
 
