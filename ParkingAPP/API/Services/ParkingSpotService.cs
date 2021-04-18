@@ -375,7 +375,7 @@ namespace API.Services
             List<int> ps_id_s = new List<int>();
             ps_id_s.AddRange(_context.ParkingSpots.Where(x=>x.EnterpriseId == enterpriseId).Select(x=>x.Id));
             List<ParkingSpotAccount> psas = new List<ParkingSpotAccount>();
-            psas.AddRange(_context.ParkingSpotAccounts);
+            psas.AddRange(_context.ParkingSpotAccounts.Where(x=>x.Deleted==null));
 
             foreach (int ps_id in ps_id_s)
             {

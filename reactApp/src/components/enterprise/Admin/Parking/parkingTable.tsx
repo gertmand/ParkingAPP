@@ -2,7 +2,7 @@ import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, InputAdornment, 
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
-import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
+import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot, deleteParkingSpotMainUser } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
@@ -144,10 +144,6 @@ const ParkingTable: FC<TableProps> = ({
     });
   };
 
-  const removeParkingSpotMainUser = () => {
-    
-
-  }
 
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
@@ -182,7 +178,6 @@ const ParkingTable: FC<TableProps> = ({
         setChecked={setChecked}
         updateParkingSpotMainUsers={updateParkingSpotMainUsers}
         updateSpotTable={updateSpotTable}
-        removeParkingSpotMainUser={removeParkingSpotMainUser}
         selectWorker
         existingUsers
         parkingSpotMainUsers={parkingSpotMainUsers}

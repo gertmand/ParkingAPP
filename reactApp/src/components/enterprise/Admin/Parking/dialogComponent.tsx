@@ -2,7 +2,7 @@ import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentTe
 import React, { FC } from 'react';
 import { XCircle } from 'react-feather';
 import { useDispatch } from 'react-redux';
-import { changeCanBook } from '../../../../store/queries/enterpriseQueries';
+import { changeCanBook, deleteParkingSpotMainUser } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
 import { SET_SUCCESS_ALERT } from '../../../common/siteActions';
@@ -29,8 +29,7 @@ type Props = {
   parkingSpotIdForUserAdd?: number,
   updateParkingSpotMainUsers?() : any,
   updateSpotTable?(): any,
-  redButton?: boolean,
-  removeParkingSpotMainUser?(): any
+  redButton?: boolean
 };
 
 export const DialogComponent: FC<Props> = ({
@@ -39,7 +38,6 @@ export const DialogComponent: FC<Props> = ({
   setChecked,
   updateSpotTable,
   updateParkingSpotMainUsers, 
-  removeParkingSpotMainUser,
   inputFieldNumberBoolean,
   selectWorker,
   inputFieldFileBoolean,
@@ -70,6 +68,20 @@ export const DialogComponent: FC<Props> = ({
         );
 
       });
+  }
+
+  const removeParkingSpotMainUser = (enterpriseId:number, accountId: number, parkingSpotId:number) => {
+    deleteParkingSpotMainUser(enterpriseId,accountId, parkingSpotId).then(()=>{
+      updateParkingSpotMainUsers!();
+      updateSpotTable!();
+      dispatch(
+        SET_SUCCESS_ALERT({
+          status: true,
+          message: 'Peakasutaja eemaldatud!'
+        })
+      );
+    });
+
   }
 
 
@@ -123,7 +135,7 @@ export const DialogComponent: FC<Props> = ({
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Tooltip title="Eemalda kasutaja">
-                          <Button onClick={removeParkingSpotMainUser}>
+                          <Button onClick={()=>removeParkingSpotMainUser(row.enterpriseId,row.accountId,row.parkingSpotId)}>
                             <XCircle color="#e08d8d" />
                           </Button>
                         </Tooltip>
