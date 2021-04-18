@@ -101,3 +101,11 @@ export type AvailableDatesResponse = {
     endDate: Date,
     checked: boolean
 }
+
+export type AvailableDates = {
+    id: number,
+    parkingSpotNumber: number,
+    days: number,
+    startDate: Date,
+    endDate: Date,
+}

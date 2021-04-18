@@ -1,89 +1,96 @@
-import { makeStyles } from '@material-ui/core';
+import { CircularProgress, makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { AvailableDatesResponse } from '../../../../store/types/enterpriseTypes';
 import BookingSpotBox from './BookingSpotBox';
 
 
-const data = 
-[
-    {
-        id: 1,
-        parkingSpotNumber: 1,
-        days: 5,
-        startDate: new Date(2021, 3, 1),
-        endDate: new Date(2021, 3, 3),
-        checked: false
-    },
-    {
-        id: 2,
-        parkingSpotNumber: 2,
-        days: 5,
-        startDate: new Date(2021, 3, 4),
-        endDate: new Date(2021, 3, 6),
-        checked: false
-    },
-    {
-        id: 3,
-        parkingSpotNumber: 3,
-        days: 5,
-        startDate: new Date(2021, 3, 7),
-        endDate: new Date(2021, 3, 9),
-        checked: false
-    },
-    {
-        id: 4,
-        parkingSpotNumber: 4,
-        days: 5,
-        startDate: new Date(2021, 3, 10),
-        endDate: new Date(2021, 3, 12),
-        checked: false
-    },
-    {
-        id: 5,
-        parkingSpotNumber: 1,
-        days: 5,
-        startDate: new Date(2021, 3, 1),
-        endDate: new Date(2021, 3, 3),
-        checked: false
-    },
-    {
-        id: 6,
-        parkingSpotNumber: 2,
-        days: 5,
-        startDate: new Date(2021, 3, 4),
-        endDate: new Date(2021, 3, 6),
-        checked: false
-    },
-    {
-        id: 7,
-        parkingSpotNumber: 3,
-        days: 5,
-        startDate: new Date(2021, 3, 7),
-        endDate: new Date(2021, 3, 9),
-        checked: false
-    },
-    {
-        id: 8,
-        parkingSpotNumber: 4,
-        days: 5,
-        startDate: new Date(2021, 3, 10),
-        endDate: new Date(2021, 3, 12),
-        checked: false
-    },
-]
+// const data = 
+// [
+//     {
+//         id: 1,
+//         parkingSpotNumber: 1,
+//         days: 5,
+//         startDate: new Date(2021, 3, 1),
+//         endDate: new Date(2021, 3, 3),
+//         checked: false
+//     },
+//     {
+//         id: 2,
+//         parkingSpotNumber: 2,
+//         days: 5,
+//         startDate: new Date(2021, 3, 4),
+//         endDate: new Date(2021, 3, 6),
+//         checked: false
+//     },
+//     {
+//         id: 3,
+//         parkingSpotNumber: 3,
+//         days: 5,
+//         startDate: new Date(2021, 3, 7),
+//         endDate: new Date(2021, 3, 9),
+//         checked: false
+//     },
+//     {
+//         id: 4,
+//         parkingSpotNumber: 4,
+//         days: 5,
+//         startDate: new Date(2021, 3, 10),
+//         endDate: new Date(2021, 3, 12),
+//         checked: false
+//     },
+//     {
+//         id: 5,
+//         parkingSpotNumber: 1,
+//         days: 5,
+//         startDate: new Date(2021, 3, 1),
+//         endDate: new Date(2021, 3, 3),
+//         checked: false
+//     },
+//     {
+//         id: 6,
+//         parkingSpotNumber: 2,
+//         days: 5,
+//         startDate: new Date(2021, 3, 4),
+//         endDate: new Date(2021, 3, 6),
+//         checked: false
+//     },
+//     {
+//         id: 7,
+//         parkingSpotNumber: 3,
+//         days: 5,
+//         startDate: new Date(2021, 3, 7),
+//         endDate: new Date(2021, 3, 9),
+//         checked: false
+//     },
+//     {
+//         id: 8,
+//         parkingSpotNumber: 4,
+//         days: 5,
+//         startDate: new Date(2021, 3, 10),
+//         endDate: new Date(2021, 3, 12),
+//         checked: false
+//     },
+// ]
 
-const BookingModal = () => {
+
+type Props = {
+    availableData: AvailableDatesResponse[],
+    modal: boolean,
+    setModal(e: boolean): any,
+    resetData(): any
+}
+
+const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
     const [scroll] = React.useState<DialogProps['scroll']>('paper');
     const [maxWidth] = React.useState<DialogProps['maxWidth']>('sm');
-    const [parkingData, setParkingData] = useState(data)
+    const [parkingData, setParkingData] = useState(availableData)
 
     const [uniqueDates] = useState<Date[]>([])
 
@@ -92,8 +99,21 @@ const BookingModal = () => {
     const [, setDays] = useState(0)
 
     const handleClose = () => {
-        setOpen(false);
+        setActivatedSpots([])
+        uniqueDates.slice(0, 1000)
+        setParkingData([])
+        setModal(false)
+        resetData()
     };
+
+    useEffect(() => {
+        if(availableData.length > 0) {
+            setTimeout(() =>  {
+                
+            })
+            setParkingData(availableData)
+        }
+    }, [availableData])
 
     const handleSpotClick = async (e: any, id: number) => {
         let spots = parkingData
@@ -137,16 +157,16 @@ const BookingModal = () => {
     }
 
     return (
-        <Dialog open={open} disableBackdropClick={true} onClose={handleClose} scroll={scroll} aria-labelledby="scroll-dialog-title" aria-describedby="scroll-dialog-description" fullWidth={true} maxWidth={maxWidth} >
+        <Dialog open={modal} disableBackdropClick={true} onClose={handleClose} scroll={scroll} aria-labelledby="scroll-dialog-title" aria-describedby="scroll-dialog-description" fullWidth={true} maxWidth={maxWidth} >
             {activatedSpots.length > 0 ? 
                 <DialogTitle className={classes.dialogTitle} id="scroll-dialog-title">Päevade arv: { uniqueDates.length } </DialogTitle> 
                 :
                 <DialogTitle id="scroll-dialog-title">Leitud parklakohad</DialogTitle> 
             }
             <DialogContent dividers={scroll === 'paper'}>
-                {parkingData.map(
+                {parkingData ? parkingData.map(
                     (row):any => <BookingSpotBox key={row.id} Spot={row} onSpotClick={handleSpotClick} />
-                )}
+                ) : <CircularProgress />}
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">

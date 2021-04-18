@@ -1,10 +1,10 @@
 import { Card, CardContent, Grid, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../store';
 import { getAccountsWithoutSpot, getEnterpriseParkingSpotData, getEnterpriseUserData } from '../../../store/queries/enterpriseQueries';
-import { ParkingSpot, ParkingSpotListData, Reservation } from '../../../store/types/enterpriseTypes';
+import { AvailableDates, AvailableDatesResponse, ParkingSpot, ParkingSpotListData, Reservation } from '../../../store/types/enterpriseTypes';
 import BookingModal from './Modals/BookingModal';
 import BookSpotModal from './Modals/bookSpotModal';
 import GiveSpot from './Modals/giveSpot';
@@ -28,10 +28,13 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
     const [giveSpotModal, setGiveSpotModal] = useState(false);
     const [releaseModal, setReleaseModal] = useState(false);
     const [regularUsers, setRegularUsers] = useState([]);
-    const isCancelled = React.useRef(false);
+    //const isCancelled = React.useRef(false);
     const dispatch = useDispatch();
     const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
     const [bookModal, setBookModal] = useState(false);
+    const [bookReservationModal, setBookReservationModal] = useState(false)
+    
+    const [availableSpots, setAvailableSpots] = useState<AvailableDatesResponse[]>([])
 
     const handleGiveSpot = (e: any) => {
         if(regularUsers.length === 0 && enterpriseId !== undefined)
@@ -54,14 +57,20 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
         setBookModal(!bookModal);
     }
 
-    useEffect(() => {
-        //updateSpotTable();
-        
-        return () => {
-            isCancelled.current = true;
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    const handleResetAvailable = () => {
+        setAvailableSpots([])
+    }
+
+    const handleBookReservationModal = () => {
+        setBookModal(false)
+        setBookReservationModal(true)
+    }
+
+    const handleAvailableReservations = (e: AvailableDates[]) => {
+        e.forEach(aDate => {
+            setAvailableSpots(prevState => [...prevState, {id: aDate.id, startDate: aDate.startDate, endDate: aDate.endDate, days: aDate.days, parkingSpotNumber: aDate.parkingSpotNumber, checked: false}])
+        });
+    }
 
     return (
         <>
@@ -82,8 +91,8 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
         </Grid>
         <GiveSpot updateSpotData={updateSpotTable} giveSpotModal={giveSpotModal} setGiveSpotModal={handleGiveSpot} regularUsers={regularUsers} />
         <ReleaseSpot updateSpotData={updateSpotTable} releaseModal={releaseModal} setReleaseModal={handleRelease} />
-        <BookSpotModal bookModal={bookModal} setBookModal={handleBookModal} />
-        <BookingModal />
+        <BookSpotModal setSpotReservationModal={handleBookReservationModal} setSpotsForReservation={handleAvailableReservations} bookModal={bookModal} setBookModal={handleBookModal} />
+        <BookingModal availableData={availableSpots} modal={bookReservationModal} setModal={setBookReservationModal} resetData={handleResetAvailable} />
         </>
     )
 }
