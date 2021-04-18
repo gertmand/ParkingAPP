@@ -1,16 +1,11 @@
 import { AppBar, Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps, DialogTitle, Grid, makeStyles, Paper, Tab, Tabs, Theme, Typography } from '@material-ui/core';
-import clsx from 'clsx';
 import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
 import { getUserDetails } from '../../../../store/queries/enterpriseQueries';
-import { getUserData } from '../../../../store/queries/userQueries';
-import { EnterpriseUserData, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
+import { ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser, User } from '../../../../store/types/userType';
-import ProfileDetails from '../../../../style/views/account/AccountView/ProfileDetails';
-import ParkingTable from '../Parking/parkingTable';
 import UsersDetails from './usersDetailsComponent';
-import UsersTable from './usersTable';
 
 type Props = {
   open: boolean;
@@ -35,7 +30,7 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
   const [userData, setUserData] = useState<User>();
   const [value, setValue] = React.useState(0);
   const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id);
-  const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
+  const [maxWidth,] = React.useState<DialogProps['maxWidth']>('md');
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -44,7 +39,7 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
   const classes = useStyles();
 
   useEffect(() => {
-    if (userIdForDetails != undefined)
+    if (userIdForDetails !== undefined)
     {
     getUserDetails(userIdForDetails, enterpriseId)
     .then((result: any) => {
@@ -54,7 +49,7 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
       console.log(err)
   })
 }
-  }, [userData, userIdForDetails])
+  }, [userIdForDetails, enterpriseId])
 
   return (
     <>

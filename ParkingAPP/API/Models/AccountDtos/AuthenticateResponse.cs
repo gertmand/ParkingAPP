@@ -23,7 +23,6 @@ namespace API.Models.AccountDtos
         [JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; }
         public string PhoneNr { get; set; }
-        public IEnumerable<Car>? AccountCars { get; set; }
-
+        public IEnumerable<CarResponse>? AccountCars { get; set; }
     }
 }

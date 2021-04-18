@@ -84,6 +84,23 @@ export const UsersTableComponent: FC<Props> = ({
       width: 200,
       flex: 75,
       headerAlign: 'center'
+      // valueGetter: getUserId,
+      //   renderCell: (params: GridValueGetterParams) => {
+      //     return (
+      //       <ButtonGroup style={{ margin: 'auto' }}>
+      //         <Tooltip title="Kustuta">
+      //           <Button>
+      //             <DeleteIcon/>
+      //           </Button>
+      //         </Tooltip>
+      //         {/* <Tooltip title="Kustuta parkimiskoht">
+      //           <Button onClick={() => handleDeleteButtonClick(params)}>
+      //             <XCircle color="#e08d8d" />
+      //           </Button>
+      //         </Tooltip> */}
+      //       </ButtonGroup>
+      //     );
+      //   }
     },
     {
       field: 'tegevused',

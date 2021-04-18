@@ -1,19 +1,14 @@
-import { Avatar } from '@material-ui/core';
 import {
-    Box,
-    Button,
-    Card,
+    Avatar, Card,
     CardContent,
-    CardHeader,
-    Divider,
+
+
     Grid,
-  
+
     makeStyles, TextField
-  } from '@material-ui/core';
-  import clsx from 'clsx';
-  import PropTypes from 'prop-types';
-  import React, { FC, useState } from 'react';
-  import { useSelector } from 'react-redux';
+} from '@material-ui/core';
+import clsx from 'clsx';
+import React, { FC } from 'react';
 import { User } from '../../../../store/types/userType';
   
   const useStyles = makeStyles(() => ({

@@ -19,14 +19,16 @@ namespace API.Controllers
     {
         private readonly IEnterpriseService _enterpriseService;
         private readonly IParkingSpotService _parkingSpotService;
+        private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         [System.Obsolete]
         private readonly IHostingEnvironment hostEnvironment;
 
         [System.Obsolete]
-        public EnterprisesController(IEnterpriseService enterpriseService, IParkingSpotService parkingSpotService, IMapper mapper, IHostingEnvironment environment)
+        public EnterprisesController(IEnterpriseService enterpriseService, IParkingSpotService parkingSpotService, IMapper mapper, IHostingEnvironment environment, IAccountService accountService)
         {
             _enterpriseService = enterpriseService;
+            _accountService = accountService;
             _parkingSpotService = parkingSpotService;
             _mapper = mapper;
             hostEnvironment = environment;
@@ -205,7 +207,10 @@ namespace API.Controllers
             }
 
             var enterpriseUsers = _enterpriseService.GetEnterpriseAccounts(enterpriseId);
-
+            foreach (var user in enterpriseUsers)
+            {
+                user.AccountCars = _accountService.GetCarsByAccountId(user.Id);
+            }
             return enterpriseUsers.ToList();
         }
 

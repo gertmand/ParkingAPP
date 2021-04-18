@@ -1,20 +1,18 @@
 import {
-    Avatar,
     Button,
     ButtonGroup,
-    InputAdornment,
-    SvgIcon,
-    TextField,
+
+
+
     Tooltip
-  } from '@material-ui/core';
-  import DeleteIcon from '@material-ui/icons/Delete';
-  import Grid from '@material-ui/core/Grid';
-  import {
+} from '@material-ui/core';
+import {
     DataGrid,
     GridColumns,
     GridValueGetterParams
-  } from '@material-ui/data-grid';
-  import React, { FC, useState } from 'react';
+} from '@material-ui/data-grid';
+import DeleteIcon from '@material-ui/icons/Delete';
+import React, { FC } from 'react';
 import { Car } from '../../store/types/userType';
   
   type Props = {
@@ -26,7 +24,6 @@ import { Car } from '../../store/types/userType';
     cars
     //handleOpenUserDetailsModal
   }) => {
-    const [searchTerm, setSearchTerm] = useState('');
   
     function getUserId(params: GridValueGetterParams) {
       return `${params.getValue('id')}`;

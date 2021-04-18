@@ -1,3 +1,4 @@
+using System.Linq;
 using API.Models.AccountDtos;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
@@ -5,6 +6,7 @@ using API.Models.ParkingSpotDtos;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Routing.Constraints;
+using Org.BouncyCastle.Asn1.Sec;
 using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace API.Helpers
@@ -21,6 +23,8 @@ namespace API.Helpers
             CreateMap<Account, AuthenticateResponse>();
 
             CreateMap<Account, EnterpriseAccountsResponse>();
+
+            CreateMap<Car, CarResponse>().ForMember(x => x.Temporary, opt => opt.MapFrom(x => x.Temporary ? "Jah" : "Ei"));
 
             CreateMap<RegisterRequest, Account>();
 

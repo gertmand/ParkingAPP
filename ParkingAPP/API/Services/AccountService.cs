@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace API.Services
         void ForgotPassword(ForgotPasswordRequest model, string origin);
         void ValidateResetToken(ValidateResetTokenRequest model);
         void ResetPassword(ResetPasswordRequest model);
-        public IList<Car> GetCarsByAccountId(int id);
+        public IList<CarResponse> GetCarsByAccountId(int id);
         IEnumerable<AccountResponse> GetAll();
         AccountResponse GetById(int id);
         AccountResponse Create(CreateRequest model);
@@ -390,11 +391,28 @@ namespace API.Services
             );
         }
 
-        public IList<Car> GetCarsByAccountId(int id)
+        public IList<CarResponse> GetCarsByAccountId(int id)
         {
             var account = getAccount(id);
             var cars = account.AccountCars.Select(x => x.Car);
-            return cars.ToList();
+            IList<CarResponse> resultCars = new List<CarResponse>();
+            foreach (Car car in cars)
+            {
+                string temp = null;
+                if (car.Temporary)
+                {
+                    temp = "Jah";
+                }
+                else
+                {
+                    temp = "Ei";
+                }
+                resultCars.Add(new CarResponse
+                    {Id = car.Id, RegNr = car.RegNr, Temporary = temp}
+                );
+            }
+
+            return resultCars;
         }
     }
 }

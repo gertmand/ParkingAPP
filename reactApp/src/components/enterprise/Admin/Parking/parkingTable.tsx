@@ -1,15 +1,15 @@
 import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, InputAdornment, makeStyles, Modal, SvgIcon, TextField, Theme } from '@material-ui/core';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
+import { Search as SearchIcon } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
-import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot, deleteParkingSpotMainUser } from '../../../../store/queries/enterpriseQueries';
+import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
+import theme from '../../../../style/theme';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
 import DialogComponent from './dialogComponent';
 import ParkingSpotTableComponent from './parkingSpotTableComponent';
-import { Search as SearchIcon } from 'react-feather';
-import theme from '../../../../style/theme';
 
 type TableProps = {
   parkingSpots: ParkingSpot[];

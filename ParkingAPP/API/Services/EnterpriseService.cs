@@ -139,7 +139,6 @@ namespace API.Services
         {
             var enterpriseUsers = _context.EnterpriseAccounts.Include(x => x.Account)
                 .Where(x => x.EnterpriseId == enterpriseId).Select(x => x.Account).ToList();
-
             return _mapper.Map<IList<EnterpriseAccountsResponse>>(enterpriseUsers);
         }
 

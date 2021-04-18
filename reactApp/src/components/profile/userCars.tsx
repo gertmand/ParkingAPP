@@ -1,16 +1,14 @@
-import { Divider, CardContent, TextField, FormControlLabel, Checkbox, Container, Grid, Box, Card, CardHeader, Button, makeStyles } from '@material-ui/core'
+import { Box, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { AppState } from '../../store'
-import { getUserCarsData } from '../../store/queries/userQueries'
-import { Car, User } from '../../store/types/userType'
+import { User } from '../../store/types/userType'
 import UserCarsTableComponent from './userCarsTableComponent'
 
 const UserCars = () => {
     const classes = useStyles();
     // const [cars, setCars] = useState<Car[]>([]);
-    const dispatch = useDispatch();
     const userData = useSelector<AppState, User>(state => state.user.userData);
 
     // useEffect(() => {
@@ -60,9 +58,9 @@ const UserCars = () => {
 const useStyles = makeStyles(theme => ({
     root: {
       height: '100%',
-      paddingTop: theme.spacing(1),
+      paddingTop: theme.spacing(0),
       maxWidth: '100%',
-      margin: theme.spacing(1)
+      margin: theme.spacing(2)
     },
     formControl: {
       margin: theme.spacing(0),
