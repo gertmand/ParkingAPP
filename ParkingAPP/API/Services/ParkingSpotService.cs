@@ -23,7 +23,7 @@ namespace API.Services
         IEnumerable<ReservationResponse> GetUserReservations(int enterpriseId, int userId);
         IEnumerable<ParkingSpotResponse> GetAll(int enterpriseId);
         IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId);
-        List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request);
+        List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request, int enterpriseId, int accountId);
         ParkingSpotStatusType GetParkingSpotStatus(int id);
         ParkingSpotResponse DeleteParkingSpot(int id);
         ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId);
@@ -261,12 +261,19 @@ namespace API.Services
             return response;
         }
 
-        public List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request)
+        public List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request, int enterpriseId, int accountId)
         {
             List<AvailableDatesResponse> availableForReservation = new List<AvailableDatesResponse>();
 
-            var releasedSpots = _context.ReleasedSpots.Where(x => x.EndDate.Date >= DateTime.Today.Date && x.StartDate.Date <= request.EndDate.Date).ToList();
-            var reservations = _context.Reservations.Where(x => x.EndDate.Date >= DateTime.Today.Date && x.StartDate.Date <= request.EndDate.Date).ToList();
+            var releasedSpots = _context.ReleasedSpots
+                .Include(x => x.ParkingSpot)
+                .ThenInclude(x => x.Enterprise)
+                .Where(x => (x.EndDate.Date >= DateTime.Today.Date && x.StartDate.Date <= request.EndDate.Date) && x.ParkingSpot.EnterpriseId == enterpriseId).ToList();
+
+            var reservations = _context.Reservations
+                .Include(x => x.ParkingSpot)
+                .ThenInclude(x => x.Enterprise)
+                .Where(x => (x.EndDate.Date >= DateTime.Today.Date && x.StartDate.Date <= request.EndDate.Date) && x.ParkingSpot.EnterpriseId == enterpriseId).ToList();
 
             releasedSpots = DateUtil<ReleasedSpot>.RemoveDeletedDates(releasedSpots);
             reservations = DateUtil<Reservation>.RemoveDeletedDates(reservations);
@@ -282,7 +289,10 @@ namespace API.Services
                 // Removing all the dates, which are not between input
                 datesToReserve.RemoveAll(x => x.Date < request.StartDate.Date || x.Date > request.EndDate.Date);
 
-                availableForReservation.AddRange(GetPossibleDates(datesToReserve, releasedSpot.ParkingSpotId, releasedSpot.Id));
+                if (getParkingSpotByUserId(enterpriseId, accountId).Id != releasedSpot.ParkingSpotId)
+                {
+                    availableForReservation.AddRange(GetPossibleDates(datesToReserve, releasedSpot.ParkingSpotId, releasedSpot.Id));
+                }
             }
 
             return availableForReservation;

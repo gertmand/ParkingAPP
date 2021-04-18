@@ -171,15 +171,15 @@ namespace API.Controllers
             return response;
         }
 
-        [HttpPost("available-dates")]
-        public ActionResult<IEnumerable<AvailableDatesResponse>> GetAvailableDatesForReservation(AvailableDatesRequest request)
+        [HttpPost("{enterpriseId}/available-dates")]
+        public ActionResult<IEnumerable<AvailableDatesResponse>> GetAvailableDatesForReservation(AvailableDatesRequest request, int enterpriseId)
         {
             if (Account == null)
             {
                 return Unauthorized();
             }
 
-            return _parkingSpotService.GetAvailableDatesForReservation(request).OrderByDescending(x => x.Days).ToList();
+            return _parkingSpotService.GetAvailableDatesForReservation(request, enterpriseId, Account.Id).OrderBy(x => x.StartDate).ToList();
         }
 
         // ADMIN METHODS

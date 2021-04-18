@@ -1,6 +1,7 @@
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Typography } from '@material-ui/core'
 import React, { FC, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppState } from '../../../../store'
 import { getAvailableSpotsForReservation } from '../../../../store/queries/enterpriseQueries'
 import SelectBookDate from '../../../common/SelectBookDate'
 import { SET_ERROR_ALERT } from '../../../common/siteActions'
@@ -15,10 +16,12 @@ type Props = {
 
 const BookSpotModal:FC<Props> = ({bookModal, setBookModal, setSpotsForReservation, setSpotReservationModal}) => {
     const dispatch = useDispatch();
+
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
     const [startDateSet, setStartDateSet] = useState(false);
     const [endDateSet, setEndDateSet] = useState(false);
+    const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
 
     const [buttonDisabled, setButtonDisabled] = useState(false)
 
@@ -35,9 +38,15 @@ const BookSpotModal:FC<Props> = ({bookModal, setBookModal, setSpotsForReservatio
     const submitSearch = () => {
         setButtonDisabled(true)
         if(startDateSet && endDateSet && startDate && endDate && startDate <= endDate) {
-            getAvailableSpotsForReservation(startDate, endDate).then(response => {
+            getAvailableSpotsForReservation(startDate, endDate, enterpriseId).then(response => {
                 setSpotsForReservation(response)
-                setSpotReservationModal()
+                if(response.length > 0) {
+                    setSpotReservationModal()
+                    setBookModal()
+                } else {
+                    setBookModal()
+                    dispatch(SET_ERROR_ALERT({status: true, message: "Antud perioodi vabastatud kohta ei leitud!"}));
+                }
                 setButtonDisabled(false)
             }).catch(err => {
                 setButtonDisabled(false)
