@@ -6,22 +6,17 @@ import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ErrorAlert from '../components/common/errorAlert';
-import SuccessAlert from '../components/common/successAlert';
 import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
 import UsersTable from '../components/enterprise/Admin/Users/usersTable';
 import { AppState } from '../store';
 import { getAccountsWithoutSpot, getEnterpriseParkingSpotData, getEnterpriseParkingSpots, getEnterpriseUserData, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
-import { SiteAlert } from '../store/types/siteTypes';
 import Page from '../style/Page';
 
 
   export const AdminPage = (props: any) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const successAlert = useSelector<AppState, SiteAlert>(state => state.site.successAlert);
-    const errorAlert = useSelector<AppState, SiteAlert>(state => state.site.errorAlert);
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(1);
     const [enterpriseUsers, setEnterpriseUsers] = useState([]);
     const [parkingSpotMainUsers, setParkingSpotMainUsers] = useState([]);
     const [enterpriseParkingSpots, setEnterpriseParkingSpots] = useState([]);
@@ -91,12 +86,9 @@ import Page from '../style/Page';
         })
       }
     }
-
     
     return (
       <Page {...props.children} className={classes.root} title="Parking Solutions - Admin">
-      {successAlert.status ? <SuccessAlert /> : null}
-      {errorAlert.status ? <ErrorAlert /> : null}
         <Container maxWidth={false}>
           <Grid container spacing={1} className={classes.height}>
             <Grid item xs={12}>

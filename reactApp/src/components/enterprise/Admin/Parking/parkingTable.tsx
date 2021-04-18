@@ -1,8 +1,8 @@
 import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, InputAdornment, makeStyles, Modal, SvgIcon, TextField, Theme } from '@material-ui/core';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
-import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
+import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot, deleteParkingSpotMainUser } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
@@ -68,11 +68,12 @@ const ParkingTable: FC<TableProps> = ({
 
   const parkingSpotNumberChange = (e: any) => {setParkingSpotNr(+e.target.value);};
 
-  //TODO:Parkimiskoha kustutamisel tuleb kustutada ka seoses töötaja ja parkimiskoha vahel
   const confirmDeleteParkingSpot = () => {
     deleteParkingSpot(parkingSpotId, enterpriseId)?.then(() => {
       setDeleteConfirmationModal(false);
       updateParkingSpots();
+      updateParkingSpotMainUsers();
+      updateSpotTable();
       dispatch(
         SET_SUCCESS_ALERT({
           status: true,
@@ -81,6 +82,7 @@ const ParkingTable: FC<TableProps> = ({
       );
     })
   }
+
   const confirmAddParkingSpotPlan = () => {
     addParkingSpotPlan(formData, enterpriseId).then(() => {
       handleCloseParkingLotPlanModal();
@@ -93,16 +95,19 @@ const ParkingTable: FC<TableProps> = ({
       );
     })
   }
+
   const selectedUserChange = (event: any, values: any) => {
     if (values) {
       setRegularUserId(values.id);
     }
   }
+
   const addMainUser = () => {
     addParkingSpotMainUser({accountId:regularUserId,parkingSpotId:parkingSpotIdForUserAdd, canBook:checked}, enterpriseId).then(() => 
     {
       handleCloseParkingSpotMainUserAddModal();
       updateParkingSpotMainUsers();
+      updateSpotTable();
       dispatch(
         SET_SUCCESS_ALERT({
           status: true,
@@ -111,6 +116,7 @@ const ParkingTable: FC<TableProps> = ({
       );
     });
   }
+
   const submitParkingSpotAdd = () => {
     if (parkingSpotNr <= 0)
       return dispatch(
@@ -141,6 +147,8 @@ const ParkingTable: FC<TableProps> = ({
       );
     });
   };
+
+
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>): any => {
     if (e.target.files == null) {
       throw new Error('Error finding e.target.files');

@@ -76,6 +76,9 @@ export const changeCanBook = async (entepriseId: number, accountId: number) => {
     return await axios.post(`${apiUrl}/api/enterprises/${entepriseId}/admin/parkingspots/mainusers/${accountId}/canBook`,null,  {headers: {"Content-Type": "application/json",...authHeader()}} )
 }
 
+export const deleteParkingSpotMainUser = async (entepriseId: number, accountId: number, parkingSpotId: number) => {
+    return await axios.post(`${apiUrl}/api/enterprises/${entepriseId}/admin/parkingspots/${parkingSpotId}/user/${accountId}/delete`,null,  {headers: {"Content-Type": "application/json",...authHeader()}} )
+}
 
 export const addParkingSpot = (request: ParkingSpotRequest, enterpriseId: number) => {
     return postParkingSpot(request, enterpriseId);

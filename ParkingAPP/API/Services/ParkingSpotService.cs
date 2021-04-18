@@ -8,6 +8,7 @@ using API.Models.Entities;
 using API.Models.JoinedEntities;
 using API.Models.ParkingSpotDtos;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Math.EC.Rfc7748;
 using RIK_parkimise_rakendus.Helpers;
@@ -29,6 +30,7 @@ namespace API.Services
         ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId);
         IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers (int enterpriseId);
         ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request);
+        ParkingSpotMainUserResponse DeteleParkingSpotMainUser(int accountId, int parkingSpotId);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -350,6 +352,7 @@ namespace API.Services
         // ADMIN METHODS
         public ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId)
         {
+            //TODO: Parklakoht kui on kustutatud, siis uut parklakohta sama numbriga lisada ei lase
             if (!checkExistingParkingSpotNr(request.Number, enterpriseId))
             {
                 throw new AppException("Sellise numbriga parkimiskoht on juba olemas!");
@@ -392,6 +395,11 @@ namespace API.Services
         public ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request)
         {
             return _mapper.Map<ParkingSpotMainUserResponse>(addParkingSpotMainUser(request));
+        }
+
+        public ParkingSpotMainUserResponse DeteleParkingSpotMainUser(int accountId, int parkingSpotId)
+        {
+            return _mapper.Map<ParkingSpotMainUserResponse>(deleteParkingSpotMainUser(accountId, parkingSpotId));
         }
 
         // helper methods
@@ -530,6 +538,13 @@ namespace API.Services
 
         private ParkingSpot deleteParkingSpot(int id)
         {
+            List<ParkingSpotAccount> psa = new List<ParkingSpotAccount>();
+            psa.AddRange(_context.ParkingSpotAccounts.Where(x=>x.ParkingSpotId==id));
+            foreach (var item in psa)
+            {
+                var temp = _context.ParkingSpotAccounts.Find(item.AccountId,item.ParkingSpotId);
+                _context.ParkingSpotAccounts.Remove(temp);
+            }
             ParkingSpot ps = _context.ParkingSpots.Find(id);
             ps.DeletionDate = DateTime.UtcNow;
             _context.SaveChanges();
@@ -547,7 +562,7 @@ namespace API.Services
             ParkingSpotAccount temp = new ParkingSpotAccount()
             {
                 AccountId = request.AccountId,
-                ParkingSpotId = request.ParkingSpotId
+                ParkingSpotId = request.ParkingSpotId,
             };
             _context.EnterpriseAccounts.FirstOrDefault(x => x.AccountId == request.AccountId).CanBook = request.CanBook;
             _context.ParkingSpotAccounts.Add(temp);
@@ -558,6 +573,20 @@ namespace API.Services
                 ParkingSpotId = temp.ParkingSpotId,
                 MainUserFullName = account.FirstName + " " + account.LastName,
                 CanBook = request.CanBook,
+            };
+            return response;
+        }
+
+        private ParkingSpotMainUserResponse deleteParkingSpotMainUser(int accountId, int parkingSpotId)
+        {
+            ParkingSpotAccount psa = _context.ParkingSpotAccounts.Find(accountId,parkingSpotId);
+            _context.ParkingSpotAccounts.Remove(psa);
+            _context.SaveChanges();
+            Account account = _context.Accounts.Find(accountId);
+            ParkingSpotMainUserResponse response = new ParkingSpotMainUserResponse()
+            {
+                ParkingSpotId = parkingSpotId,
+                MainUserFullName = account.FirstName + " " + account.LastName,
             };
             return response;
         }

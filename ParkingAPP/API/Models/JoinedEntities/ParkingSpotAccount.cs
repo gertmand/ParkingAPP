@@ -1,4 +1,5 @@
-﻿using API.Models.Entities;
+﻿using System;
+using API.Models.Entities;
 
 namespace API.Models.JoinedEntities
 {
