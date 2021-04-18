@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, Icon, makeStyles, TextField, Typography } from '@material-ui/core';
+import { Box, Button, Checkbox, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, Typography } from '@material-ui/core';
 import { Formik } from 'formik';
 import React, { useState } from 'react';
 import * as Yup from 'yup';
@@ -14,6 +14,10 @@ const LoginPage = (props: any) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); 
   const [isSubmitting, setSubmit] = useState(false);
+
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {setOpen(true);};
+  const handleClose = () => {setOpen(false);};
 
   const handleLogin = () => {
     setSubmit(true);
@@ -42,7 +46,44 @@ const LoginPage = (props: any) => {
   }
 
   return (
+
+    
+
     <Page {...props.children} className={classes.root} title="Login">
+
+
+<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Registreeru</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Kasutaja lisamisel suunatakse kasutaja järgmisena keskkonna seadistamise lehele, 
+            kus määratakse asutuse tüüp ning listakse esmased kasutajad ja parkimiskohad.
+          </DialogContentText>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="gender">Sugu</InputLabel>
+              <Select labelId="gender" id="demo-simple-select">
+                <MenuItem value={"Naine"}>Naine</MenuItem>
+                <MenuItem value={"Mees"}>Mees</MenuItem>
+              </Select>
+          </FormControl>
+          <TextField autoFocus margin="dense" id="firstName" label="Eesnimi" type="textPrimary" fullWidth/>
+          <TextField autoFocus margin="dense" id="lastName" label="Perekonnanimi" type="textPrimary" fullWidth/>
+          <TextField autoFocus margin="dense" id="email" label="Email" type="email" fullWidth/>
+          <TextField autoFocus margin="dense" id="password" label="Parool" type="Password" fullWidth/>
+          <TextField autoFocus margin="dense" id="confirmPassword" label="Kinnita parool" type="password" fullWidth/>
+          <FormControlLabel value="end" control={<Checkbox color="primary"/>} label="Nõustun kasutustingimustega" labelPlacement="end"/>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Loobu
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            Registreeru
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+
       <Box
         display="flex"
         flexDirection="column"
@@ -71,7 +112,7 @@ const LoginPage = (props: any) => {
                   </Grid>
                   <Grid container justify="space-between">
                     <Grid item><Typography className={classes.margin} color="textSecondary" gutterBottom variant="body2" >Sisesta email ja parool</Typography></Grid>
-                    <Grid item><Button title="Registreeri uus kasutaja"><PersonAddIcon color="primary" /></Button></Grid>
+                    <Grid item><Button onClick={handleClickOpen} title="Registreeri uus kasutaja"><PersonAddIcon color="primary" /></Button></Grid>
                   </Grid>
                 <TextField error={Boolean(touched.email && errors.email)} fullWidth helperText={touched.email && errors.email} label="E-posti aadress" margin="normal"  name="email" onBlur={handleBlur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {onEmailChange(e.target.value); }} type="email" value={email} variant="outlined" />
                 <TextField error={Boolean(touched.password && errors.password)} fullWidth helperText={touched.password && errors.password} label="Parool" margin="normal" name="password" onBlur={handleBlur} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {onPasswordChange(e.target.value); }} type="password" value={password} variant="outlined"/>
@@ -97,6 +138,9 @@ const useStyles = makeStyles(theme => ({
       height: '100%',
       paddingBottom: theme.spacing(3),
       paddingTop: theme.spacing(3)
+    },
+    formControl: {
+      minWidth: 120,
     },
     margin: {
       marginTop: theme.spacing(1)
