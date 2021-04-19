@@ -98,7 +98,7 @@ const LoginPage = (props: any) => {
 
   const handleUserAdd = async () => {
     if ((title && firstName && lastName && emailForAdd && passwordForAdd && confirmPasswordForAdd && acceptTerms) !==undefined && passwordForAdd === confirmPasswordForAdd && acceptTerms === true && 
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailForAdd)) {
+    /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailForAdd)) {
       setLoading(true);
       setSuccess(false);
       addUser({ title:title,firstName:firstName,lastName:lastName,email:emailForAdd,password:passwordForAdd,confirmPassword:confirmPasswordForAdd,acceptTerms:acceptTerms })
@@ -116,7 +116,7 @@ const LoginPage = (props: any) => {
       else if(firstName === "") setFirstNameError(true); 
       else if(lastName === "") setLastNameError(true); 
       else if(emailForAdd === "") {setEmailError(true); setEmailErrorText("Kohustuslik väli"); }
-      else if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailForAdd)) {setEmailError(true); setEmailErrorText("Email on vales formaadis."); }
+      else if(!/^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailForAdd)) {setEmailError(true); setEmailErrorText("Email on vales formaadis."); }
       else if(passwordForAdd === "") setPasswordError(true); 
       else if(confirmPasswordForAdd === "") {setConfirmPasswordError(true); setConfirmPasswordErrorText("Kohustuslik väli!"); }
       else if(passwordForAdd !== confirmPasswordForAdd) {setConfirmPasswordError(true); setConfirmPasswordErrorText("Paroolid erinevad"); }
