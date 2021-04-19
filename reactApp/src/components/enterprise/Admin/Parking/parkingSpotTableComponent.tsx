@@ -103,22 +103,22 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
     }
   ];
 
-  const handleChange = () => {
-    parkingSpots.filter(ps => {
-      if (searchTerm === '') {
-        return ps;
-      } else if (ps.number.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps;
-      } else if (ps.staatus.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps 
-      } else if (parkingSpotMainUsers.filter(mu => {
-        if(mu.parkingSpotId === ps.id && mu.mainUserFullName.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
-          return ps;
-        }
-      }))
-      return null;
-    })
+  // const handleChange = () => {
+  //   parkingSpots.filter(ps => {
+  //     if (searchTerm === '') {
+  //       return ps;
+  //     } else if (ps.number.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps;
+  //     } else if (ps.staatus.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps 
+  //     } else if (parkingSpotMainUsers.filter(mu => {
+  //       if(mu.parkingSpotId === ps.id && mu.mainUserFullName.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
+  //         return ps;
+  //       }
+  //     }))
+  //     return null;
+  //   })
 
-    //console.log(parkingSpots)
-  }
+  //   //console.log(parkingSpots)
+  // }
 
   return (
     <>
@@ -142,12 +142,7 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
           if (searchTerm === '') {
             return ps;
           } else if (ps.number.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps;
-          } else if (ps.staatus.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps 
-          } else if (parkingSpotMainUsers.filter(mu => {
-            if(mu.parkingSpotId === ps.id && mu.mainUserFullName.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
-              return ps;
-            }
-          }))
+          } else if (ps.staatus.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps }
           return null;
         })}
         columns={columns}

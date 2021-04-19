@@ -90,7 +90,7 @@ const ParkingTable: FC<TableProps> = ({
       dispatch(
         SET_SUCCESS_ALERT({
           status: true,
-          message: 'Parkla plaan lisatud!'
+          message: 'Parklaplaan lisatud!'
         })
       );
     })
@@ -224,7 +224,7 @@ const ParkingTable: FC<TableProps> = ({
       >
         <Fade in={openParkingLotPlanModal}>
           <div>
-          <Button fullWidth onClick={() => handleOpenAddParkingLotPlanModal()} color="primary" variant="contained">Lisa uus parklaplaan</Button>
+          <Button fullWidth onClick={() => handleOpenAddParkingLotPlanModal()} color="primary" variant="contained">Lisa parklaplaan</Button>
             <CardMedia
               component="img"
               src={
@@ -239,26 +239,25 @@ const ParkingTable: FC<TableProps> = ({
       </Modal>      
       
 
-      <Grid container direction="row" spacing={3} style={{ padding: theme.spacing(2) }} >
-          <Grid item xs={6}>
+      <Grid container justify="space-between" direction="row" spacing={3} style={{ padding: theme.spacing(2) }} >
+          <Grid item xs={12} sm={4} md={6}>
               <TextField
+              className={classes.searchBox}
               variant="standard"
               onChange={event => {setSearchTerm(event.target.value);}}
               placeholder="Otsi.."
               InputProps={{startAdornment: (<InputAdornment position="start"><SvgIcon fontSize="small" color="action"><SearchIcon /></SvgIcon></InputAdornment>)}}
             />
           </Grid>
-          <Grid container item xs={6} spacing={3} style={{ padding: theme.spacing(2) }} justify="flex-end">
-            <Grid item>
-              <Button color="primary" variant="contained" onClick={handleOpenParkingLotPlanModal} >
-                Vaata parklaplaani
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button color="primary" variant="contained" onClick={handleOpenAddParkingSpotAddModal} >
-                Lisa parklakoht
-              </Button>
-            </Grid>
+          <Grid item xs={12} sm={8} md={6}>
+            <div className={classes.buttonGroup}>
+                <Button className={classes.toolbarButton} onClick={handleOpenParkingLotPlanModal} >
+                  Parklaplaan
+                </Button>
+                <Button className={classes.toolbarButton} color="primary" variant="contained" onClick={handleOpenAddParkingSpotAddModal} >
+                  Lisa parklakoht
+                </Button>
+            </div>
           </Grid>
       </Grid>
 
@@ -286,5 +285,30 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '1200px',
       margin: 'auto'
     },
+    buttonGroup: {
+      [theme.breakpoints.down('sm')]: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      },
+      [theme.breakpoints.up('sm')]: {
+        float: "right"
+      },
+    },
+    toolbarButton: {
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: "15px"
+      },
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: "15px"
+      },
+    },
+    searchBox: {
+      [theme.breakpoints.down('sm')]: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+      }
+    }
   })
 );
