@@ -127,7 +127,7 @@ export const UserAddModal: FC<Props> = ({userAddModal,setUserAddModal} : any) =>
           <FormHelperText error={!acceptTerms?true:false} ><FormControlLabel value="end" control={<Checkbox required checked={acceptTerms} onChange={()=>setAcceptTerms(!acceptTerms)} color="primary"/>} label="Nõustun kasutustingimustega" labelPlacement="end"/></FormHelperText> 
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=> console.log(allEmails)} color="primary">
+          <Button onClick={()=> handleClose()} color="primary">
             Loobu
           </Button>
           <Button onClick={()=>handleUserAdd()} color="primary">
