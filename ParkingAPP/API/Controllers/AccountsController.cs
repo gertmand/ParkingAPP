@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using API.Helpers;
 using API.Models.AccountDtos;
 using API.Models.Entities;
@@ -68,6 +69,14 @@ namespace API.Controllers
         {
             _accountService.Register(model, Request.Headers["origin"]);
             return Ok(new { message = "Registration successful, please check your email for verification instructions" });
+        }
+
+        [HttpGet("emails")]
+        public List<string> GetEmails()
+        {
+            List<string> emails = new List<string>();
+            emails.AddRange(_accountService.GetAll().Select(x=>x.Email));
+            return emails;
         }
 
         [HttpPost("verify-email")]

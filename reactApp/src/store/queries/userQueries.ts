@@ -9,6 +9,10 @@ export const login = async (request: AuthenticateRequest) => {
     return await post(`${apiUrl}/api/accounts/authenticate`, request);
 }
 
+export const getEmails = async() =>{
+    return await get(`${apiUrl}/api/accounts/emails`)
+}
+
 export const getUserData = async (dispatch: any) => {
     dispatch(FETCH_USER_DATA_START())
     return await get(`${apiUrl}/api/accounts/data`).then((data) => dispatch(FETCH_USER_DATA_SUCCESS(data)))

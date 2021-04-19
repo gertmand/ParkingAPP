@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormHelperText, MenuItem, TextField} from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../components/common/siteActions';
-import { addUser} from '../../store/queries/userQueries';
+import { addUser, getEmails} from '../../store/queries/userQueries';
 
 type Props = {
     userAddModal:boolean;
@@ -11,7 +11,6 @@ type Props = {
   };
   
 export const UserAddModal: FC<Props> = ({userAddModal,setUserAddModal} : any) => {
-
   const dispatch = useDispatch();
   const [, setLoading] = useState(false);
   const [, setSuccess] = React.useState(false);
@@ -34,6 +33,17 @@ export const UserAddModal: FC<Props> = ({userAddModal,setUserAddModal} : any) =>
 
   const [emailErrorText, setEmailErrorText] = useState("");
   const [confirmPasswordErrorText, setConfirmPasswordErrorText] = useState("");
+
+  const [allEmails, setAllEmails] = useState([] as any);
+
+  useEffect(() => {
+    if (allEmails !== undefined && allEmails.length === 0)
+    {
+      getEmails().then(result => {
+        setAllEmails(result);
+      })
+    }
+  }, [allEmails])
 
 
   const handleTitleChange = (titleName:string) => {
@@ -67,7 +77,13 @@ export const UserAddModal: FC<Props> = ({userAddModal,setUserAddModal} : any) =>
   ]
   
     const handleUserAdd = async () => {
-        if ((title && firstName && lastName && emailForAdd && passwordForAdd && confirmPasswordForAdd && acceptTerms) !==undefined && passwordForAdd === confirmPasswordForAdd && acceptTerms === true && 
+        if(allEmails.includes(emailForAdd))
+        {
+            dispatch(SET_ERROR_ALERT({ status: true, message: "Selline email on juba registreeritud" }));
+            setEmailError(true);
+            
+        }
+        else if ((title && firstName && lastName && emailForAdd && passwordForAdd && confirmPasswordForAdd && acceptTerms) !==undefined && passwordForAdd === confirmPasswordForAdd && acceptTerms === true && 
         /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailForAdd)) {
           setLoading(true);
           setSuccess(false);
@@ -111,7 +127,7 @@ export const UserAddModal: FC<Props> = ({userAddModal,setUserAddModal} : any) =>
           <FormHelperText error={!acceptTerms?true:false} ><FormControlLabel value="end" control={<Checkbox required checked={acceptTerms} onChange={()=>setAcceptTerms(!acceptTerms)} color="primary"/>} label="Nõustun kasutustingimustega" labelPlacement="end"/></FormHelperText> 
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>setUserAddModal(!userAddModal)} color="primary">
+          <Button onClick={()=> console.log(allEmails)} color="primary">
             Loobu
           </Button>
           <Button onClick={()=>handleUserAdd()} color="primary">
