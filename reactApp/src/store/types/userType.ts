@@ -26,3 +26,13 @@ export type Car = {
     regNr: string,
     temporary: boolean
 }
+
+export type RegisterUser = {
+    title: string,
+    firstName:string,
+    lastName:string,
+    email:string,
+    password: string,
+    confirmPassword: string,
+    acceptTerms: boolean,
+}

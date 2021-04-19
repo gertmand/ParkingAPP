@@ -134,10 +134,15 @@ namespace API.Services
             var isFirstAccount = _context.Accounts.Count() == 0;
             account.Role = isFirstAccount ? Role.Admin : Role.User;
             account.Created = DateTime.UtcNow;
-            account.VerificationToken = randomTokenString();
+            //account.VerificationToken = randomTokenString();
 
             // hash password
             account.PasswordHash = BC.HashPassword(model.Password);
+
+
+            //temporary solution for testing. 
+            account.Verified = DateTime.UtcNow;
+            account.VerificationToken = null;
 
             // save account
             _context.Accounts.Add(account);

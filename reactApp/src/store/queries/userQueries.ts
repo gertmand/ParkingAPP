@@ -2,6 +2,7 @@ import { apiUrl } from '../../_helpers/apiUrl';
 import { get, post } from '../../_helpers/fetch-wrapper';
 import { FETCH_USER_DATA_START, FETCH_USER_DATA_SUCCESS } from '../actions/userActions';
 import { AuthenticateRequest } from '../types/authenticateRequest';
+import { RegisterUser } from '../types/userType';
 
 
 export const login = async (request: AuthenticateRequest) => {
@@ -14,4 +15,8 @@ export const getUserData = async (dispatch: any) => {
 }
 export const getUserCarsData = async (dispatch: any) => {
     return await get(`${apiUrl}/api/accounts/cars`)
+}
+
+export const addUser = async (registerUser : RegisterUser) => {
+    return await post(`${apiUrl}/api/accounts/register`,registerUser)
 }
