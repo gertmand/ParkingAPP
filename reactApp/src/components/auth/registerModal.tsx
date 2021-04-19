@@ -10,7 +10,7 @@ type Props = {
     setUserAddModal(e: boolean): any,
   };
   
-export const UserAddModal: FC<Props> = ({userAddModal,setUserAddModal} : any) => {
+export const RegisterModal: FC<Props> = ({userAddModal,setUserAddModal} : any) => {
   const dispatch = useDispatch();
   const [, setLoading] = useState(false);
   const [, setSuccess] = React.useState(false);
@@ -140,4 +140,4 @@ export const UserAddModal: FC<Props> = ({userAddModal,setUserAddModal} : any) =>
     );
   };
   
-  export default UserAddModal;
+  export default RegisterModal;

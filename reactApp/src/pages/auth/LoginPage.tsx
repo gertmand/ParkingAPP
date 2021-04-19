@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { login } from '../../store/queries/userQueries';
 import { User } from '../../store/types/userType';
 import Page from '../../style/Page';
-import UserAddModal from '../../components/auth/userAddModal';
+import RegisterModal from '../../components/auth/registerModal';
 
 const LoginPage = (props: any) => {
   const classes = useStyles();
@@ -47,7 +47,7 @@ const LoginPage = (props: any) => {
 
   return (
     <Page {...props.children} className={classes.root} title="Login">
-      <UserAddModal
+      <RegisterModal
         userAddModal={userAddModal}
         setUserAddModal={setUserAddModal}
       />
