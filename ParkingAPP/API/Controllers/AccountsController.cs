@@ -71,6 +71,7 @@ namespace API.Controllers
             return Ok(new { message = "Registration successful, please check your email for verification instructions" });
         }
 
+        // TODO: Meetod kustutada või asendada parema loogikaga. Me ei avalikusta inimeste andmeid avalikult
         [HttpGet("emails")]
         public List<string> GetEmails()
         {

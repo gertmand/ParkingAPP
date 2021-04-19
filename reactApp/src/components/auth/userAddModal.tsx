@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormHelperText, MenuItem, TextField} from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../components/common/siteActions';
+import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../common/siteActions';
 import { addUser, getEmails} from '../../store/queries/userQueries';
 
 type Props = {
@@ -39,6 +39,7 @@ export const UserAddModal: FC<Props> = ({userAddModal,setUserAddModal} : any) =>
   useEffect(() => {
     if (allEmails !== undefined && allEmails.length === 0)
     {
+      //TODO: APIs samuti parandus sisse viia, see ei ole Frontendi validatsioon, vaid API enda peale seda kui request on saadetud
       getEmails().then(result => {
         setAllEmails(result);
       })
