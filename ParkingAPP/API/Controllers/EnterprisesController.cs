@@ -396,6 +396,26 @@ namespace API.Controllers
             return Ok();
         }
 
+        [HttpPost("{enterpriseId}/admin/users/{accountId}")]
+        public ActionResult<AccountResponse> GetUserData(int enterpriseId, int accountId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+
+            //TODO: @KEVIN AccountService meetod GetById, topelt koodi pole vaja
+            return _enterpriseService.GetUserData(accountId);
+        }
+
 
         // HELPER METHODS
 

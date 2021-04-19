@@ -73,11 +73,11 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
                     </Tabs>
                   </AppBar>
                   <TabPanel value={value} index={0}>
-                  {userData === undefined ? '' : 
-                  <UsersDetails userData={userData} className=''/>}
+                    {userData === undefined ? '' : 
+                    <UsersDetails userData={userData} className=''/>}
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                  <Typography>Broneeringud</Typography>
+                    <Typography>Broneeringud</Typography>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <Typography>Logid</Typography>
@@ -162,8 +162,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.text.secondary,
   },
   dialogPaper: {
-    minHeight: "50vh",
-    maxHeight: "50vh"
+    minHeight: "75vh",
+    maxHeight: "75vh"
   }
 }));
 

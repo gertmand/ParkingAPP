@@ -88,7 +88,7 @@ const LoginPage = (props: any) => {
         setSubmit(false);
         if(err.response !== undefined) {
           setError(err.response.data.message);
-        } else setError("Something went wrong!")
+        } else setError("Vale kasutaja!")
     })
 }
 
