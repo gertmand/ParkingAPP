@@ -9,8 +9,8 @@ export const login = async (request: AuthenticateRequest) => {
     return await post(`${apiUrl}/api/accounts/authenticate`, request);
 }
 
-export const getEmails = async() =>{
-    return await get(`${apiUrl}/api/accounts/emails`)
+export const checkExistingEmail = async(email :String) =>{
+    return await post(`${apiUrl}/api/accounts/check-existing-email`, email)
 }
 
 export const getUserData = async (dispatch: any) => {

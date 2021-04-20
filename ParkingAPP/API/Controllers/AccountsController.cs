@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using API.Helpers;
 using API.Models.AccountDtos;
 using API.Models.Entities;
@@ -71,13 +72,15 @@ namespace API.Controllers
             return Ok(new { message = "Registration successful, please check your email for verification instructions" });
         }
 
-        // TODO: Meetod kustutada või asendada parema loogikaga. Me ei avalikusta inimeste andmeid avalikult
-        [HttpGet("emails")]
-        public List<string> GetEmails()
+        [HttpPost("check-existing-email")]
+        public async Task<bool> CheckExistingEmail([FromBody] string email)
         {
-            List<string> emails = new List<string>();
-            emails.AddRange(_accountService.GetAll().Select(x=>x.Email));
-            return emails;
+            if (_accountService.GetAll().Select(x=>x.Email).Contains(email))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         [HttpPost("verify-email")]
