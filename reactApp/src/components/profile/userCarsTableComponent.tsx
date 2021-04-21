@@ -1,21 +1,21 @@
 import {
-    Button,
-    ButtonGroup,
+  Button,
+  ButtonGroup,
 
 
 
-    Tooltip
+  Tooltip
 } from '@material-ui/core';
 import {
-    DataGrid,
-    GridColumns,
-    GridValueGetterParams
+  DataGrid,
+  GridColumns,
+  GridValueGetterParams
 } from '@material-ui/data-grid';
 import DeleteIcon from '@material-ui/icons/Delete';
-import React, { FC, Props, useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
-import { Car, User } from '../../store/types/userType';
+import { User } from '../../store/types/userType';
   
  
   

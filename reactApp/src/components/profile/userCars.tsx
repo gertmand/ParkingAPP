@@ -1,9 +1,6 @@
 import { Box, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { AppState } from '../../store'
-import { User } from '../../store/types/userType'
 import UserCarsTableComponent from './userCarsTableComponent'
 
 const UserCars = () => {
