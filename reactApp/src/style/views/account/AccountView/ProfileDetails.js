@@ -91,7 +91,11 @@ const ProfileDetails = ({ className, ...rest }) => {
             </Grid>
           </Grid>
         </CardContent>
-        <Card>
+        
+        
+        
+      </Card>
+      <Card>
         <CardHeader title="Sõidukid" />
         
         <UserCars/>
@@ -101,10 +105,6 @@ const ProfileDetails = ({ className, ...rest }) => {
           </Button>
         </Box>
         </Card>
-        
-        
-      </Card>
-      
     </form>
   );
 };

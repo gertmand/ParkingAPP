@@ -400,7 +400,7 @@ namespace API.Services
         {
             var account = getAccount(id);
             var cars = account.AccountCars.Select(x => x.Car);
-            IList<CarResponse> resultCars = new List<CarResponse>();
+            List<CarResponse> resultCars = new List<CarResponse>();
             foreach (Car car in cars)
             {
                 string temp = null;
