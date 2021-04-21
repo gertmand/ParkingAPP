@@ -96,7 +96,8 @@ export const DialogComponent: FC<Props> = ({
 
           {inputFieldNumberBoolean ? (
             <Input
-              placeholder="Sisesta number..."
+            style={{width: "100%"}}
+              placeholder="Sisesta parklakoha number..."
               type="number"
               inputProps={{ min: 1 }}
               onChange={inputOnChange}/>):''}
@@ -108,7 +109,7 @@ export const DialogComponent: FC<Props> = ({
           <FormControlLabel
           value="end"
           control={<Checkbox color="primary" checked={checked} onChange={() => setChecked(!checked)}/>}
-          label="kasutaja saab endiselt broneerida vabu kohti"
+          label="Kasutajale lisatakse broneerimisõigus"
           labelPlacement="end"
           /></> ) : ''}
 
