@@ -86,7 +86,7 @@ export const UsersTableComponent: FC<Props> = ({
       headerAlign: 'center',
       align: 'center',
       valueGetter: (params: GridValueGetterParams) =>
-        `${params.row.accountCars.map((x: { regNr: string; }) => '[' + x.regNr + '] ') || ''}`
+        `${params.row.accountCars.map((x: { regNr: string; }) => x.regNr).join(', ') || ''}`
   },
     {
       field: 'tegevused',

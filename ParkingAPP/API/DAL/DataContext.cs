@@ -127,7 +127,7 @@ namespace API.DAL
                 new Car { Id = 4, RegNr = "333CCC", Temporary = false },
                 new Car { Id = 5, RegNr = "444DDD", Temporary = false },
                 new Car { Id = 6, RegNr = "CityBee", Temporary = true },
-                new Car { Id = 7, RegNr = "Lambine", Temporary = true }
+                new Car { Id = 7, RegNr = "ISA", Temporary = true }
             );
 
             modelBuilder.Entity<AccountCars>().HasData(
@@ -137,6 +137,7 @@ namespace API.DAL
                 new AccountCars { AccountId = 4, CarId = 4 },
                 new AccountCars { AccountId = 5, CarId = 5 },
                 new AccountCars { AccountId = 6, CarId = 6 },
+                new AccountCars { AccountId = 2, CarId = 7 },
                 new AccountCars { AccountId = 11, CarId = 5 },
                 new AccountCars { AccountId = 12, CarId = 5 },
                 new AccountCars { AccountId = 13, CarId = 5 });
