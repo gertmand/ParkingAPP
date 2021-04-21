@@ -12,19 +12,16 @@ import {
     GridValueGetterParams
 } from '@material-ui/data-grid';
 import DeleteIcon from '@material-ui/icons/Delete';
-import React, { FC } from 'react';
-import { Car } from '../../store/types/userType';
+import React, { FC, Props, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store';
+import { Car, User } from '../../store/types/userType';
   
-  type Props = {
-    cars: Car[];
-    //handleOpenUserDetailsModal(id: number): any;
-  };
+ 
   
-  export const UserCarsTableComponent: FC<Props> = ({
-    cars
-    //handleOpenUserDetailsModal
-  }) => {
+  export const UserCarsTableComponent = () => {
   
+    const userData = useSelector<AppState, User>(state => state.user.userData);
     function getUserId(params: GridValueGetterParams) {
       return `${params.getValue('id')}`;
     }
@@ -87,7 +84,7 @@ import { Car } from '../../store/types/userType';
             footerRowSelected: count => `${count.toLocaleString()} rida valitud`
           }}
           autoHeight
-          rows={cars}
+          rows={userData.accountCars === undefined ? [] : userData.accountCars}
           columns={columns}
           pageSize={10}
         />
