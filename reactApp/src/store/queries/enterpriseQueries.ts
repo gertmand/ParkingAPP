@@ -2,7 +2,12 @@ import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
 import { authHeader, del, get, post } from "../../_helpers/fetch-wrapper"
 import { ADD_ENTERPRISE_DATA, FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
-import { ParkingSpotMainUserRequest, ParkingSpotRequest, ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
+import { EnterpriseAddRequest, ParkingSpotMainUserRequest, ParkingSpotRequest, ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
+
+//TODO: enterpriseType from enum
+export const addEnterprise = async (request: EnterpriseAddRequest) => {
+    return await post(`${apiUrl}/api/enterprises/add`,request)
+}
 
 export const getUserEnterprises = async () => {
     return await get(`${apiUrl}/api/enterprises/user`)

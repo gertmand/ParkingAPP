@@ -12,6 +12,14 @@ export enum EnterpriseType {
     Appartment
 }
 
+//TODO: enterpriseType from enum. 
+export type EnterpriseAddRequest = {
+    name: string,
+    description: string,
+    enterpriseType: string,
+    acceptTerms: boolean,
+}
+
 // Enterprise User Data
 
 export type EnterpriseUserData = {

@@ -1,7 +1,7 @@
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormHelperText, MenuItem, TextField } from '@material-ui/core';
 import React, { FC, useState } from "react";
 import { useDispatch } from 'react-redux';
-import { addUser } from '../../store/queries/userQueries';
+import { addEnterprise } from '../../store/queries/enterpriseQueries';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../common/siteActions';
 
 type Props = {
@@ -14,80 +14,53 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
   const [, setLoading] = useState(false);
   const [, setSuccess] = React.useState(false);
   const handleClose = () => {
-    setTitle('');
-    setFirstName('');
-    setLastName('');
-    setEmailForAdd('');
-    setPasswordForAdd('');
-    setConfirmPasswordForAdd('');
+    setType('');
+    setName('');
+    setDescription('');
     setAcceptTerms(false);
     setEnterpriseAddModal(false);
   };
-  
-  const [emailForAdd, setEmailForAdd] = useState('');
-  const [title, setTitle] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [passwordForAdd, setPasswordForAdd] = useState('');
-  const [confirmPasswordForAdd, setConfirmPasswordForAdd] = useState('');
+  const [type, setType] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
 
-  const [titleError, setTitleError] = useState(false);
-  const [firstNameError, setFirstNameError] = useState(false);
-  const [lastNameError, setLastNameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  const [typeError, setTypeError] = useState(false);
+  const [nameError, setNameError] = useState(false);
+  const [descriptionError, setDescriptionError] = useState(false);
 
-  const [emailErrorText, setEmailErrorText] = useState('');
-  const [confirmPasswordErrorText, setConfirmPasswordErrorText] = useState('');
-
-  const handleTitleChange = (titleName: string) => {
-    setTitle(titleName);
-    setTitleError(false);
+  const handleTypeChange = (type: string) => {
+    setType(type);
+    setTypeError(false);
   };
-  const handleFirstNameChange = (e: any) => {
-    setFirstName(e);
-    setFirstNameError(false);
+  const handleNameChange = (e: any) => {
+    setName(e);
+    setNameError(false);
   };
-  const handleLastNameChange = (e: any) => {
-    setLastName(e);
-    setLastNameError(false);
-  };
-  const handleEmailChange = (e: any) => {
-    setEmailForAdd(e);
-    setEmailError(false);
-  };
-  const handlePasswordChange = (e: any) => {
-    setPasswordForAdd(e);
-    setPasswordError(false);
-  };
-  const handleConfirmPasswordChange = (e: any) => {
-    setConfirmPasswordForAdd(e);
-    setConfirmPasswordError(false);
+  const handleDescriptionChange = (e: any) => {
+    setDescription(e);
+    setDescriptionError(false);
   };
 
-  const genders = [
-    { value: 'mees', label: 'Mr.' },
-    { value: 'naine', label: 'Mrs.' }
-  ];
+  const typeOptions = [
+    { value: 'EV', label: 'Ettevõte' },
+    { value: 'KÜ', label: 'Korteriühistu' },
+    { value: 'Haridusasutus', label: 'Kool' },
+  ]; 
 
   const handleUserAdd = async () => {
 
-    if ((title && firstName && lastName && emailForAdd && passwordForAdd && confirmPasswordForAdd && acceptTerms) !== undefined && 
-        passwordForAdd === confirmPasswordForAdd &&
-        acceptTerms === true &&
-        /^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailForAdd)
-    ) {
+    if ((type && name && description && acceptTerms) !== undefined && acceptTerms === true ) {
         setLoading(true);
         setSuccess(false);
-        addUser({title: title, firstName: firstName, lastName: lastName, email: emailForAdd, password: passwordForAdd, confirmPassword: confirmPasswordForAdd, acceptTerms: acceptTerms})
+        //TODO: enterpriseType from enum
+        addEnterprise({enterpriseType: type, name: name, description: description, acceptTerms: acceptTerms})
           .then(result => {
             setLoading(false);
             setSuccess(true);
             handleClose();
             dispatch(
-              SET_SUCCESS_ALERT({ status: true, message: 'Kasutaja lisatud!' })
+              SET_SUCCESS_ALERT({ status: true, message: 'Asutus lisatud!' })
             );
           })
           .catch((err: any) => {
@@ -100,26 +73,9 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
             );
           });
     } 
-    else if (title === '') setTitleError(true);
-    else if (firstName === '') setFirstNameError(true);
-    else if (lastName === '') setLastNameError(true);
-    else if (emailForAdd === '') {
-      setEmailError(true);
-      setEmailErrorText('Kohustuslik väli');
-    } 
-    else if (!/^(([^<>()\]\\.,;:\s@"]+(\.[^<>()\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(emailForAdd)){
-      setEmailError(true);
-      setEmailErrorText('Email on vales formaadis.');
-    } 
-    else if (passwordForAdd === '') setPasswordError(true);
-    else if (confirmPasswordForAdd === '') {
-      setConfirmPasswordError(true);
-      setConfirmPasswordErrorText('Kohustuslik väli!');
-    } 
-    else if (passwordForAdd !== confirmPasswordForAdd) {
-      setConfirmPasswordError(true);
-      setConfirmPasswordErrorText('Paroolid erinevad');
-    }
+    else if (type === '') setTypeError(true);
+    else if (name === '') setNameError(true);
+    else if (description === '') setDescriptionError(true);
   };
 
 
@@ -130,21 +86,21 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">Registreeru</DialogTitle>
+        <DialogTitle id="form-dialog-title">Registreeri uus asutus</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Peale registreerimist on võimalik koheselt sisse logida.
+            Peale registreerimist oled koheselt ka asutuse administraatori rollis ning saad administraatori alalehelt lisada kasutajaid ja parkimiskohti.
           </DialogContentText>
           <TextField
             required
-            id="gender"
+            id="typeOptions"
             select
-            value={title}
-            error={titleError ? true : false}
-            helperText={titleError ? 'Kohustuslik väli!' : 'Palun määra sugu.'}
-            onChange={event => handleTitleChange(event.target.value)}
+            value={type}
+            error={typeError ? true : false}
+            helperText={typeError ? 'Kohustuslik väli!' : 'Palun määra asutuse tüüp.'}
+            onChange={event => handleTypeChange(event.target.value)}
           >
-            {genders.map(option => (
+            {typeOptions.map(option => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -152,62 +108,29 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
           </TextField>
           <TextField
             required
-            onChange={event => handleFirstNameChange(event.target.value)}
+            onChange={event => handleNameChange(event.target.value)}
             autoFocus
             margin="dense"
-            error={firstNameError ? true : false}
-            helperText={firstNameError ? 'Kohustuslik väli!' : ''}
-            id="firstName"
-            label="Eesnimi"
+            error={nameError ? true : false}
+            helperText={nameError ? 'Kohustuslik väli!' : ''}
+            id="name"
+            label="Nimi"
             type="textPrimary"
             fullWidth
           />
           <TextField
             required
-            onChange={event => handleLastNameChange(event.target.value)}
+            onChange={event => handleDescriptionChange(event.target.value)}
             autoFocus
+            multiline
+            rows={2}
+            rowsMax={4}
             margin="dense"
-            error={lastNameError ? true : false}
-            helperText={lastNameError ? 'Kohustuslik väli!' : ''}
-            id="lastName"
-            label="Perekonnanimi"
+            error={descriptionError ? true : false}
+            helperText={descriptionError ? 'Kohustuslik väli!' : ''}
+            id="description"
+            label="Kirjeldus"
             type="textPrimary"
-            fullWidth
-          />
-          <TextField
-            required
-            onChange={event => handleEmailChange(event.target.value)}
-            autoFocus
-            margin="dense"
-            error={emailError ? true : false}
-            helperText={emailError ? emailErrorText : ''}
-            id="email"
-            label="Email"
-            type="email"
-            fullWidth
-          />
-          <TextField
-            required
-            onChange={event => handlePasswordChange(event.target.value)}
-            autoFocus
-            margin="dense"
-            error={passwordError ? true : false}
-            helperText={passwordError ? 'Kohustuslik väli!' : ''}
-            id="password"
-            label="Parool"
-            type="Password"
-            fullWidth
-          />
-          <TextField
-            required
-            onChange={event => handleConfirmPasswordChange(event.target.value)}
-            autoFocus
-            margin="dense"
-            error={confirmPasswordError ? true : false}
-            helperText={confirmPasswordError ? confirmPasswordErrorText : ''}
-            id="confirmPassword"
-            label="Kinnita parool"
-            type="password"
             fullWidth
           />
           <FormHelperText error={!acceptTerms ? true : false}>
