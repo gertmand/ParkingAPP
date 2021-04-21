@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Typography } from '@material-ui/core'
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid } from '@material-ui/core'
 import React, { FC, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppState } from '../../../../store'
@@ -70,18 +70,19 @@ const BookSpotModal:FC<Props> = ({bookModal, setBookModal, setSpotsForReservatio
             <DialogContentText>
                 Koha otsimiseks sisestage periood
             </DialogContentText>
-{ buttonDisabled ? <div style={{textAlign: "center"}}><CircularProgress /></div> : <Grid item xs={12}>
-                <Typography color="textPrimary" variant="h4">
-                    <Grid container spacing={1} justify="space-around">
-                        <Grid item>
-                            <SelectBookDate date={startDate} onDateChange={changeStartDate} label="Algus" />
-                        </Grid>
-                        <Grid item>
-                            <SelectBookDate date={endDate} onDateChange={changeEndDate} label="Lõpp" />
-                        </Grid>
+            { buttonDisabled 
+            ? 
+                <div style={{textAlign: "center"}}><CircularProgress /></div> 
+            : 
+                <Grid container spacing={1} justify="space-around">
+                    <Grid item>
+                        <SelectBookDate date={startDate} onDateChange={changeStartDate} label="Algus" />
                     </Grid>
-                </Typography>
-            </Grid>}
+                    <Grid item>
+                        <SelectBookDate date={endDate} onDateChange={changeEndDate} label="Lõpp" />
+                    </Grid>
+                </Grid>
+            }
         </DialogContent>
         <DialogActions>
             <Button onClick={() => setBookModal()} color="primary">

@@ -43,11 +43,11 @@ const ReleaseModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setSta
                     <DialogContentText>
                         Vali periood, mis ajaks koht vabastatakse teistele broneerimiseks
                     </DialogContentText>
-                    <Grid container spacing={1} justify={"space-between"}>
-                        <Grid item xs={12} sm={6}>
+                    <Grid container spacing={1} justify="space-around">
+                        <Grid item>
                             <SelectBookDate date={startDate} onDateChange={changeStartDate} label="Algus"/>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item>
                             <SelectBookDate date={endDate} onDateChange={changeEndDate} label="Lõpp" />
                         </Grid>
                     </Grid>

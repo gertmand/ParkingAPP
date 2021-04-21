@@ -86,12 +86,6 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData}) => {
           <TableBody>
             {reservationData !== undefined ? reservationData.map((row: Reservation) => (
               <TableRow key={row.id}>
-                {/* <TableCell component="th" scope="row">
-                  {row.status === "Assigned" && "Laenatud"}
-                  {row.status === "Reserved" && "Reserveeritud"}
-                  {row.status === "Released" && "Vabastatud"}
-                  {row.status === "Booked" && "Broneering"}
-                </TableCell> */}
                 <TableCell>Broneering</TableCell>
                 <TableCell>{changeDate(row.startDate)}</TableCell>
                 <TableCell>{changeDate(row.endDate)}</TableCell>

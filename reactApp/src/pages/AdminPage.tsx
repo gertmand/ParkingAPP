@@ -23,7 +23,7 @@ import Page from '../style/Page';
     const [regularUsers, setRegularUsers] = useState([]);
     const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
 
-    const [parkingLoading, setParkingLoading] = useState(false)
+    const [parkingLoading, setParkingLoading] = useState(true)
   
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
       setValue(newValue);
@@ -32,6 +32,7 @@ import Page from '../style/Page';
     useEffect(() => {
       if (enterpriseUsers !== undefined && enterpriseUsers.length === 0 && parkingSpotMainUsers !== undefined && parkingSpotMainUsers.length === 0 && regularUsers.length === 0 && enterpriseId !== undefined)
       {
+        updateParkingSpots()
         getEnterpriseUsers(enterpriseId).then(result => {
           setEnterpriseUsers(result);
         })
@@ -40,11 +41,8 @@ import Page from '../style/Page';
         })
         getAccountsWithoutSpot(enterpriseId).then(data => setRegularUsers(data));
       }
+      // eslint-disable-next-line
     }, [enterpriseUsers,parkingSpotMainUsers, regularUsers, enterpriseId])
-
-    // useEffect(() => {
-    //   updateParkingSpots()
-    // }, [enterpriseParkingSpots, enterpriseId])
 
     const updateSpotTable = () => {
       if(enterpriseId !== undefined) {            
@@ -52,6 +50,7 @@ import Page from '../style/Page';
           getEnterpriseParkingSpotData(enterpriseId, dispatch, false); 
       }
     }
+
     const updateParkingSpots = async () => {
       setParkingLoading(true)
       if (enterpriseParkingSpots !== undefined && enterpriseId !== undefined)
@@ -65,6 +64,7 @@ import Page from '../style/Page';
         })
       }
     }
+
     const updateParkingSpotMainUsers = async () => {
       setParkingLoading(true)
       if (parkingSpotMainUsers !== undefined && regularUsers!==undefined && enterpriseId !== undefined)
@@ -97,7 +97,7 @@ import Page from '../style/Page';
                   <AppBar position="static">
                     <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="off" aria-label="scrollable prevent tabs example">
                       <Tab label="Uudised" aria-label="news" {...a11yProps(0)} />
-                      <Tab onClick={()=> updateParkingSpots()} label="Parklakohad"  aria-label="spots" {...a11yProps(1)} />
+                      <Tab label="Parklakohad"  aria-label="spots" {...a11yProps(1)} />
                       <Tab label="Liikmed" aria-label="members" {...a11yProps(2)} />
                       <Tab label="Seaded" aria-label="settings" {...a11yProps(3)} />
                       <Tab label="Logid" aria-label="logs" {...a11yProps(4)} />

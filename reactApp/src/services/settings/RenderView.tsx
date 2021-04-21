@@ -1,17 +1,11 @@
 import { CircularProgress } from '@material-ui/core';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../store';
 import GlobalStyles from '../../style/GlobalStyles';
 import PrivateRoutes from './PrivateRoutes';
 import Routes from './Routes';
 
-const RenderView = () => {
-    const userDataFetching = useSelector<AppState, boolean>(state => state.user.userDataFetching);
-    const enterpriseUserDataFetching = useSelector<AppState, boolean>(state => state.user.enterpriseUserDataFetching);
-    const enterpriseParkingDataFetching = useSelector<AppState, boolean>(state => state.user.enterpriseParkingSpotDataFetching);
-
-    if (!userDataFetching && !enterpriseUserDataFetching && !enterpriseParkingDataFetching) {
+const RenderView = (pageLoading: boolean) => {
+    if (!pageLoading) {
         if (!localStorage.getItem('token')) {
         return (
             <>

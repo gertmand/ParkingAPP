@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { FC } from "react";
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormHelperText, MenuItem, TextField} from '@material-ui/core';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormHelperText, MenuItem, TextField } from '@material-ui/core';
+import React, { FC, useState } from "react";
 import { useDispatch } from 'react-redux';
+import { addUser } from '../../store/queries/userQueries';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../common/siteActions';
-import { addUser, checkExistingEmail} from '../../store/queries/userQueries';
 
 type Props = {
     enterpriseAddModal:boolean;
