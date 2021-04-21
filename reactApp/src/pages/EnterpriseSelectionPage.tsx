@@ -2,6 +2,7 @@ import { Container, Fab, Grid, makeStyles } from '@material-ui/core';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import EnterpriseAddModal from '../components/enterprise/enterpriseAddModal';
 import { ADD_ENTERPRISE_DATA } from '../store/actions/enterpriseActions';
 import { getEnterpriseParkingSpotData, getEnterpriseUserData, getUserEnterprises } from '../store/queries/enterpriseQueries';
 import { Enterprise } from '../store/types/enterpriseTypes';
@@ -12,14 +13,20 @@ const EnterpriseSelectionPage = (props: any) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [enterprises, setEnterprises] = useState<Enterprise[]>([]);
+    const [enterpriseAddModal, setEnterpriseAddModal] = useState(false);
 
+    
+    
     useEffect(() => {
         getEnterprises();
-    }, [])
+
+        //FIX FOR: Warning: Can't perform a React state update on an unmounted component. 
+        return () => {setEnterprises([]);}
+    },[])
 
     const getEnterprises = async () => {
         await getUserEnterprises().then(async (result) => {
-          await setEnterprises(result);
+          setEnterprises(result);
          })
       }
 
@@ -32,6 +39,8 @@ const EnterpriseSelectionPage = (props: any) => {
     }
 
     return (
+        <>
+        <EnterpriseAddModal enterpriseAddModal={enterpriseAddModal} setEnterpriseAddModal={setEnterpriseAddModal}/>
         <div className={classes.root}>
         <TopBar className={"a"} />
         <div className={classes.wrapper}>
@@ -50,7 +59,7 @@ const EnterpriseSelectionPage = (props: any) => {
                                 </Grid>
                             ))}
                             <Grid item>
-                                <Fab id="addNew" variant="extended" color="secondary" aria-label="add" className={classes.margin}>
+                                <Fab onClick={() => setEnterpriseAddModal(!enterpriseAddModal)} id="addNew" variant="extended" color="secondary" aria-label="add" className={classes.margin}>
                                     <NavigationIcon className={classes.extendedIcon} />
                                     Lisa uus
                                 </Fab>
@@ -62,6 +71,7 @@ const EnterpriseSelectionPage = (props: any) => {
           </div>
         </div>
       </div>
+      </>
     )
 }
 
