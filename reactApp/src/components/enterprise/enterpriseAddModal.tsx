@@ -145,7 +145,7 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
             Loobu
           </Button>
           <Button onClick={() => {handleUserAdd();}} color="primary">
-            Registreeru
+            Lisa asutus
           </Button>
         </DialogActions>
       </Dialog>

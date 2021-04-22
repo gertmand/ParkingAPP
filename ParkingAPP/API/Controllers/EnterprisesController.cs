@@ -292,7 +292,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{enterpriseId}/admin/parkingspots/add")]
-        public ActionResult<ParkingSpotResponse> AddParkingSpot(ParkingSpotRequest request, int enterpriseId)
+        public ActionResult<ParkingSpotResponse> AddParkingSpot(ParkingSpotRequest request)
         {
             if (Account == null)
             {
@@ -300,16 +300,38 @@ namespace API.Controllers
 
             }
 
-            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, request.EnterpriseId))
             {
                 return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
             }
 
-            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
+            if (_enterpriseService.GetEnterpriseAdmin(request.EnterpriseId, Account.Id) == false)
             {
                 return Unauthorized();
             }
-            return _parkingSpotService.AddParkingSpot(request, enterpriseId);
+            return _parkingSpotService.AddParkingSpot(request, request.EnterpriseId);
+        }
+
+        [HttpPost("{enterpriseId}/admin/parkingspots/addcollection")]
+        public IActionResult AddParkingSpotArray(ParkingSpotRequest[] request)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, request[0].EnterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            if (_enterpriseService.GetEnterpriseAdmin(request[0].EnterpriseId, Account.Id) == false)
+            {
+                return Unauthorized();
+            }
+            _parkingSpotService.AddParkingSpotArray(request);
+            return Ok("Kohad lisatud.");
         }
 
         [HttpPost("{enterpriseId}/admin/parkingspots/adduser")] 

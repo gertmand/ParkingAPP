@@ -1,15 +1,16 @@
-import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, InputAdornment, makeStyles, Modal, SvgIcon, TextField, Theme } from '@material-ui/core';
+import { Backdrop, Button, CardMedia, createStyles, Fade, Grid, Input, InputAdornment, makeStyles, Modal, SvgIcon, TextField, Theme } from '@material-ui/core';
 import React, { FC, useState } from 'react';
 import { Search as SearchIcon } from 'react-feather';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
-import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
-import { ParkingSpot, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
+import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot, addParkingSpotArray } from '../../../../store/queries/enterpriseQueries';
+import { ParkingSpot, ParkingSpotMainUserResponse, ParkingSpotRequest} from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
 import theme from '../../../../style/theme';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
 import DialogComponent from './dialogComponent';
 import ParkingSpotTableComponent from './parkingSpotTableComponent';
+import * as XLSX from "xlsx";
 
 type TableProps = {
   parkingSpots: ParkingSpot[];
@@ -136,7 +137,7 @@ const ParkingTable: FC<TableProps> = ({
             })
           );
       });
-    addParkingSpot({ number: parkingSpotNr }, enterpriseId).then(() => {
+    addParkingSpot({ number: parkingSpotNr , enterpriseId: enterpriseId}).then(() => {
       setParkingSpotAddModal(false);
       updateParkingSpots();
       dispatch(
@@ -155,11 +156,59 @@ const ParkingTable: FC<TableProps> = ({
     }
     file = e.target.files[0];
     formData.append('parkingLotPlan', file);
-    console.log(e.target.files[0])
   };
+
+//TODO: eraldi komponenti
+  const [dataFromExcel, setDataFromExcel] = useState<any[]>([]);
+  let parkingSpotsArray: Array<ParkingSpotRequest> = [];
+
+  const readExcel = (file: Blob) => {
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
+      fileReader.onload = (e) => {
+        const bufferArray = e.target?.result;
+        const wb = XLSX.read(bufferArray, { type: "buffer" });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+        const data = XLSX.utils.sheet_to_json(ws);
+        resolve(data);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+
+    promise.then((d) => {
+      return setDataFromExcel(d as any);
+    });
+  };
+
+  const addParkingSpots = () => {
+    dataFromExcel.forEach(element => {
+      parkingSpotsArray.push({number:element.Number, enterpriseId:enterpriseId})
+    });
+    addParkingSpotArray(parkingSpotsArray);
+  }
 
   return (
     <>
+
+//TODO: see osa parkimiskoha lisamise modaali alla.
+      <Input
+        disableUnderline
+        type="file"
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          if (e.target.files == null) {
+            throw new Error('Error finding e.target.files');
+          }
+          const file = e.target.files[0];
+          readExcel(file);
+        }}
+        />
+        {dataFromExcel.length < 1 ? "" : <Button color="primary" variant="contained" onClick={() => addParkingSpots()}>Lisa parkimiskohad</Button>}
+        
+        
       {/* Parkimiskoha kustutamise modaal */}
       <DialogComponent
         open={openDeleteConfirmationModal}

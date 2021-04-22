@@ -8,6 +8,7 @@ namespace API.Models.ParkingSpotDtos
     public class ParkingSpotRequest
     {
         public int Number { get; set; }
+        public int EnterpriseId { get; set; }
 
     }
 }

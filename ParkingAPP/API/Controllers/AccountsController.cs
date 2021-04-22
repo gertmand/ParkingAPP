@@ -73,14 +73,9 @@ namespace API.Controllers
         }
 
         [HttpPost("check-existing-email")]
-        public async Task<bool> CheckExistingEmail([FromBody] string email)
+        public bool CheckExistingEmail([FromBody] string email)
         {
-            if (_accountService.GetAll().Select(x=>x.Email).Contains(email))
-            {
-                return false;
-            }
-
-            return true;
+            return !_accountService.GetAll().Select(x => x.Email).Contains(email);
         }
 
         [HttpPost("verify-email")]

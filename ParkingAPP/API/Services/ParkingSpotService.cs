@@ -31,6 +31,7 @@ namespace API.Services
         IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers (int enterpriseId);
         ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request);
         ParkingSpotMainUserResponse DeteleParkingSpotMainUser(int accountId, int parkingSpotId);
+        void AddParkingSpotArray(ParkingSpotRequest[] request);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -362,6 +363,18 @@ namespace API.Services
             _context.SaveChanges();
 
             return _mapper.Map<ParkingSpotResponse>(ps);
+        }
+
+        public void AddParkingSpotArray(ParkingSpotRequest[] request)
+        {
+            //TODO: Parklakoht kui on kustutatud, siis uut parklakohta sama numbriga lisada ei lase
+            List<ParkingSpot> spots = new List<ParkingSpot>();
+            foreach (var spot in request)
+            {
+                spots.Add(new ParkingSpot { EnterpriseId = spot.EnterpriseId, Number = spot.Number, Created = DateTime.UtcNow });
+            }
+            _context.ParkingSpots.AddRange(spots);
+            _context.SaveChanges();
         }
         public ParkingSpotResponse DeleteParkingSpot(int id)
         {

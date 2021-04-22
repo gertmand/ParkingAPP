@@ -1,7 +1,7 @@
 export const post = (url: any, body: any) => {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...authHeader() } as any,
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', ...authHeader() } as any,
         credentials: 'include' as any,
         body: JSON.stringify(body)
     };

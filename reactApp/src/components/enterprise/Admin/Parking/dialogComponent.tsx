@@ -101,7 +101,8 @@ export const DialogComponent: FC<Props> = ({
               type="number"
               inputProps={{ min: 1 }}
               onChange={inputOnChange}/>):''}
-              {inputFieldFileBoolean? (<Input disableUnderline type="file" onChange={onFileChange!} id="input"/>):''}
+          
+          {inputFieldFileBoolean? (<Input disableUnderline type="file" onChange={onFileChange!} id="input"/>):''}
         
           {selectWorker?(
           <>  
