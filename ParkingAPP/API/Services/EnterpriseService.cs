@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using API.DAL;
 using API.Models.AccountDtos;
 using API.Models.EnterpriseDtos;
@@ -16,7 +17,7 @@ namespace API.Services
     public interface IEnterpriseService
     {
         EnterpriseResponse GetById(int id);
-        EnterpriseResponse Create(EnterpriseCreateRequest model);
+        void Create(EnterpriseCreateRequest request);
         IEnumerable<EnterpriseResponse> GetAll();
         IEnumerable<EnterpriseResponse> GetAllByAccountId(int userId);
         IEnumerable<Reservation> GetReservations();
@@ -61,9 +62,18 @@ namespace API.Services
         }
 
 
-        public EnterpriseResponse Create(EnterpriseCreateRequest model)
+        public void Create(EnterpriseCreateRequest request)
         {
-            throw new NotImplementedException();
+           
+            var enterprise = _mapper.Map<Enterprise>(request);
+            enterprise.Active = true;
+            enterprise.Created = DateTime.UtcNow;
+            _context.Enterprises.Add(enterprise);
+            _context.SaveChanges();
+            var enterpriseId = _context.Enterprises.OrderByDescending(x=>x.Id).FirstOrDefault().Id;
+            EnterpriseAccount ea = new EnterpriseAccount() { AccountId = request.UserId, EnterpriseId = enterpriseId, IsAdmin = true, CanBook = true };
+            _context.EnterpriseAccounts.Add(ea);
+            _context.SaveChanges();
         }
 
         public IEnumerable<Reservation> GetReservations()

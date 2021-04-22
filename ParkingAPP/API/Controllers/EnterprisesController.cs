@@ -140,7 +140,14 @@ namespace API.Controllers
 
             return spotData;
         }
-        
+
+        [HttpPost("add")]
+        public IActionResult Create(EnterpriseCreateRequest request)
+        {
+            _enterpriseService.Create(request);
+            return Ok(new { message = "Registration successful, you can now use see the enterprise" });
+        }
+
 
         // PARKING METHODS (PARKING, RESERVATION, RELEASE)
 
