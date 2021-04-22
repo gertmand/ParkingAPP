@@ -1,18 +1,23 @@
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, FormHelperText, MenuItem, TextField } from '@material-ui/core';
 import React, { FC, useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../store';
 import { addEnterprise } from '../../store/queries/enterpriseQueries';
+import { EnterpriseType } from '../../store/types/enterpriseTypes';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../common/siteActions';
 
 type Props = {
     enterpriseAddModal:boolean;
     setEnterpriseAddModal(e: boolean): any,
+    updateEnterprises():any
   };
   
-export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseAddModal}: any) => {
+export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseAddModal,updateEnterprises}: any) => {
   const dispatch = useDispatch();
   const [, setLoading] = useState(false);
   const [, setSuccess] = React.useState(false);
+  const userId = useSelector<AppState, number>(state => state.user.userData.id);
+
   const handleClose = () => {
     setType('');
     setName('');
@@ -20,6 +25,7 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
     setAcceptTerms(false);
     setEnterpriseAddModal(false);
   };
+
   const [type, setType] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -29,8 +35,8 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
   const [nameError, setNameError] = useState(false);
   const [descriptionError, setDescriptionError] = useState(false);
 
-  const handleTypeChange = (type: string) => {
-    setType(type);
+  const handleTypeChange = (type: number) => {
+    setType(type.toString());
     setTypeError(false);
   };
   const handleNameChange = (e: any) => {
@@ -42,22 +48,16 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
     setDescriptionError(false);
   };
 
-  const typeOptions = [
-    { value: 'EV', label: 'Ettevõte' },
-    { value: 'KÜ', label: 'Korteriühistu' },
-    { value: 'Haridusasutus', label: 'Kool' },
-  ]; 
-
   const handleUserAdd = async () => {
 
     if ((type && name && description && acceptTerms) !== undefined && acceptTerms === true ) {
         setLoading(true);
         setSuccess(false);
-        //TODO: enterpriseType from enum
-        addEnterprise({enterpriseType: type, name: name, description: description, acceptTerms: acceptTerms})
+        addEnterprise({userId: userId,type: +type, name: name, description: description, acceptTerms: acceptTerms})
           .then(result => {
             setLoading(false);
             setSuccess(true);
+            updateEnterprises();
             handleClose();
             dispatch(
               SET_SUCCESS_ALERT({ status: true, message: 'Asutus lisatud!' })
@@ -78,7 +78,6 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
     else if (description === '') setDescriptionError(true);
   };
 
-
   return (
     <>
       <Dialog
@@ -93,16 +92,15 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
           </DialogContentText>
           <TextField
             required
-            id="typeOptions"
             select
             value={type}
             error={typeError ? true : false}
             helperText={typeError ? 'Kohustuslik väli!' : 'Palun määra asutuse tüüp.'}
-            onChange={event => handleTypeChange(event.target.value)}
+            onChange={event => handleTypeChange(+event.target.value)}
           >
-            {typeOptions.map(option => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {Object.values(EnterpriseType).filter(e => isNaN(e as any)).map(option => (
+              <MenuItem key={option} value={EnterpriseType[option as any]}>
+                {option}
               </MenuItem>
             ))}
           </TextField>

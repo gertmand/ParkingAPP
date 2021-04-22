@@ -6,18 +6,19 @@ export type Enterprise = {
     active: boolean
 }
 
+
 export enum EnterpriseType {
-    Business,
-    School,
-    Appartment
+  Ettevõte ,
+  Kool ,
+  Ühistu ,
 }
 
-//TODO: enterpriseType from enum. 
 export type EnterpriseAddRequest = {
     name: string,
     description: string,
-    enterpriseType: string,
+    type: EnterpriseType,
     acceptTerms: boolean,
+    userId: number
 }
 
 // Enterprise User Data

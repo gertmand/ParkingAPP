@@ -24,6 +24,10 @@ const EnterpriseSelectionPage = (props: any) => {
         return () => {setEnterprises([]);}
     },[])
 
+    const updateEnterprises = () => {
+        getEnterprises();
+      }
+
     const getEnterprises = async () => {
         await getUserEnterprises().then(async (result) => {
           setEnterprises(result);
@@ -40,7 +44,7 @@ const EnterpriseSelectionPage = (props: any) => {
 
     return (
         <>
-        <EnterpriseAddModal enterpriseAddModal={enterpriseAddModal} setEnterpriseAddModal={setEnterpriseAddModal}/>
+        <EnterpriseAddModal enterpriseAddModal={enterpriseAddModal} setEnterpriseAddModal={setEnterpriseAddModal} updateEnterprises={updateEnterprises}/>
         <div className={classes.root}>
         <TopBar className={"a"} />
         <div className={classes.wrapper}>

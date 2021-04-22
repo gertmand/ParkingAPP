@@ -150,7 +150,7 @@ namespace API.DAL
                     Description = "Parkimine",
                     Active = true,
                     Created = new DateTime(2021, 02, 01),
-                    Type = EnterpriseType.Business
+                    Type = EnterpriseType.Ettevõte
                 },
                 new Enterprise
                 {
@@ -159,7 +159,7 @@ namespace API.DAL
                     Description = "Parkimine",
                     Active = true,
                     Created = new DateTime(2021, 02, 01),
-                    Type = EnterpriseType.Business
+                    Type = EnterpriseType.Ettevõte
                 });
 
             for (int i = 1; i <= 10; i++)

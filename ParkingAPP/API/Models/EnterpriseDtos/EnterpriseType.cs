@@ -7,8 +7,8 @@ namespace API.Models.EnterpriseDtos
 {
     public enum EnterpriseType
     {
-        Business,
-        School,
-        Appartment
+        Ettevõte,
+        Kool,
+        Ühistu
     }
 }
