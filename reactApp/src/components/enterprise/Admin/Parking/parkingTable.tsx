@@ -159,6 +159,8 @@ const ParkingTable: FC<TableProps> = ({
   };
 
 //TODO: eraldi komponenti
+//TODO: faili üleslaadimise õpetud
+//TODO: faili kontroll
   const [dataFromExcel, setDataFromExcel] = useState<any[]>([]);
   let parkingSpotsArray: Array<ParkingSpotRequest> = [];
 
