@@ -35,6 +35,8 @@ namespace API.Services
         AccountResponse Create(CreateRequest model);
         AccountResponse Update(int id, UpdateRequest model);
         void Delete(int id);
+        void AddCar(int id, CarResponse request);
+        void DeleteCar(int id, CarResponse request);
     }
 
     public class AccountService : IAccountService
@@ -418,6 +420,31 @@ namespace API.Services
             }
 
             return resultCars;
+        }
+
+        public void AddCar(int id, CarResponse request)
+        {
+            var car = _mapper.Map<Car>(request);
+            _context.Cars.Add(car);
+            _context.SaveChanges();
+            var carId = _context.Cars.OrderByDescending(x => x.Id).FirstOrDefault().Id;
+            AccountCars ac = new AccountCars()
+            {
+                CarId = carId,
+                AccountId = id
+            };
+            _context.AccountCars.Add(ac);
+            _context.SaveChanges();
+        }
+
+        public void DeleteCar(int id, CarResponse request)
+        {
+            var car = _context.Cars.Find(request.Id);
+            _context.Cars.Remove(car);
+            _context.SaveChanges();
+            var ac = _context.AccountCars.Where(x => x.CarId == request.Id && x.AccountId == id).First();
+            _context.AccountCars.Remove(ac);
+            _context.SaveChanges();
         }
     }
 }
