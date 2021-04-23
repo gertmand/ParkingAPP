@@ -9,6 +9,7 @@ using API.Models.Entities;
 using API.Models.JoinedEntities;
 using API.Models.ParkingSpotDtos;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Math.EC.Rfc7748;
 
@@ -27,8 +28,8 @@ namespace API.Services
         bool CheckUserEnterprise(int userId, int enterpriseId);
         bool GetEnterpriseAdmin(int enterpriseId, int userId);
         bool GetEnterpriseData(int enterpriseId, int userId);
-
         bool ChangeCanBookStatus(int enterpriseId, int accountId);
+        bool ValidatePhoneNumber(string phoneNumber);
     }
 
 
@@ -132,6 +133,30 @@ namespace API.Services
                 .Where(x => x.AccountId == userId && x.EnterpriseId == enterpriseId).First().CanBook;
 
             return canBook;
+        }
+
+        public bool ValidatePhoneNumber(string phoneNumber)
+        {
+            List<string> phoneNumbers = new List<string>();
+            string temp;
+            string numberToValidate = phoneNumber.Replace("+", "").Replace(" ", "");
+            if (numberToValidate.StartsWith("372")) numberToValidate = numberToValidate.Remove(0, 3);
+            if (numberToValidate.Length < 15 && numberToValidate.All(char.IsDigit))
+            {
+                foreach (var account in _context.Accounts)
+                {
+                    if (account.PhoneNr != null)
+                    {
+                        temp = account.PhoneNr.Replace("+", "").Replace(" ", "");
+                        if (temp.StartsWith("372")) temp = temp.Remove(0, 3);
+                        phoneNumbers.Add(temp);
+                    }
+                }
+
+                if (phoneNumbers.Contains(numberToValidate)) return true;
+            }
+
+            return false;
         }
 
         // ADMIN METHODS

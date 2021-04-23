@@ -148,6 +148,12 @@ namespace API.Controllers
             return Ok(new { message = "Registration successful, you can now use see the enterprise" });
         }
 
+        [HttpGet("{enterpriseId}/validate/{phoneNumber}")]
+        public bool ValidatePhoneNumber(string phoneNumber)
+        { 
+            return _enterpriseService.ValidatePhoneNumber(phoneNumber);
+        }
+
 
         // PARKING METHODS (PARKING, RESERVATION, RELEASE)
 
