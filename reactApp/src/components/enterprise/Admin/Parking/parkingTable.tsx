@@ -196,7 +196,7 @@ const ParkingTable: FC<TableProps> = ({
   return (
     <>
 
-//TODO: see osa parkimiskoha lisamise modaali alla.
+{/*TODO: see osa parkimiskoha lisamise modaali alla.*/}
       <Input
         disableUnderline
         type="file"
@@ -333,7 +333,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: '1200px',
+      width: '1000px',
       margin: 'auto'
     },
     buttonGroup: {
