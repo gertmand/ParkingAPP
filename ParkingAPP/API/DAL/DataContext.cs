@@ -5,6 +5,7 @@ using API.Models.EnterpriseDtos;
 using API.Models.Entities;
 using API.Models.JoinedEntities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace API.DAL
 {
@@ -17,11 +18,13 @@ namespace API.DAL
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
         public DbSet<ReleasedSpot> ReleasedSpots { get; set; }
+        public DbSet<Car> Cars { get; set; }
 
         // Joined Entitied
 
         public DbSet<ParkingSpotAccount> ParkingSpotAccounts { get; set; }
         public DbSet<EnterpriseAccount> EnterpriseAccounts { get; set; }
+        public DbSet<AccountCars> AccountCars { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

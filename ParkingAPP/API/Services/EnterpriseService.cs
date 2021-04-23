@@ -30,6 +30,7 @@ namespace API.Services
         bool GetEnterpriseData(int enterpriseId, int userId);
         bool ChangeCanBookStatus(int enterpriseId, int accountId);
         bool ValidatePhoneNumber(string phoneNumber);
+        string ValidateCarNumber(string carNr, int enterpriseId);
     }
 
 
@@ -135,6 +136,7 @@ namespace API.Services
             return canBook;
         }
 
+        // Validate methods for client
         public bool ValidatePhoneNumber(string phoneNumber)
         {
             List<string> phoneNumbers = new List<string>();
@@ -157,6 +159,35 @@ namespace API.Services
             }
 
             return false;
+        }
+
+        public string ValidateCarNumber(string carNr, int enterpriseId)
+        {
+            List<string> carNrs = new List<string>();
+            string temp = carNr.Replace(" ", "").ToLower();
+            List<int> enterpriseAccountIds = new List<int>(_context.EnterpriseAccounts.Where(x => x.EnterpriseId == enterpriseId).Select(x=>x.AccountId));
+            List<int> accountCarsAccountIds = new List<int>(_context.AccountCars.Select(x => x.AccountId));
+            foreach (var aId in enterpriseAccountIds)
+            {
+                if (accountCarsAccountIds.Contains(aId))
+                {
+                    carNrs.AddRange(_context.AccountCars.Where(x=>x.AccountId == aId).Select(x=>x.Car).Select(x=>x.RegNr.Replace(" ","").ToLower()));
+                }
+            }
+            
+            if (temp.Length <= 8 && temp.All(char.IsLetterOrDigit))
+            {
+                foreach (var number in carNrs)
+                {
+                    if (number == temp)
+                    {
+                        return "Autol numbriga " + carNr + " on lubatud selles parklas parkida.";
+                    }
+                        
+                }
+                return "Autol numbriga " + carNr + " ei ole lubatud selles parklas parkida.";
+            }
+            return "Viga. Kontrolli numbrimärki";
         }
 
         // ADMIN METHODS

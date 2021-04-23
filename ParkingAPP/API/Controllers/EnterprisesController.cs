@@ -148,10 +148,18 @@ namespace API.Controllers
             return Ok(new { message = "Registration successful, you can now use see the enterprise" });
         }
 
-        [HttpGet("{enterpriseId}/validate/{phoneNumber}")]
+
+        // Validate methods for client
+        [HttpGet("{enterpriseId}/validatephonenumber/{phoneNumber}")]
         public bool ValidatePhoneNumber(string phoneNumber)
         { 
             return _enterpriseService.ValidatePhoneNumber(phoneNumber);
+        }
+
+        [HttpGet("{enterpriseId}/validatecarnumber/{carNr}")]
+        public string ValidateCarNumber(string carNr, int enterpriseId)
+        {
+            return _enterpriseService.ValidateCarNumber(carNr, enterpriseId);
         }
 
 

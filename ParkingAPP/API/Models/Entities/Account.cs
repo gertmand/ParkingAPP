@@ -26,13 +26,13 @@ namespace API.Models.Entities
         public List<RefreshToken> RefreshTokens { get; set; }
         public string? Avatar { get; set; }
         public string? PhoneNr { get; set; }
-        public IEnumerable<AccountCars>? AccountCars { get; set; }
+        
 
         public bool OwnsToken(string token) 
         {
             return this.RefreshTokens?.Find(x => x.Token == token) != null;
         }
-
+        public IEnumerable<AccountCars>? AccountCars { get; set; }
         public ICollection<EnterpriseAccount> EnterpriseAccounts { get; set; }
     }
 }
