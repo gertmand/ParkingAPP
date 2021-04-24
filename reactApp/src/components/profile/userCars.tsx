@@ -6,14 +6,15 @@ import UserCarsTableComponent from './userCarsTableComponent'
 const UserCars = () => {
     const classes = useStyles();
     // const [cars, setCars] = useState<Car[]>([]);
-    
-
+    const handleOpenDeleteConfirmationModal = () => {setDeleteConfirmationModal(true);};
+    const handleCloseDeleteConfirmationModal = () => {setDeleteConfirmationModal(false);};
+    const [openDeleteConfirmationModal,setDeleteConfirmationModal] = React.useState(false);
 
     return (
         <div>
             
               <Box className={clsx(classes.root)}>
-                <UserCarsTableComponent/>
+                <UserCarsTableComponent handleOpenDeleteConfirmationModal={handleOpenDeleteConfirmationModal}/>
 
                 {/* <Box className={clsx(classes.root)}><Card><CardHeader title="SÕIDUKI LISAMINE" />
                   <Divider /><CardContent><TextField

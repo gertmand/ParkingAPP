@@ -4,6 +4,10 @@ import {
 
 
 
+  Grid,
+
+
+
   Tooltip
 } from '@material-ui/core';
 import {
@@ -12,23 +16,39 @@ import {
   GridValueGetterParams
 } from '@material-ui/data-grid';
 import DeleteIcon from '@material-ui/icons/Delete';
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { User } from '../../store/types/userType';
+import theme from '../../style/theme';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
   
- 
+const useStyles = makeStyles((theme: Theme) =>
+createStyles({
+  root: {
+    ...theme.typography.button,
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(1),
+    fontSize: 15
+  },
+}),
+);
   
-  export const UserCarsTableComponent = () => {
-  
+type Props = {
+  handleOpenDeleteConfirmationModal(): any;
+};
+
+  export const UserCarsTableComponent: FC<Props> = ({handleOpenDeleteConfirmationModal}) => {
+    const classes = useStyles();
+    const [carId, setCarId] = useState(0);
     const userData = useSelector<AppState, User>(state => state.user.userData);
-    function getUserId(params: GridValueGetterParams) {
+    function getCarId(params: GridValueGetterParams) {
       return `${params.getValue('id')}`;
     }
-    //   const handleDeleteButtonClick = (params: GridValueGetterParams) => {
-    //     setParkingSpotId(+getParkingSpotId(params));
-    //     handleOpenDeleteConfirmationModal();
-    //   };
+      const handleDeleteButtonClick = (params: GridValueGetterParams) => {
+        setCarId(+getCarId(params));
+        handleOpenDeleteConfirmationModal();
+      };
   
     const columns: GridColumns = [
       { field: 'id', headerName: '', hide: true },
@@ -55,7 +75,7 @@ import { User } from '../../store/types/userType';
         disableClickEventBubbling: true,
         headerAlign: 'center',
         flex: 75,
-        valueGetter: getUserId,
+        valueGetter: getCarId,
         renderCell: (params: GridValueGetterParams) => {
           return (
             <ButtonGroup style={{ margin: 'auto' }}>
@@ -77,6 +97,16 @@ import { User } from '../../store/types/userType';
   
     return (
       <>
+      <Grid container justify="space-between" spacing={3} style={{ padding: theme.spacing(2) }}>
+        <Grid item xs={6}>
+        <div className={classes.root}>{"SÕIDUKID"}</div>
+        </Grid>
+        <Grid item xs={6}>
+          <Button color="primary" variant="contained" style={{float: "right"}}>
+            Lisa sõiduk
+          </Button>
+        </Grid>
+      </Grid>
         <DataGrid
           disableColumnMenu
           localeText={{

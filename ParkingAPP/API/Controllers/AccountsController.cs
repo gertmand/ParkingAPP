@@ -174,6 +174,23 @@ namespace API.Controllers
             _accountService.Delete(id);
             return Ok(new { message = "Account deleted successfully" });
         }
+        // cars
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult<CarResponse> AddCar(CarResponse car)
+        {
+            _accountService.AddCar(Account.Id, car);
+            return Ok(new { message = "Car successfully added!" });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult<CarResponse> DeleteCar(CarResponse car)
+        {
+            _accountService.DeleteCar(Account.Id, car);
+            return Ok(new { message = "Car deleted!" });
+        }
 
         // helper methods
 
