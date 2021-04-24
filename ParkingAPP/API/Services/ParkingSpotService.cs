@@ -353,7 +353,6 @@ namespace API.Services
         // ADMIN METHODS
         public ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId)
         {
-            //TODO: Parklakoht kui on kustutatud, siis uut parklakohta sama numbriga lisada ei lase
             if (!checkExistingParkingSpotNr(request.Number, enterpriseId))
             {
                 throw new AppException("Sellise numbriga parkimiskoht on juba olemas!");

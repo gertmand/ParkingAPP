@@ -19,20 +19,21 @@ const App = (props: any) => {
   const successAlert = useSelector<AppState, SiteAlert>(state => state.site.successAlert);
   const errorAlert = useSelector<AppState, SiteAlert>(state => state.site.errorAlert);
   
-  const [pageLoading, setPageLoading] = useState(false);
+  //TODO: pageLoading ei toimi hetkel korralikult. Lehe laadimisega probleemid. 
+  //const [pageLoading, setPageLoading] = useState(false);
 
   const getDataQuery = async (enterpriseId: any) => {
-    setPageLoading(true);
+    //setPageLoading(true);
     getUserData(dispatch).then(async () => {
       if(!isNaN(enterpriseId) && enterpriseId !== 0 && enterpriseId !== "0") {
         await getEnterpriseUserData(enterpriseId, dispatch, true);
         await getEnterpriseParkingSpotData(enterpriseId, dispatch, true);
         await getEnterprise(enterpriseId, dispatch);
-        setPageLoading(false);
+        //setPageLoading(false);
       }
     }).catch(() => {
       localStorage.removeItem('token')
-      setPageLoading(false);
+      //setPageLoading(false);
       window.location.reload(false);})
   }
 
@@ -52,7 +53,7 @@ const App = (props: any) => {
     <ThemeProvider theme={theme}>
       {successAlert.status ? <SuccessAlert /> : null}
       {errorAlert.status ? <ErrorAlert /> : null}
-        {RenderView(pageLoading)}
+        {RenderView(/*pageLoading*/)}
       </ThemeProvider>
   );
 };

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { changeCanBook, deleteParkingSpotMainUser } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser } from '../../../../store/types/userType';
+import { ExcelReader } from '../../../../_helpers/excelReader';
 import { SET_SUCCESS_ALERT } from '../../../common/siteActions';
 import SelectWorker from '../../Parking/selectWorker';
 
@@ -29,7 +30,10 @@ type Props = {
   parkingSpotIdForUserAdd?: number,
   updateParkingSpotMainUsers?() : any,
   updateSpotTable?(): any,
-  redButton?: boolean
+  redButton?: boolean,
+  enterpriseId?: number,
+  updateParkingSpots?(): any,
+  setParkingSpotAddModal?(e : any) : any
 };
 
 export const DialogComponent: FC<Props> = ({
@@ -53,9 +57,14 @@ export const DialogComponent: FC<Props> = ({
   confirmButton, 
   parkingSpotMainUsers,
   regularUsers,
-  redButton}) => {
+  redButton,
+  enterpriseId,
+  updateParkingSpots,
+  setParkingSpotAddModal
+}) => {
 
   const dispatch = useDispatch();
+
   const handleBookingRight = async (enterpriseId:number, accountId: number) => {
       changeCanBook(enterpriseId, accountId).then(()=>{
         updateParkingSpotMainUsers!();
@@ -95,12 +104,19 @@ export const DialogComponent: FC<Props> = ({
           </DialogContentText>
 
           {inputFieldNumberBoolean ? (
+            <div>
             <Input
             style={{width: "100%"}}
               placeholder="Sisesta parklakoha number..."
               type="number"
               inputProps={{ min: 1 }}
-              onChange={inputOnChange}/>):''}
+              onChange={inputOnChange}/>
+              <p> </p>
+            <DialogContentText id="alert-dialog-description">
+            Või lisa kohad exceli tabelist. NB! Failis peab parkimiskohtade numbrite tulba pealkiri olema "Number"
+            </DialogContentText>  
+            <ExcelReader enterpriseId={enterpriseId!} updateParkingSpots={updateParkingSpots!} setParkingSpotAddModal={setParkingSpotAddModal!} /> 
+              </div>):''}
           
           {inputFieldFileBoolean? (<Input disableUnderline type="file" onChange={onFileChange!} id="input"/>):''}
         
@@ -150,7 +166,7 @@ export const DialogComponent: FC<Props> = ({
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={()=>{handleClose(); setChecked(false);}} color="primary">
             Loobu
           </Button>
           { redButton ? 

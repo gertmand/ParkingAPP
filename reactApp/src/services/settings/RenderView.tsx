@@ -1,11 +1,23 @@
 import { CircularProgress } from '@material-ui/core';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../store';
 import GlobalStyles from '../../style/GlobalStyles';
 import PrivateRoutes from './PrivateRoutes';
 import Routes from './Routes';
 
-const RenderView = (pageLoading: boolean) => {
-    if (!pageLoading) {
+
+//TODO: vaheldumisi ei lae ära login/home page
+// const RenderView = (pageLoading: boolean) => {
+//     if (!pageLoading) {
+
+
+const RenderView = () => {
+    const userDataFetching = useSelector<AppState, boolean>(state => state.user.userDataFetching);
+    const enterpriseUserDataFetching = useSelector<AppState, boolean>(state => state.user.enterpriseUserDataFetching);
+    const enterpriseParkingDataFetching = useSelector<AppState, boolean>(state => state.user.enterpriseParkingSpotDataFetching);
+    
+    if (!userDataFetching && !enterpriseUserDataFetching && !enterpriseParkingDataFetching) {
         if (!localStorage.getItem('token')) {
         return (
             <>
