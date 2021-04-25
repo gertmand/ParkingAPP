@@ -35,7 +35,7 @@ namespace API.Services
         AccountResponse Create(CreateRequest model);
         AccountResponse Update(int id, UpdateRequest model);
         void Delete(int id);
-        void AddCar(int id, CarResponse request);
+        void AddCar(int id,  AddCarRequest request);
         void DeleteCar(int id, CarResponse request);
     }
 
@@ -424,7 +424,7 @@ namespace API.Services
             return resultCars;
         }
 
-        public void AddCar(int id, CarResponse request)
+        public void AddCar(int id, AddCarRequest request)
         {
             var car = _mapper.Map<Car>(request);
             _context.Cars.Add(car);
@@ -443,9 +443,6 @@ namespace API.Services
         {
             var car = _context.Cars.Find(request.Id);
             _context.Cars.Remove(car);
-            _context.SaveChanges();
-            var ac = _context.AccountCars.Where(x => x.CarId == request.Id && x.AccountId == id).First();
-            _context.AccountCars.Remove(ac);
             _context.SaveChanges();
         }
     }

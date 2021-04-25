@@ -176,16 +176,16 @@ namespace API.Controllers
         }
         // cars
 
-        [Authorize]
-        [HttpPost]
-        public ActionResult<CarResponse> AddCar(CarResponse car)
+        
+        [HttpPost("add-car")]
+        public ActionResult<CarResponse> AddCar(AddCarRequest car)
         {
             _accountService.AddCar(Account.Id, car);
             return Ok(new { message = "Car successfully added!" });
         }
 
-        [Authorize]
-        [HttpPost]
+        
+        [HttpPost("delete-car")]
         public ActionResult<CarResponse> DeleteCar(CarResponse car)
         {
             _accountService.DeleteCar(Account.Id, car);

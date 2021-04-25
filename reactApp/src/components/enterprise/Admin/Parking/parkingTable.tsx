@@ -215,6 +215,8 @@ const ParkingTable: FC<TableProps> = ({
         confirmButton="Lisa parkimiskoht"
         updateParkingSpots={updateParkingSpots} 
         setParkingSpotAddModal={setParkingSpotAddModal}
+        checked={checked}
+        setChecked={setChecked}
       />
 
       <Modal
