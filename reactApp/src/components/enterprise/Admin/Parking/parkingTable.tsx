@@ -136,7 +136,7 @@ const ParkingTable: FC<TableProps> = ({
             })
           );
       });
-    addParkingSpot({ number: parkingSpotNr , enterpriseId: enterpriseId}).then(() => {
+    addParkingSpot({ number: parkingSpotNr}, enterpriseId ).then(() => {
       setParkingSpotAddModal(false);
       updateParkingSpots();
       dispatch(
@@ -213,7 +213,6 @@ const ParkingTable: FC<TableProps> = ({
         dialogTitle="Sisesta uue parklakoha number"
         dialogContextText="Sama numbriga parkimiskohta ei ole võimalik lisada."
         confirmButton="Lisa parkimiskoht"
-        enterpriseId={enterpriseId} 
         updateParkingSpots={updateParkingSpots} 
         setParkingSpotAddModal={setParkingSpotAddModal}
       />

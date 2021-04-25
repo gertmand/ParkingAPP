@@ -115,7 +115,7 @@ export const DialogComponent: FC<Props> = ({
             <DialogContentText id="alert-dialog-description">
             Või lisa kohad exceli tabelist. NB! Failis peab parkimiskohtade numbrite tulba pealkiri olema "Number"
             </DialogContentText>  
-            <ExcelReader enterpriseId={enterpriseId!} updateParkingSpots={updateParkingSpots!} setParkingSpotAddModal={setParkingSpotAddModal!} /> 
+            <ExcelReader updateParkingSpots={updateParkingSpots!} setParkingSpotAddModal={setParkingSpotAddModal!} /> 
               </div>):''}
           
           {inputFieldFileBoolean? (<Input disableUnderline type="file" onChange={onFileChange!} id="input"/>):''}

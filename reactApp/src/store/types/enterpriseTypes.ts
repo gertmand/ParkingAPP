@@ -79,8 +79,7 @@ export type ParkingSpot = {
 }
 
 export type ParkingSpotRequest = {
-    number : number,
-    enterpriseId: number
+    number : number
 }
 
 export type ParkingSpotMainUserResponse = {

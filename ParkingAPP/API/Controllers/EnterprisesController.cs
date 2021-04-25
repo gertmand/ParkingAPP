@@ -306,7 +306,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{enterpriseId}/admin/parkingspots/add")]
-        public ActionResult<ParkingSpotResponse> AddParkingSpot(ParkingSpotRequest request)
+        public ActionResult<ParkingSpotResponse> AddParkingSpot(ParkingSpotRequest request,int enterpriseId)
         {
             if (Account == null)
             {
@@ -314,20 +314,20 @@ namespace API.Controllers
 
             }
 
-            if (!_enterpriseService.CheckUserEnterprise(Account.Id, request.EnterpriseId))
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
             {
                 return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
             }
 
-            if (_enterpriseService.GetEnterpriseAdmin(request.EnterpriseId, Account.Id) == false)
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
             {
                 return Unauthorized();
             }
-            return _parkingSpotService.AddParkingSpot(request, request.EnterpriseId);
+            return _parkingSpotService.AddParkingSpot(request, enterpriseId);
         }
 
         [HttpPost("{enterpriseId}/admin/parkingspots/addcollection")]
-        public IActionResult AddParkingSpotArray(ParkingSpotRequest[] request)
+        public IActionResult AddParkingSpotArray(ParkingSpotRequest[] request,int  enterpriseId)
         {
             if (Account == null)
             {
@@ -335,16 +335,16 @@ namespace API.Controllers
 
             }
 
-            if (!_enterpriseService.CheckUserEnterprise(Account.Id, request[0].EnterpriseId))
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
             {
                 return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
             }
 
-            if (_enterpriseService.GetEnterpriseAdmin(request[0].EnterpriseId, Account.Id) == false)
+            if (_enterpriseService.GetEnterpriseAdmin(enterpriseId, Account.Id) == false)
             {
                 return Unauthorized();
             }
-            _parkingSpotService.AddParkingSpotArray(request);
+            _parkingSpotService.AddParkingSpotArray(request, enterpriseId);
             return Ok("Kohad lisatud.");
         }
 

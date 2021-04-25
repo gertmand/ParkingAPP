@@ -84,17 +84,14 @@ export const deleteParkingSpotMainUser = async (entepriseId: number, accountId: 
     return await axios.post(`${apiUrl}/api/enterprises/${entepriseId}/admin/parkingspots/${parkingSpotId}/user/${accountId}/delete`,null,  {headers: {"Content-Type": "application/json",...authHeader()}} )
 }
 
-export const addParkingSpot = (request: ParkingSpotRequest) => {
-    return postParkingSpot(request);
+export const addParkingSpot = (request: ParkingSpotRequest, enterpriseId: number) => {
+    return post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/add`,request);
 };
 
-export const addParkingSpotArray = (request: ParkingSpotRequest[]) => {
-    return post(`${apiUrl}/api/enterprises/${request[0].enterpriseId}/admin/parkingspots/addcollection`, request);
+export const addParkingSpotArray = (request: ParkingSpotRequest[], enterpriseId:number) => {
+    return post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/parkingspots/addcollection`, request);
 };
 
-const postParkingSpot = (request: ParkingSpotRequest) => {
-    return axios.post(`${apiUrl}/api/enterprises/${request.enterpriseId}/admin/parkingspots/add`, JSON.stringify(request), {headers: {"Content-Type": "application/json", ...authHeader()}});
-};
 
 export const deleteParkingSpot = (parkingSpotId: number, enterpriseId : number) => {
     if(parkingSpotId !== undefined){

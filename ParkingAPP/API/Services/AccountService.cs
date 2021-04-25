@@ -29,7 +29,7 @@ namespace API.Services
         void ForgotPassword(ForgotPasswordRequest model, string origin);
         void ValidateResetToken(ValidateResetTokenRequest model);
         void ResetPassword(ResetPasswordRequest model);
-        public IList<CarResponse> GetCarsByAccountId(int id);
+        IList<CarResponse> GetCarsByAccountId(int id);
         IEnumerable<AccountResponse> GetAll();
         AccountResponse GetById(int id);
         AccountResponse Create(CreateRequest model);
@@ -126,6 +126,8 @@ namespace API.Services
             {
                 // send already registered error in email to prevent account enumeration
                 sendAlreadyRegisteredEmail(model.Email, origin);
+                //TODO: kui o aega siis kasuta seda osa, et kasutajale anda info olemaoleva emaili kohta. 
+                //throw new AppException("Email on juba olemas!");
                 return;
             }
 

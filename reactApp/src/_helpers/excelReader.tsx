@@ -1,9 +1,11 @@
 import { Input, Button } from "@material-ui/core";
+import { LaptopWindows } from "@material-ui/icons";
 import React from "react";
 import { FC, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as XLSX from "xlsx";
 import { SET_SUCCESS_ALERT } from "../components/common/siteActions";
+import { AppState } from "../store";
 import { addParkingSpotArray } from "../store/queries/enterpriseQueries";
 import { ParkingSpotRequest } from "../store/types/enterpriseTypes";
 
@@ -11,20 +13,19 @@ import { ParkingSpotRequest } from "../store/types/enterpriseTypes";
 //TODO: faili kontroll
 
 type Props = {
-    enterpriseId: number;
     updateParkingSpots(): any;
     setParkingSpotAddModal(e : any) : any;
   };
   
-  export const ExcelReader: FC<Props> = ({enterpriseId,updateParkingSpots,setParkingSpotAddModal}) => {
+  export const ExcelReader: FC<Props> = ({updateParkingSpots,setParkingSpotAddModal}) => {
   
     const dispatch = useDispatch();
-    const [dataFromExcel, setDataFromExcel] = useState<any[]>([]);
     const [addButton, setAddButton] = useState(false);
-    const [file, setFile] = useState<Blob>();
-    let parkingSpotsArray: Array<ParkingSpotRequest> = [];
+    const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id);
   
-    const readExcel = (file: Blob) => {
+    const [parkingSpotsArray, setParkingSpotsArray] = useState<ParkingSpotRequest[]>([]);
+
+    const readExcel = async (file: Blob) => {
       const promise = new Promise((resolve, reject) => {
         const fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
@@ -40,22 +41,18 @@ type Props = {
           reject(error);
         };
       });
-  
-      promise.then((d) => {
-        return setDataFromExcel(d as any);
-      });
+
+      promise.then((d : any) => {
+        d.forEach((element: { Number: any; }) => {
+          setParkingSpotsArray(prevState => [...prevState, {number:element.Number}])
+        });
+      })
     };
   
     const addParkingSpots = () => {
-    
-        if(file !== undefined){
-            readExcel(file);
-        }
-      
-      dataFromExcel.forEach(element => {
-        parkingSpotsArray.push({number:element.Number, enterpriseId:enterpriseId})
-      });
-      addParkingSpotArray(parkingSpotsArray).then(() => {
+
+      if(parkingSpotsArray.length === 0) return;
+      addParkingSpotArray(parkingSpotsArray, enterpriseId).then(() => {
         setParkingSpotAddModal(false);
         updateParkingSpots();
         dispatch(
@@ -64,7 +61,7 @@ type Props = {
             message: 'Parkimiskohad lisatud!'
           })
         );
-      });;
+      });
     }
   
     return (
@@ -78,7 +75,7 @@ type Props = {
           if (e.target.files == null || e.target.files === undefined) {
             throw new Error('Error finding e.target.files');
           }
-          setFile(e.target.files[0]);
+          readExcel(e.target.files[0]);
           setAddButton(true);
         }}
         />
