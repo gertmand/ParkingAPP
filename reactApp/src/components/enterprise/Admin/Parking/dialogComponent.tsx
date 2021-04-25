@@ -103,7 +103,6 @@ export const DialogComponent: FC<Props> = ({
       <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
         <DialogContent>
-          
           <DialogContentText id="alert-dialog-description">
             {dialogContextText}
           </DialogContentText>

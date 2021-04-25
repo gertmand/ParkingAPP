@@ -216,6 +216,8 @@ const ParkingTable: FC<TableProps> = ({
         enterpriseId={enterpriseId} 
         updateParkingSpots={updateParkingSpots} 
         setParkingSpotAddModal={setParkingSpotAddModal}
+        checked={checked}
+        setChecked={setChecked}
       />
 
       <Modal
