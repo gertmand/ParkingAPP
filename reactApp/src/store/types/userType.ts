@@ -22,9 +22,9 @@ export type SelectedUser = {
 }
 
 export type Car = {
-    id: number,
+    id?: number,
     regNr: string,
-    temporary: boolean
+    temporary?: boolean
 }
 
 export type RegisterUser = {

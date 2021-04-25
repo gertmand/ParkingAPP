@@ -22,6 +22,7 @@ import { AppState } from '../../store';
 import { User } from '../../store/types/userType';
 import theme from '../../style/theme';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { XCircle } from 'react-feather';
   
 const useStyles = makeStyles((theme: Theme) =>
 createStyles({
@@ -36,17 +37,20 @@ createStyles({
   
 type Props = {
   handleOpenDeleteConfirmationModal(): any;
+  handleOpenAddCarModal(): any;
+  setCarId: any;
+  setCarRegNr: any;
 };
 
-  export const UserCarsTableComponent: FC<Props> = ({handleOpenDeleteConfirmationModal}) => {
+  export const UserCarsTableComponent: FC<Props> = ({handleOpenDeleteConfirmationModal, handleOpenAddCarModal, setCarId, setCarRegNr}) => {
     const classes = useStyles();
-    const [carId, setCarId] = useState(0);
     const userData = useSelector<AppState, User>(state => state.user.userData);
     function getCarId(params: GridValueGetterParams) {
       return `${params.getValue('id')}`;
     }
       const handleDeleteButtonClick = (params: GridValueGetterParams) => {
         setCarId(+getCarId(params));
+        setCarRegNr(`${params.getValue('regNr')}`)
         handleOpenDeleteConfirmationModal();
       };
   
@@ -80,9 +84,9 @@ type Props = {
           return (
             <ButtonGroup style={{ margin: 'auto' }}>
               <Tooltip title="Kustuta">
-                <Button>
-                  <DeleteIcon/>
-                </Button>
+              <Button onClick={() => handleDeleteButtonClick(params)}>
+                <XCircle color="#e08d8d" />
+              </Button>
               </Tooltip>
               {/* <Tooltip title="Kustuta parkimiskoht">
                 <Button onClick={() => handleDeleteButtonClick(params)}>
@@ -102,7 +106,8 @@ type Props = {
         <div className={classes.root}>{"SÕIDUKID"}</div>
         </Grid>
         <Grid item xs={6}>
-          <Button color="primary" variant="contained" style={{float: "right"}}>
+          <Button color="primary" variant="contained" style={{float: "right"}}
+          onClick={() => handleOpenAddCarModal()}>
             Lisa sõiduk
           </Button>
         </Grid>

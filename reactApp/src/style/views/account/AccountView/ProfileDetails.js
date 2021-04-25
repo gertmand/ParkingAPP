@@ -101,7 +101,7 @@ const ProfileDetails = ({ className, ...rest }) => {
         
       </Card>
       <Card>
-        <UserCars/>
+        <UserCars />
       </Card>
     </form>
   );

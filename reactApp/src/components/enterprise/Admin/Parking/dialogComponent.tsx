@@ -1,4 +1,4 @@
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@material-ui/core';
+import { Button, Card, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Tooltip } from '@material-ui/core';
 import React, { FC } from 'react';
 import { XCircle } from 'react-feather';
 import { useDispatch } from 'react-redux';
@@ -33,7 +33,9 @@ type Props = {
   redButton?: boolean,
   enterpriseId?: number,
   updateParkingSpots?(): any,
-  setParkingSpotAddModal?(e : any) : any
+  setParkingSpotAddModal?(e : any) : any,
+  openAddCarModal?: boolean,
+  handleAddCarTemporaryChange?: any
 };
 
 export const DialogComponent: FC<Props> = ({
@@ -60,7 +62,9 @@ export const DialogComponent: FC<Props> = ({
   redButton,
   enterpriseId,
   updateParkingSpots,
-  setParkingSpotAddModal
+  setParkingSpotAddModal,
+  openAddCarModal,
+  handleAddCarTemporaryChange
 }) => {
 
   const dispatch = useDispatch();
@@ -99,6 +103,7 @@ export const DialogComponent: FC<Props> = ({
       <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
         <DialogContent>
+          
           <DialogContentText id="alert-dialog-description">
             {dialogContextText}
           </DialogContentText>
@@ -163,6 +168,30 @@ export const DialogComponent: FC<Props> = ({
               </TableBody>
             </Table>
                   </TableContainer>): ''}  
+          
+            {openAddCarModal ? (
+            <div>
+              <TextField
+                fullWidth
+                label="Numbrimärk"
+                name="regNr"
+                onChange={inputOnChange}
+                required
+                variant="outlined"
+              />
+                <p></p>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={handleAddCarTemporaryChange}
+                      name="checkedB"
+                      color="primary"
+                    />
+                  }
+                  label="Ajutine?"
+                  />
+            </div>
+            ):''}
 
         </DialogContent>
         <DialogActions>

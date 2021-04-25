@@ -26,6 +26,8 @@ namespace API.Helpers
 
             CreateMap<Car, CarResponse>().ForMember(x => x.Temporary, opt => opt.MapFrom(x => x.Temporary ? "Jah" : "Ei"));
 
+            CreateMap<AddCarRequest, Car>();
+
             CreateMap<RegisterRequest, Account>();
 
             CreateMap<CreateRequest, Account>();

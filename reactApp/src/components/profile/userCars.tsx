@@ -1,45 +1,99 @@
 import { Box, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addCar, deleteCar, getUserData } from '../../store/queries/userQueries'
+import { SET_SUCCESS_ALERT } from '../common/siteActions'
+import DialogComponent from '../enterprise/Admin/Parking/dialogComponent'
 import UserCarsTableComponent from './userCarsTableComponent'
 
 const UserCars = () => {
     const classes = useStyles();
-    // const [cars, setCars] = useState<Car[]>([]);
+    const dispatch = useDispatch();
+
     const handleOpenDeleteConfirmationModal = () => {setDeleteConfirmationModal(true);};
     const handleCloseDeleteConfirmationModal = () => {setDeleteConfirmationModal(false);};
+
+    const handleOpenAddCarModal = () => {setAddCarModal(true);};
+    const handleCloseAddCarModal = () => {setAddCarModal(false);};
+
+    const handleCarChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setAddCarRegNr(event.target.value as string);
+    };
+
+    const handleAddCarTemporaryChange = (e: any) => {setChecked(e.target.checked);};
+
+    const [openAddCarModal,setAddCarModal] = React.useState(false);
     const [openDeleteConfirmationModal,setDeleteConfirmationModal] = React.useState(false);
+    const [carId, setCarId] = useState<number>(0);
+    const [regNr, setCarRegNr] = useState<string>('');
+    const [addRegNr, setAddCarRegNr] = useState<string>('');
+    const [checked, setChecked] = useState(false);
+
+    const confirmDeleteCar = () => {
+      deleteCar({id: carId, regNr: regNr})?.then(() => {
+        setDeleteConfirmationModal(false);
+        getUserData(dispatch, false)
+        dispatch(
+          SET_SUCCESS_ALERT({
+            status: true,
+            message: 'Sõiduk numbrimärgiga ' + regNr + ' kustutatud!'
+          })
+        );
+      })
+    }
+
+    const confirmAddCar = () => {
+      console.log(addRegNr, checked)
+      addCar({regNr: addRegNr, temporary: checked})?.then(() => {
+        setAddCarModal(false);
+        getUserData(dispatch, false)
+        dispatch(
+          SET_SUCCESS_ALERT({
+            status: true,
+            message: 'Sõiduk lisatud!'
+          })
+        );
+      }).catch((err: any) => {
+        console.log(err)
+      })
+    }
 
     return (
         <div>
-            
+              {/* Sõiduki kustutamise modaal */}
+              <DialogComponent
+                open={openDeleteConfirmationModal}
+                handleClose={handleCloseDeleteConfirmationModal}
+                onSubmit={confirmDeleteCar}
+                dialogTitle="Kas oled kindel?"
+                dialogContextText={"Kas olete kindel, et soovite kustutada sõidukit numbrimärgiga " + regNr + "?"}
+                confirmButton="Kustuta"
+                checked={checked}
+                setChecked={setChecked}
+              />
+              {/* Sõiduki lisamise modaal */}
+              <DialogComponent
+                open={openAddCarModal}
+                handleClose={handleCloseAddCarModal}
+                onSubmit={confirmAddCar}
+                dialogTitle="Sõiduki lisamine"
+                dialogContextText={"Sisestage oma sõiduki andmed"}
+                confirmButton="Lisa sõiduk"
+                checked={checked}
+                setChecked={setChecked}
+                openAddCarModal={openAddCarModal}
+                handleAddCarTemporaryChange={handleAddCarTemporaryChange}
+                inputOnChange={handleCarChange}
+              />
+              {/* Sõidukite tabel */}
               <Box className={clsx(classes.root)}>
-                <UserCarsTableComponent handleOpenDeleteConfirmationModal={handleOpenDeleteConfirmationModal}/>
-
-                {/* <Box className={clsx(classes.root)}><Card><CardHeader title="SÕIDUKI LISAMINE" />
-                  <Divider /><CardContent><TextField
-                    fullWidth
-                    label="Numbrimärk"
-                    name="lastName"
-                    onChange={handleCarChange}
-                    required
-                    variant="outlined"
+                <UserCarsTableComponent 
+                  setCarId={setCarId} 
+                  setCarRegNr={setCarRegNr}
+                  handleOpenDeleteConfirmationModal={handleOpenDeleteConfirmationModal}
+                  handleOpenAddCarModal={handleOpenAddCarModal}
                   />
-                    <FormControlLabel
-                      control={<Checkbox checked={temporary} onChange={handleChange} name="temporary" />}
-                      label="Ajutine?"
-                    /></CardContent><Divider />
-                  <Box display="flex" justifyContent="left" p={2}><Button
-                    className={classes.autodeButton}
-                    color="primary"
-                    variant="contained"
-                    onClick={ConfirmCar}
-
-                  >
-                    Lisa sõiduk
-                </Button></Box></Card></Box> */}
-
-
               </Box>
         </div>
     )
