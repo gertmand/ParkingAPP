@@ -6,7 +6,6 @@ import {
   CardHeader,
   Divider,
   Grid,
-  useTheme,
   makeStyles, TextField
 } from '@material-ui/core';
 import clsx from 'clsx';
@@ -21,7 +20,6 @@ const useStyles = makeStyles(() => ({
 
 const ProfileDetails = ({ className, ...rest }) => {
   const classes = useStyles();
-  const theme = useTheme();
   const userData = useSelector(state => state.user.userData);
   const [values, setValues] = useState();
   const handleChange = event => {

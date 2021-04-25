@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import { useDispatch, useSelector } from 'react-redux';
 import ErrorAlert from './components/common/errorAlert';

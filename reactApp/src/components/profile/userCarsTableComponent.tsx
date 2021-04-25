@@ -15,8 +15,7 @@ import {
   GridColumns,
   GridValueGetterParams
 } from '@material-ui/data-grid';
-import DeleteIcon from '@material-ui/icons/Delete';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { User } from '../../store/types/userType';

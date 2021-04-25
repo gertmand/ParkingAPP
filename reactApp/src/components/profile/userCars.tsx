@@ -82,7 +82,6 @@ const UserCars = () => {
                 confirmButton="Lisa sõiduk"
                 checked={checked}
                 setChecked={setChecked}
-                openAddCarModal={openAddCarModal}
                 handleAddCarTemporaryChange={handleAddCarTemporaryChange}
                 inputOnChange={handleCarChange}
               />
