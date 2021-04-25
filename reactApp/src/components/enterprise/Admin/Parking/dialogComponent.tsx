@@ -194,7 +194,7 @@ export const DialogComponent: FC<Props> = ({
 
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>{handleClose(); setChecked(false);}} color="primary">
+          <Button onClick={()=>handleClose()} color="primary">
             Loobu
           </Button>
           { redButton ? 

@@ -121,7 +121,6 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
             onChange={event => handleDescriptionChange(event.target.value)}
             autoFocus
             multiline
-            rows={2}
             rowsMax={4}
             margin="dense"
             error={descriptionError ? true : false}
