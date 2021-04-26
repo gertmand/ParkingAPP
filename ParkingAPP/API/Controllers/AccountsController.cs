@@ -188,7 +188,7 @@ namespace API.Controllers
         [HttpPost("delete-car")]
         public ActionResult<CarResponse> DeleteCar(CarResponse car)
         {
-            _accountService.DeleteCar(Account.Id, car);
+            _accountService.DeleteCar(car);
             return Ok(new { message = "Car deleted!" });
         }
 

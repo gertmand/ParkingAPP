@@ -2,6 +2,7 @@ using System.Linq;
 using API.Models.AccountDtos;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
+using API.Models.JoinedEntities;
 using API.Models.ParkingSpotDtos;
 using API.Services;
 using AutoMapper;
@@ -58,6 +59,8 @@ namespace API.Helpers
             CreateMap<ReleasedSpot, ReleasedResponse>();
 
             CreateMap<EnterpriseCreateRequest, Enterprise>();
+
+            CreateMap<AccountCars, CarResponse>();
         }
     }
 }

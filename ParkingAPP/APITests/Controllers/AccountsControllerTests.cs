@@ -94,50 +94,6 @@ namespace APITests.Controllers
             Assert.Pass();
         }
 
-        [Test]
-        public void GetAllTest()
-        {
-            Assert.Pass();
-        }
-
-        [Test]
-        public void GetByIdTest()
-        {
-            Assert.Pass();
-        }
-
-        [Test]
-        public void CreateTest()
-        {
-            Assert.Pass();
-        }
-
-        [Test]
-        public void UpdateTest()
-        {
-            Assert.Pass();
-        }
-
-        [Test]
-        public void DeleteTest()
-        {
-            Assert.Pass();
-        }
-        // cars
-
-        [Test]
-        public void AddCarTest()
-        {
-            Assert.Pass();
-        }
-
-
-        [Test]
-        public void DeleteCarTest()
-        {
-            Assert.Pass();
-        }
-
         private void setTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions
