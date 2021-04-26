@@ -366,11 +366,13 @@ namespace API.Services
 
         public void AddParkingSpotArray(ParkingSpotRequest[] request, int enterpriseId)
         {
-            //TODO: Parklakoht kui on kustutatud, siis uut parklakohta sama numbriga lisada ei lase
             List<ParkingSpot> spots = new List<ParkingSpot>();
             foreach (var spot in request)
             {
-                spots.Add(new ParkingSpot { EnterpriseId = enterpriseId, Number = spot.Number, Created = DateTime.UtcNow });
+                if (!_context.ParkingSpots.Where(x=>x.EnterpriseId==enterpriseId).Select(x => x.Number).Contains(spot.Number))
+                {
+                    spots.Add(new ParkingSpot { EnterpriseId = enterpriseId, Number = spot.Number, Created = DateTime.UtcNow });
+                }
             }
             _context.ParkingSpots.AddRange(spots);
             _context.SaveChanges();

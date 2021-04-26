@@ -3,13 +3,12 @@ import React from "react";
 import { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as XLSX from "xlsx";
-import { SET_SUCCESS_ALERT } from "../components/common/siteActions";
+import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from "../components/common/siteActions";
 import { AppState } from "../store";
 import { addParkingSpotArray } from "../store/queries/enterpriseQueries";
 import { ParkingSpotRequest } from "../store/types/enterpriseTypes";
 
 
-//TODO: faili kontroll
 
 type Props = {
     updateParkingSpots(): any;
@@ -25,6 +24,7 @@ type Props = {
     const [parkingSpotsArray, setParkingSpotsArray] = useState<ParkingSpotRequest[]>([]);
 
     const readExcel = async (file: Blob) => {
+      
       const promise = new Promise((resolve, reject) => {
         const fileReader = new FileReader();
         fileReader.readAsArrayBuffer(file);
@@ -50,17 +50,19 @@ type Props = {
   
     const addParkingSpots = () => {
 
-      if(parkingSpotsArray.length === 0) return;
-      addParkingSpotArray(parkingSpotsArray, enterpriseId).then(() => {
-        setParkingSpotAddModal(false);
-        updateParkingSpots();
-        dispatch(
-          SET_SUCCESS_ALERT({
-            status: true,
-            message: 'Parkimiskohad lisatud!'
-          })
-        );
-      });
+      if(parkingSpotsArray.length > 0){
+        console.log(parkingSpotsArray)
+        addParkingSpotArray(parkingSpotsArray, enterpriseId).then(() => {
+          setParkingSpotAddModal(false);
+          updateParkingSpots();
+          dispatch(
+            SET_SUCCESS_ALERT({
+              status: true,
+              message: 'Parkimiskohad lisatud!'
+            })
+          );
+        });
+      }
     }
   
     return (
@@ -74,8 +76,17 @@ type Props = {
           if (e.target.files == null || e.target.files === undefined) {
             throw new Error('Error finding e.target.files');
           }
-          readExcel(e.target.files[0]);
-          setAddButton(true);
+          if(e.target.files[0].name.split('.')[1] === "xlsx"){
+            readExcel(e.target.files[0]);
+            setAddButton(true);
+          } else {
+            dispatch(
+              SET_ERROR_ALERT({
+                status: true,
+                message: 'Kontrolli faili, ainult ".xlsx" on lubatud!'
+              })
+            );
+          }
         }}
         />
         {!addButton ? "" : <Button color="primary" variant="contained" onClick={() => addParkingSpots()}>Lisa parkimiskohad</Button>}

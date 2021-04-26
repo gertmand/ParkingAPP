@@ -90,8 +90,8 @@ export const RegisterModal: FC<Props> = ({userAddModal,setUserAddModal}: any) =>
   }, [debouncedValue]);
 
   const genders = [
-    { value: 'mees', label: 'Mr.' },
-    { value: 'naine', label: 'Mrs.' }
+    { value: 'mees', label: 'mees' },
+    { value: 'naine', label: 'naine' }
   ];
 
   const handleUserAdd = async () => {
