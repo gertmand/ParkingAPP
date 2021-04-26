@@ -4,6 +4,10 @@ import {
 
 
 
+  CardHeader,
+
+
+
   Grid,
 
 
@@ -100,9 +104,9 @@ type Props = {
   
     return (
       <>
-      <Grid container justify="space-between" spacing={3} style={{ padding: theme.spacing(2) }}>
+      <Grid container>
         <Grid item xs={6}>
-        <div className={classes.root}>{"SÕIDUKID"}</div>
+        <CardHeader title="Sõidukid" />
         </Grid>
         <Grid item xs={6}>
           <Button color="primary" variant="contained" style={{float: "right"}}
