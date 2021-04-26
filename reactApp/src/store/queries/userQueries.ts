@@ -32,3 +32,7 @@ export const addCar = async (car : any) => {
 export const deleteCar = async (car : any) => {
     return await post(`${apiUrl}/api/accounts/delete-car`, car)
 }
+
+export const editAccount = async (user : any) => {
+    return await post(`${apiUrl}/api/accounts/edit-account`, user)
+}

@@ -36,7 +36,8 @@ namespace API.Services
         AccountResponse Update(int id, UpdateRequest model);
         void Delete(int id);
         void AddCar(int id,  AddCarRequest request);
-        void DeleteCar(CarResponse request);
+        void DeleteCar(int id, CarResponse request);
+        void EditAccount(int id, EditAccountRequest request);
     }
 
     public class AccountService : IAccountService
@@ -46,15 +47,6 @@ namespace API.Services
         private readonly AppSettings _appSettings;
         private readonly IEmailService _emailService;
 
-        public AccountService(
-            DataContext context,
-            IMapper mapper,
-            IEmailService emailService)
-        {
-            _context = context;
-            _mapper = mapper;
-            _emailService = emailService;
-        }
         public AccountService(
             DataContext context,
             IMapper mapper,
@@ -286,53 +278,6 @@ namespace API.Services
             _context.SaveChanges();
         }
 
-        //CARS
-        public IList<CarResponse> GetCarsByAccountId(int id)
-        {
-            var account = getAccount(id);
-            var cars = account.AccountCars.Select(x => x.Car);
-            List<CarResponse> resultCars = new List<CarResponse>();
-            foreach (Car car in cars)
-            {
-                string temp = null;
-                if (car.Temporary)
-                {
-                    temp = "Jah";
-                }
-                else
-                {
-                    temp = "Ei";
-                }
-                resultCars.Add(new CarResponse
-                    { Id = car.Id, RegNr = car.RegNr, Temporary = temp }
-                );
-            }
-
-            return resultCars;
-        }
-
-        public void AddCar(int id, AddCarRequest request)
-        {
-            var car = _mapper.Map<Car>(request);
-            _context.Cars.Add(car);
-            _context.SaveChanges();
-            var carId = _context.Cars.OrderByDescending(x => x.Id).FirstOrDefault().Id;
-            AccountCars ac = new AccountCars()
-            {
-                CarId = carId,
-                AccountId = id
-            };
-            _context.AccountCars.Add(ac);
-            _context.SaveChanges();
-        }
-
-        public void DeleteCar(CarResponse request)
-        {
-            var car = _context.Cars.Find(request.Id);
-            _context.Cars.Remove(car);
-            _context.SaveChanges();
-        }
-
         // helper methods
 
         private Account getAccount(int id)
@@ -456,6 +401,60 @@ namespace API.Services
             );
         }
 
-        
+        public IList<CarResponse> GetCarsByAccountId(int id)
+        {
+            var account = getAccount(id);
+            var cars = account.AccountCars.Select(x => x.Car);
+            List<CarResponse> resultCars = new List<CarResponse>();
+            foreach (Car car in cars)
+            {
+                string temp = null;
+                if (car.Temporary)
+                {
+                    temp = "Jah";
+                }
+                else
+                {
+                    temp = "Ei";
+                }
+                resultCars.Add(new CarResponse
+                    {Id = car.Id, RegNr = car.RegNr, Temporary = temp}
+                );
+            }
+
+            return resultCars;
+        }
+
+        public void AddCar(int id, AddCarRequest request)
+        {
+            var car = _mapper.Map<Car>(request);
+            _context.Cars.Add(car);
+            _context.SaveChanges();
+            var carId = _context.Cars.OrderByDescending(x => x.Id).FirstOrDefault().Id;
+            AccountCars ac = new AccountCars()
+            {
+                CarId = carId,
+                AccountId = id
+            };
+            _context.AccountCars.Add(ac);
+            _context.SaveChanges();
+        }
+
+        public void DeleteCar(int id, CarResponse request)
+        {
+            var car = _context.Cars.Find(request.Id);
+            _context.Cars.Remove(car);
+            _context.SaveChanges();
+        }
+
+        public void EditAccount(int id, EditAccountRequest request)
+        {
+            var user = _context.Accounts.Find(id);
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.PhoneNr = request.PhoneNr;
+            _context.Accounts.Update(user);
+            _context.SaveChanges();
+        }
     }
 }

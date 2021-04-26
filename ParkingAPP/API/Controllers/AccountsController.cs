@@ -192,9 +192,15 @@ namespace API.Controllers
             return Ok(new { message = "Car deleted!" });
         }
 
+        [HttpPost("edit-account")]
+        public ActionResult<EditAccountRequest> EditUser(EditAccountRequest user)
+        {
+            _accountService.EditAccount(Account.Id, user);
+            return Ok(new { message = "Account updated!" });
+        }
         // helper methods
 
-        private void setTokenCookie(string token)
+            private void setTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions
             {

@@ -4,6 +4,10 @@ import {
 
 
 
+  CardHeader,
+
+
+
   Grid,
 
 
@@ -19,20 +23,7 @@ import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../store';
 import { User } from '../../store/types/userType';
-import theme from '../../style/theme';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { XCircle } from 'react-feather';
-  
-const useStyles = makeStyles((theme: Theme) =>
-createStyles({
-  root: {
-    ...theme.typography.button,
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(1),
-    fontSize: 15
-  },
-}),
-);
   
 type Props = {
   handleOpenDeleteConfirmationModal(): any;
@@ -42,7 +33,6 @@ type Props = {
 };
 
   export const UserCarsTableComponent: FC<Props> = ({handleOpenDeleteConfirmationModal, handleOpenAddCarModal, setCarId, setCarRegNr}) => {
-    const classes = useStyles();
     const userData = useSelector<AppState, User>(state => state.user.userData);
     function getCarId(params: GridValueGetterParams) {
       return `${params.getValue('id')}`;
@@ -100,9 +90,9 @@ type Props = {
   
     return (
       <>
-      <Grid container justify="space-between" spacing={3} style={{ padding: theme.spacing(2) }}>
+      <Grid container>
         <Grid item xs={6}>
-        <div className={classes.root}>{"SÕIDUKID"}</div>
+        <CardHeader title="Sõidukid" />
         </Grid>
         <Grid item xs={6}>
           <Button color="primary" variant="contained" style={{float: "right"}}
