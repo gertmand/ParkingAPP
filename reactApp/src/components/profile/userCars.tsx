@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addCar, deleteCar, getUserData } from '../../store/queries/userQueries'
-import { SET_SUCCESS_ALERT } from '../common/siteActions'
+import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../common/siteActions'
 import DialogComponent from '../enterprise/Admin/Parking/dialogComponent'
 import UserCarsTableComponent from './userCarsTableComponent'
 
@@ -44,7 +44,13 @@ const UserCars = () => {
     }
 
     const confirmAddCar = () => {
-      console.log(addRegNr, checked)
+      if (addRegNr.length > 10 || addRegNr === '')
+      return dispatch(
+        SET_ERROR_ALERT({
+          status: true,
+          message: 'Palun sisestage korrektne numbrimärk!'
+        })
+      );
       addCar({regNr: addRegNr, temporary: checked})?.then(() => {
         setAddCarModal(false);
         getUserData(dispatch, false)
@@ -83,12 +89,13 @@ const UserCars = () => {
                 checked={checked}
                 setChecked={setChecked}
                 handleAddCarTemporaryChange={handleAddCarTemporaryChange}
+                openAddCarModal={openAddCarModal}
                 inputOnChange={handleCarChange}
               />
               {/* Sõidukite tabel */}
               <Box className={clsx(classes.root)}>
-                <UserCarsTableComponent 
-                  setCarId={setCarId} 
+                <UserCarsTableComponent
+                  setCarId={setCarId}
                   setCarRegNr={setCarRegNr}
                   handleOpenDeleteConfirmationModal={handleOpenDeleteConfirmationModal}
                   handleOpenAddCarModal={handleOpenAddCarModal}
