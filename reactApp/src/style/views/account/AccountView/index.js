@@ -5,8 +5,10 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import Page from '../../../Page';
-import ProfileDetails from './ProfileDetails';
+
 import Profile from './Profile';
+
+import ProfilePage from '../../../../pages/ProfilePage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +32,7 @@ const Account = () => {
             <Profile />
           </Grid>
           <Grid item lg={8} md={6} xs={12} >
-            <ProfileDetails/>
+            <ProfilePage />
           </Grid>
         </Grid>
       </Container>

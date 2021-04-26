@@ -28,6 +28,8 @@ namespace API.Helpers
 
             CreateMap<AddCarRequest, Car>();
 
+            CreateMap<EditAccountRequest, Account>();
+
             CreateMap<RegisterRequest, Account>();
 
             CreateMap<CreateRequest, Account>();

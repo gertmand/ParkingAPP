@@ -37,6 +37,7 @@ namespace API.Services
         void Delete(int id);
         void AddCar(int id,  AddCarRequest request);
         void DeleteCar(int id, CarResponse request);
+        void EditAccount(int id, EditAccountRequest request);
     }
 
     public class AccountService : IAccountService
@@ -443,6 +444,16 @@ namespace API.Services
         {
             var car = _context.Cars.Find(request.Id);
             _context.Cars.Remove(car);
+            _context.SaveChanges();
+        }
+
+        public void EditAccount(int id, EditAccountRequest request)
+        {
+            var user = _context.Accounts.Find(id);
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.PhoneNr = request.PhoneNr;
+            _context.Accounts.Update(user);
             _context.SaveChanges();
         }
     }
