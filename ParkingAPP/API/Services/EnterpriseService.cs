@@ -94,7 +94,8 @@ namespace API.Services
         {
             var regularUsersList = new List<EnterpriseAccountsResponse>();
 
-            var spotUsers = _context.ParkingSpotAccounts.ToListAsync().Result.Select(x => x.AccountId);
+            var enterpriseParkingSpots = _context.ParkingSpots.Where(x => x.EnterpriseId == enterpriseId).Select(x=>x.Id);
+            var spotUsers = _context.ParkingSpotAccounts.Where(x=> enterpriseParkingSpots.Contains(x.ParkingSpotId)).ToListAsync().Result.Select(x => x.AccountId);
 
             var enterpriseUsers = _context.EnterpriseAccounts
                 .Include(x => x.Account)
