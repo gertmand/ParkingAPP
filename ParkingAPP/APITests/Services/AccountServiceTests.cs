@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using API.DAL;
 using API.Helpers;
 using API.Models.AccountDtos;
@@ -30,7 +31,7 @@ namespace APITests.Services
                 Title = "Mr",
                 FirstName = "Gert",
                 LastName = "Mänd",
-                Email = "german@ttu.ee",
+                Email = "gert2@ttu.ee",
                 PasswordHash = "$2a$11$XMJY4NPSLnwRYdRLCXMtQ.wL4L9VHjRORvgue2uNxaG6urN9Cr9Su",
                 AcceptTerms = true,
                 Role = Role.Admin,
@@ -69,7 +70,7 @@ namespace APITests.Services
         public void GetAllTest()
         {
             var response = aService.GetAll().Count();
-            Assert.AreEqual(1,response);
+            Assert.IsTrue(response > 0);
         }
 
         [Test]
@@ -117,7 +118,7 @@ namespace APITests.Services
         public void DeleteTest()
         {
             var count = aService.GetAll().Count();
-            aService.Delete(2);
+            aService.Delete(10);
             var countAfterDelete = aService.GetAll().Count();
             Assert.AreEqual(count-1,countAfterDelete);
         }
@@ -132,8 +133,8 @@ namespace APITests.Services
             };
             aService.AddCar(1, request);
             var count = _context.Cars.Count();
-            Assert.AreEqual(1, count);
-            _context.Cars.Remove(_context.Cars.Find(1));
+            Assert.AreEqual(2, count);
+            //_context.Cars.Remove(_context.Cars.Find(1));
             //_context.AccountCars.Remove(_context.AccountCars.Find(1, 1));
             _context.SaveChanges();
         }
@@ -148,7 +149,7 @@ namespace APITests.Services
             };
             aService.AddCar(1, request);
             var result = aService.GetCarsByAccountId(1).Count;
-            Assert.AreEqual(1, result);
+            Assert.AreEqual(2, result);
         }
 
         [Test]

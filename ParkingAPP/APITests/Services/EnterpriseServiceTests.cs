@@ -160,8 +160,8 @@ namespace APITests.Services
         [Test]
         public void ValidateCarNumberTest()
         {
-            var response = eService.ValidateCarNumber("123abc", 1);
-            Assert.AreEqual(response, "Autol numbriga 123abc on lubatud selles parklas parkida.");
+            var response = eService.ValidateCarNumber("123est", 1);
+            Assert.AreEqual(response, "Autol numbriga 123est on lubatud selles parklas parkida.");
         }
 
         [Test]
