@@ -20,11 +20,7 @@ import {
   GridValueGetterParams
 } from '@material-ui/data-grid';
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../store';
-import { User } from '../../store/types/userType';
 import { XCircle } from 'react-feather';
-import { updateNonNullExpression } from 'typescript';
   
 type Props = {
   handleOpenDeleteConfirmationModal?(): any;
@@ -66,6 +62,7 @@ type Props = {
         headerAlign: 'center',
       },
       {
+        hide: dataForAdmin,
         field: 'tegevused',
         headerName: 'Tegevused',
         sortable: false,
@@ -76,16 +73,15 @@ type Props = {
         valueGetter: getCarId,
         renderCell: (params: GridValueGetterParams) => {
           return (
-            <div>
-              {!dataForAdmin ? <ButtonGroup style={{ margin: 'auto' }}>
+            <ButtonGroup style={{ margin: 'auto' }}>
+              {!dataForAdmin ? 
               <Tooltip title="Kustuta">
               <Button onClick={() => handleDeleteButtonClick(params)}>
                 <XCircle color="#e08d8d" />
               </Button>
               </Tooltip>
-            </ButtonGroup> : ''}
-            
-            </div>
+             : ''}
+             </ButtonGroup>
           );
         }
       }

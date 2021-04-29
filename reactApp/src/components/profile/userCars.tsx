@@ -55,7 +55,8 @@ const UserCars = () => {
       );
       addCar({regNr: addRegNr, temporary: checked})?.then(() => {
         setAddCarModal(false);
-        getUserData(dispatch, false)
+        getUserData(dispatch, false);
+        setChecked(false);
         dispatch(
           SET_SUCCESS_ALERT({
             status: true,
