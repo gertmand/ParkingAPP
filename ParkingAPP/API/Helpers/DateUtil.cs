@@ -36,7 +36,7 @@ namespace RIK_parkimise_rakendus.Helpers
         }
 
         public static List<T> RemoveDeletedDates(List<T> list)
-        {
+            {
             for (int i = list.Count - 1; i >= 0; i--)
             {
                 if (list[i].DeletionDate != null)

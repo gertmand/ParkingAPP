@@ -5,7 +5,6 @@ using API.Models.EnterpriseDtos;
 using API.Models.Entities;
 using API.Models.JoinedEntities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace API.DAL
 {

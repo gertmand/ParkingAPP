@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using API.DAL;
 using API.Helpers;
 using API.Models.Entities;
 using API.Models.JoinedEntities;
 using API.Models.ParkingSpotDtos;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 using RIK_parkimise_rakendus.Helpers;
 
 namespace API.Services
@@ -30,7 +27,7 @@ namespace API.Services
         ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId);
         IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers (int enterpriseId);
         ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request);
-        ParkingSpotMainUserResponse DeteleParkingSpotMainUser(int accountId, int parkingSpotId);
+        ParkingSpotMainUserResponse DeleteParkingSpotMainUser(int accountId, int parkingSpotId);
         void AddParkingSpotArray(ParkingSpotRequest[] request, int enterpriseId);
     }
 
@@ -122,7 +119,6 @@ namespace API.Services
 
             return _mapper.Map<ParkingSpotResponse>(parkingSpot);
         }
-
 
         public ParkingSpotStatusType GetParkingSpotStatus(int id)
         {
@@ -317,6 +313,7 @@ namespace API.Services
         {
             List<AvailableDatesResponse> availableForReservation = new List<AvailableDatesResponse>();
 
+
             var releasedSpots = _context.ReleasedSpots
                 .Include(x => x.ParkingSpot)
                 .ThenInclude(x => x.Enterprise)
@@ -411,7 +408,7 @@ namespace API.Services
             return _mapper.Map<ParkingSpotMainUserResponse>(addParkingSpotMainUser(request));
         }
 
-        public ParkingSpotMainUserResponse DeteleParkingSpotMainUser(int accountId, int parkingSpotId)
+        public ParkingSpotMainUserResponse DeleteParkingSpotMainUser(int accountId, int parkingSpotId)
         {
             return _mapper.Map<ParkingSpotMainUserResponse>(deleteParkingSpotMainUser(accountId, parkingSpotId));
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using API.Models.AccountDtos;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
@@ -440,7 +439,7 @@ namespace API.Controllers
             {
                 return Unauthorized();
             }
-            _parkingSpotService.DeteleParkingSpotMainUser(accountId,parkingSpotId);
+            _parkingSpotService.DeleteParkingSpotMainUser(accountId,parkingSpotId);
             return Ok();
         }
 

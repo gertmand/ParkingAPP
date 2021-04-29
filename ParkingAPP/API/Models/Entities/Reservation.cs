@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API.Models.Common;
+﻿using API.Models.Common;
 
 namespace API.Models.Entities
 {

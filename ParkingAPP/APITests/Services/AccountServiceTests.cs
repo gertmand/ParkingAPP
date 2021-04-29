@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using API.DAL;
 using API.Helpers;
 using API.Models.AccountDtos;
@@ -10,7 +7,6 @@ using API.Models.Entities;
 using API.Services;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using NUnit.Framework;
 
 namespace APITests.Services
@@ -53,24 +49,20 @@ namespace APITests.Services
                 _mapper = mapper;
             }
             aService = new AccountService(_context, _mapper, _emailService);
-
-
-
         }
 
-        [SetUp]
-        public void Setup()
+        [Test]
+        public void CanCreateTest()
         {
-            
+            AccountService aservice = new AccountService(_context,_mapper,_emailService);
+            Assert.IsNotNull(aservice);
         }
 
         [Test]
         public void GetByIdTest()
         {
-            
             var response = aService.GetById(1);
             Assert.IsNotNull(response);
-            
         }
 
         [Test]
@@ -138,7 +130,7 @@ namespace APITests.Services
                 RegNr = "123test",
                 Temporary = false,
             };
-            aService.AddCar(1,request);
+            aService.AddCar(1, request);
             var count = _context.Cars.Count();
             Assert.AreEqual(1, count);
             _context.Cars.Remove(_context.Cars.Find(1));
@@ -170,9 +162,20 @@ namespace APITests.Services
             };
             aService.AddCar(1, request);
             var countAfterAdd = _context.Cars.Count();
-            CarResponse cr = new CarResponse{Id = 2, RegNr = "123test", Temporary = "false"};
+            CarResponse cr = new CarResponse { Id = 2, RegNr = "123est", Temporary = "false" };
             aService.DeleteCar(cr);
             Assert.AreEqual(countBeforeAdd, countAfterAdd - 1);
+        }
+
+        [Test]
+        public void EditAccount()
+        {
+            EditAccountRequest request = new EditAccountRequest
+            {
+                FirstName = "Gert2"
+            };
+            aService.EditAccount(1, request);
+            Assert.AreEqual("Gert2", _context.Accounts.Find(1).FirstName);
         }
     }
 }

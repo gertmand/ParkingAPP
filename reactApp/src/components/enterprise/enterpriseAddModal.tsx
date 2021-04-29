@@ -48,7 +48,7 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
     setDescriptionError(false);
   };
 
-  const handleUserAdd = async () => {
+  const handleEnterpriseAdd = async () => {
 
     if ((type && name && description && acceptTerms) !== undefined && acceptTerms === true ) {
         setLoading(true);
@@ -143,7 +143,7 @@ export const EnterpriseAddModal: FC<Props> = ({enterpriseAddModal,setEnterpriseA
           <Button onClick={() => handleClose()} color="primary">
             Loobu
           </Button>
-          <Button onClick={() => {handleUserAdd();}} color="primary">
+          <Button onClick={() => {handleEnterpriseAdd();}} color="primary">
             Lisa asutus
           </Button>
         </DialogActions>
