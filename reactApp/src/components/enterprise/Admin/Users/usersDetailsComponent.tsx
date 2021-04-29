@@ -10,6 +10,7 @@ import {
 import clsx from 'clsx';
 import React, { FC } from 'react';
 import { User } from '../../../../store/types/userType';
+import UserCarsTableComponent from '../../../profile/userCarsTableComponent';
   
   const useStyles = makeStyles(() => ({
     root: {},
@@ -76,6 +77,12 @@ import { User } from '../../../../store/types/userType';
                   value={userData.phoneNr || ''}
                   variant="outlined"
                 />
+              </Grid>
+              <Grid item  xs={12}>
+              <UserCarsTableComponent
+                  dataForAdmin={true}
+                  userData = {userData}
+                  />
               </Grid>
             </Grid>
           </CardContent>

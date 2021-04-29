@@ -459,8 +459,10 @@ namespace API.Controllers
                 return Unauthorized();
             }
 
-            //TODO: @KEVIN AccountService meetod GetById, topelt koodi pole vaja
-            return _enterpriseService.GetUserData(accountId);
+            var cars = _accountService.GetCarsByAccountId(accountId);
+            var user = _enterpriseService.GetUserData(accountId);
+            user.AccountCars = cars;
+            return user;
         }
 
 

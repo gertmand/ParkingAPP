@@ -207,7 +207,8 @@ namespace API.Services
 
         public AccountResponse GetUserData(int userId)
         {
-            var user = _context.Accounts.Find(userId);
+            var user = _context.Accounts.Include(x => x.AccountCars).ThenInclude(x => x.Car).Where(x => x.Id == userId)
+                .First();
 
             return _mapper.Map<AccountResponse>(user);
         }
