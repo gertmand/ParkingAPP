@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using API.Models.Entities;
-using API.Models.JoinedEntities;
 
 namespace API.Models.AccountDtos
 {

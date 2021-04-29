@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using API.Helpers;
 using API.Models.AccountDtos;
-using API.Models.Entities;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;

@@ -1,5 +1,4 @@
 ﻿using System;
-using API.Controllers;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +20,6 @@ namespace APITests.Controllers
         [Obsolete]
         public void Setup()
         {
-            var eController = new EnterprisesController( _enterpriseService, _parkingSpotService, _accountService, _mapper, hostEnvironment);
         }
 
         // ENTERPRISE METHODS

@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using API.DAL;
 using API.Models.AccountDtos;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
 using API.Models.JoinedEntities;
-using API.Models.ParkingSpotDtos;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace API.Services
 {
@@ -47,7 +43,8 @@ namespace API.Services
 
         public IEnumerable<EnterpriseResponse> GetAll()
         {
-            throw new NotImplementedException();
+            var enterprises = getAllEnterprises();
+            return _mapper.Map<IList<EnterpriseResponse>>(enterprises);
         }
 
         public EnterpriseResponse GetById(int id)
@@ -62,7 +59,6 @@ namespace API.Services
 
             return _mapper.Map<IList<EnterpriseResponse>>(enterprises);
         }
-
 
         public void Create(EnterpriseCreateRequest request)
         {
@@ -231,6 +227,12 @@ namespace API.Services
                 .Include(x => x.EnterpriseAccounts)
                 .Where(x => x.EnterpriseAccounts.Any(x => x.AccountId == userId)).ToList();
 
+            return enterprises;
+        }
+
+        private IEnumerable<Enterprise> getAllEnterprises()
+        {
+            var enterprises = _context.Enterprises;
             return enterprises;
         }
     }

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using API.Models.Entities;
 
 namespace API.Models.AccountDtos
 {

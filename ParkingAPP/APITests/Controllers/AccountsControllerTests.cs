@@ -1,8 +1,9 @@
-﻿using System;
-using API.Controllers;
+﻿using API.Controllers;
+using API.DAL;
+using API.Helpers;
 using API.Services;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 
@@ -11,45 +12,40 @@ namespace APITests.Controllers
     [TestFixture]
     public class AccountsControllerTests : BaseController
     {
-        
+        private readonly IAccountService _accountService;
+        private readonly IMapper _mapper;
+        private AccountsController aController;
+        public DbContextOptions<DataContext> _options;
+        public DataContext _context;
+        public IEmailService _emailService;
+        private AccountService aService;
 
-
-        public AccountsControllerTests() { }
-        public AccountsControllerTests(
-            IAccountService accountService,
-            IMapper mapper)
+        public AccountsControllerTests()
         {
-            
-        }
-        [SetUp]
-        public void Setup()
-        {
-
+            _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "db").Options;
+            _context = new DataContext(_options);
+            if (_mapper == null)
+            {
+                var mappingConfig = new MapperConfiguration(mc =>
+                {
+                    mc.AddProfile(new AutoMapperProfile());
+                });
+                IMapper mapper = mappingConfig.CreateMapper();
+                _mapper = mapper;
+            }
+            aService = new AccountService(_context, _mapper, _emailService);
+            _accountService = aService;
+            aController = new AccountsController(_accountService, _mapper);
         }
 
         [Test]
         public void CanCreateAccountsControllerTest()
         {
-            Assert.Pass();
+            
+            AccountsController acontroller = new AccountsController(_accountService, _mapper);
+            Assert.IsNotNull(acontroller);
         }
 
-        [Test]
-        public void AuthenticateTest()
-        {
-            Assert.Pass();
-        }
-
-        [Test]
-        public void RefreshTokenTest()
-        {
-            Assert.Pass();
-        }
-
-        [Test]
-        public void RevokeTokenTest()
-        {
-            Assert.Pass();
-        }
 
         [Test]
         public void RegisterTest()
@@ -92,25 +88,6 @@ namespace APITests.Controllers
         public void GetUserDataTest()
         {
             Assert.Pass();
-        }
-
-        private void setTokenCookie(string token)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
-            };
-            Response.Cookies.Append("refreshToken", token, cookieOptions);
-        }
-
-
-        private string ipAddress()
-        {
-            if (Request.Headers.ContainsKey("X-Forwarded-For"))
-                return Request.Headers["X-Forwarded-For"];
-            else
-                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
         }
     }
 }

@@ -15,6 +15,7 @@ namespace API.Services
     public class EmailService : IEmailService
     {
         private readonly AppSettings _appSettings;
+        public EmailService() { }
 
         public EmailService(IOptions<AppSettings> appSettings)
         {

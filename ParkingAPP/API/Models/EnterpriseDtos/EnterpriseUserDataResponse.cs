@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using API.Models.Entities;
+﻿using System.Collections.Generic;
 using API.Models.ParkingSpotDtos;
 
 namespace API.Models.EnterpriseDtos

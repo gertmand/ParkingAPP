@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using API.Models.Entities;
-using API.Models.JoinedEntities;
 
 namespace API.Models.AccountDtos
 {

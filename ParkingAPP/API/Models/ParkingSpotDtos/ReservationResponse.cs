@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-using API.Models.Common;
 using API.Models.Entities;
 
 namespace API.Models.ParkingSpotDtos
