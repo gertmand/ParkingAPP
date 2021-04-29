@@ -1,8 +1,10 @@
 import { Box, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppState } from '../../store'
 import { addCar, deleteCar, getUserData } from '../../store/queries/userQueries'
+import { User } from '../../store/types/userType'
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../common/siteActions'
 import DialogComponent from '../enterprise/Admin/Parking/dialogComponent'
 import UserCarsTableComponent from './userCarsTableComponent'
@@ -10,7 +12,7 @@ import UserCarsTableComponent from './userCarsTableComponent'
 const UserCars = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-
+    const userData = useSelector<AppState, User>(state => state.user.userData);
     const handleOpenDeleteConfirmationModal = () => {setDeleteConfirmationModal(true);};
     const handleCloseDeleteConfirmationModal = () => {setDeleteConfirmationModal(false);};
 
@@ -95,6 +97,8 @@ const UserCars = () => {
               {/* Sõidukite tabel */}
               <Box className={clsx(classes.root)}>
                 <UserCarsTableComponent
+                  dataForAdmin={false}
+                  userData = {userData}
                   setCarId={setCarId}
                   setCarRegNr={setCarRegNr}
                   handleOpenDeleteConfirmationModal={handleOpenDeleteConfirmationModal}
