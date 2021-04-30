@@ -16,7 +16,6 @@ namespace API.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
-
         public AccountsController(
             IAccountService accountService,
             IMapper mapper)
@@ -76,6 +75,14 @@ namespace API.Controllers
             return !_accountService.GetAll().Select(x => x.Email).Contains(email);
         }
 
+        [Authorize(Role.Admin)]
+        [HttpPost]
+        public ActionResult<AccountResponse> Create(CreateRequest model)
+        {
+            var account = _accountService.Create(model);
+            return Ok(account);
+        }
+
         [HttpPost("verify-email")]
         public IActionResult VerifyEmail(VerifyEmailRequest model)
         {
@@ -90,18 +97,18 @@ namespace API.Controllers
             return Ok(new { message = "Please check your email for password reset instructions" });
         }
 
-        [HttpPost("validate-reset-token")]
-        public IActionResult ValidateResetToken(ValidateResetTokenRequest model)
-        {
-            _accountService.ValidateResetToken(model);
-            return Ok(new { message = "Token is valid" });
-        }
-
         [HttpPost("reset-password")]
         public IActionResult ResetPassword(ResetPasswordRequest model)
         {
             _accountService.ResetPassword(model);
             return Ok(new { message = "Password reset successful, you can now login" });
+        }
+
+        [HttpPost("validate-reset-token")]
+        public IActionResult ValidateResetToken(ValidateResetTokenRequest model)
+        {
+            _accountService.ValidateResetToken(model);
+            return Ok(new { message = "Token is valid" });
         }
 
         [HttpGet("data")]
@@ -137,13 +144,7 @@ namespace API.Controllers
             return Ok(account);
         }
 
-        [Authorize(Role.Admin)]
-        [HttpPost]
-        public ActionResult<AccountResponse> Create(CreateRequest model)
-        {
-            var account = _accountService.Create(model);
-            return Ok(account);
-        }
+        
 
         [Authorize]
         [HttpPut("{id:int}")]
@@ -172,9 +173,8 @@ namespace API.Controllers
             _accountService.Delete(id);
             return Ok(new { message = "Account deleted successfully" });
         }
-        // cars
 
-        
+        //Cars
         [HttpPost("add-car")]
         public ActionResult<CarResponse> AddCar(AddCarRequest car)
         {
@@ -182,7 +182,6 @@ namespace API.Controllers
             return Ok(new { message = "Car successfully added!" });
         }
 
-        
         [HttpPost("delete-car")]
         public ActionResult<CarResponse> DeleteCar(CarResponse car)
         {
@@ -196,8 +195,8 @@ namespace API.Controllers
             _accountService.EditAccount(Account.Id, user);
             return Ok(new { message = "Account updated!" });
         }
-        // helper methods
-
+        
+        //Helper methods
         private void setTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions
