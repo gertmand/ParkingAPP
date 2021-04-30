@@ -198,7 +198,7 @@ namespace API.Controllers
         }
         // helper methods
 
-            private void setTokenCookie(string token)
+        private void setTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions
             {
