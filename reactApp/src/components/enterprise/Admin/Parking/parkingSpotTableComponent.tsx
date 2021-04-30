@@ -3,6 +3,7 @@ import { DataGrid, GridColumns, GridSortDirection, GridValueGetterParams } from 
 import React, { FC } from 'react';
 import { PlusCircle, XCircle } from 'react-feather';
 import { ParkingSpot, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
+import { User } from '../../../../store/types/userType';
 
 type Props = {
   parkingSpotMainUsers: ParkingSpotMainUserResponse[];
@@ -12,9 +13,10 @@ type Props = {
   setParkingSpotId(parkingSpotId: number): any;
   parkingSpotLoading: boolean,
   searchTerm: string,
+  enterpriseUsers: User[]
 };
 
-export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMainUsers,parkingSpots,handleOpenParkingSpotMainUserAddModal,handleOpenDeleteConfirmationModal,setParkingSpotId, parkingSpotLoading}) => {
+export const ParkingSpotTableComponent: FC<Props> = ({enterpriseUsers, searchTerm, parkingSpotMainUsers,parkingSpots,handleOpenParkingSpotMainUserAddModal,handleOpenDeleteConfirmationModal,setParkingSpotId, parkingSpotLoading}) => {
   
 
   function getParkingSpotId(params: GridValueGetterParams) {
@@ -62,7 +64,21 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
       headerName: ' Auto reg. number',
       width: 200,
       flex: 75,
-      headerAlign: 'center'
+      headerAlign: 'center',
+      valueGetter: getParkingSpotId,
+      renderCell: (params: GridValueGetterParams) => {
+        return (
+          <Table>
+            <TableBody>
+              <TableRow >
+              <TableCell style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
+                  {parkingSpotMainUsers.filter(x=>x.parkingSpotId === +getParkingSpotId(params)).map(x=>x.accountCars.map(x=>x.regNr).join(', '))}
+              </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>);
+      }
+
     },
     {
       field: 'staatus',
@@ -102,23 +118,6 @@ export const ParkingSpotTableComponent: FC<Props> = ({searchTerm, parkingSpotMai
       }
     }
   ];
-
-  // const handleChange = () => {
-  //   parkingSpots.filter(ps => {
-  //     if (searchTerm === '') {
-  //       return ps;
-  //     } else if (ps.number.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps;
-  //     } else if (ps.staatus.toString().toLowerCase().includes(searchTerm.toLowerCase())) { return ps 
-  //     } else if (parkingSpotMainUsers.filter(mu => {
-  //       if(mu.parkingSpotId === ps.id && mu.mainUserFullName.toString().toLowerCase().includes(searchTerm.toLowerCase())) {
-  //         return ps;
-  //       }
-  //     }))
-  //     return null;
-  //   })
-
-  //   //console.log(parkingSpots)
-  // }
 
   return (
     <>

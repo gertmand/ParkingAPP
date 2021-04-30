@@ -1,3 +1,5 @@
+import { Car } from "./userType"
+
 export type Enterprise = {
     id: number,
     name: string,
@@ -87,7 +89,8 @@ export type ParkingSpotMainUserResponse = {
     accountId: number,
     mainUserFullName : string,
     canBook: boolean,
-    enterpriseId: number
+    enterpriseId: number,
+    accountCars: Car[]
 }
 
 export type ParkingSpotMainUserRequest = {

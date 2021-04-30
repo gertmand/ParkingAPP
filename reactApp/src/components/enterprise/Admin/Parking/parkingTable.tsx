@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
 import { addParkingSpot, addParkingSpotMainUser, addParkingSpotPlan, deleteParkingSpot } from '../../../../store/queries/enterpriseQueries';
 import { ParkingSpot, ParkingSpotMainUserResponse} from '../../../../store/types/enterpriseTypes';
-import { SelectedUser } from '../../../../store/types/userType';
+import { SelectedUser, User } from '../../../../store/types/userType';
 import theme from '../../../../style/theme';
 import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
 import DialogComponent from './dialogComponent';
@@ -19,9 +19,11 @@ type TableProps = {
   parkingSpotLoading: boolean;
   updateParkingSpotMainUsers(): any;
   updateSpotTable(): any;
+  enterpriseUsers : User[]
 };
 
 const ParkingTable: FC<TableProps> = ({
+  enterpriseUsers,
   parkingSpots,
   parkingSpotMainUsers,
   regularUsers,
@@ -269,6 +271,7 @@ const ParkingTable: FC<TableProps> = ({
       </Grid>
 
       <ParkingSpotTableComponent
+        enterpriseUsers ={enterpriseUsers}
         searchTerm={searchTerm}
         parkingSpots={parkingSpots}
         parkingSpotMainUsers={parkingSpotMainUsers}

@@ -35,11 +35,14 @@ namespace API.Services
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IAccountService _accountService;
+        private readonly IEmailService _emailService;
 
         public ParkingSpotService(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+            _accountService = new AccountService(_context,_mapper,_emailService);
         }
 
         public IEnumerable<ParkingSpotResponse> GetAll(int enterpriseId)
@@ -395,7 +398,15 @@ namespace API.Services
                     if (psa.ParkingSpotId == ps_id)
                     {
                         Account a = _context.Accounts.Include(x=>x.EnterpriseAccounts).FirstOrDefault(x => x.Id == psa.AccountId);
-                        psmu.Add(new ParkingSpotMainUserResponse() { MainUserFullName = a.FirstName + " " + a.LastName, ParkingSpotId = ps_id, AccountId = a.Id, CanBook = a.EnterpriseAccounts.FirstOrDefault(x=>x.AccountId == a.Id).CanBook, EnterpriseId = enterpriseId});
+                        psmu.Add(new ParkingSpotMainUserResponse()
+                        {
+                            MainUserFullName = a.FirstName + " " + a.LastName, 
+                            ParkingSpotId = ps_id, 
+                            AccountId = a.Id, 
+                            CanBook = a.EnterpriseAccounts.FirstOrDefault(x=>x.AccountId == a.Id).CanBook, 
+                            EnterpriseId = enterpriseId, 
+                            AccountCars = _accountService.GetCarsByAccountId(a.Id)
+                        });
                     }
                 }
             }

@@ -107,7 +107,7 @@ import Page from '../style/Page';
                     <Typography>Uudised</Typography>
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <ParkingTable parkingSpotLoading={parkingLoading} updateSpotTable={updateSpotTable} updateParkingSpotMainUsers={updateParkingSpotMainUsers} parkingSpots = {enterpriseParkingSpots} parkingSpotMainUsers= {parkingSpotMainUsers} regularUsers={regularUsers} updateParkingSpots={updateParkingSpots}/>
+                    <ParkingTable enterpriseUsers={enterpriseUsers} parkingSpotLoading={parkingLoading} updateSpotTable={updateSpotTable} updateParkingSpotMainUsers={updateParkingSpotMainUsers} parkingSpots = {enterpriseParkingSpots} parkingSpotMainUsers= {parkingSpotMainUsers} regularUsers={regularUsers} updateParkingSpots={updateParkingSpots}/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <UsersTable users = {enterpriseUsers}/>
