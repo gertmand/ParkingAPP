@@ -141,10 +141,10 @@ namespace API.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Create(EnterpriseCreateRequest request)
+        public ActionResult Create(EnterpriseCreateRequest request)
         {
             _enterpriseService.Create(request);
-            return Ok(new { message = "Registration successful, you can now use see the enterprise" });
+            return Ok(new { message = "Asutus lisatud, saate nüüd asutust kasutada" });
         }
 
 
