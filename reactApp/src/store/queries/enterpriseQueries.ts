@@ -103,3 +103,12 @@ export const getUserDetails = async (userId: number, enterpriseId : number) => {
     return await post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/users/${userId}`, null)
 }
 
+export const getEnterpriseUserDataAdmin = async (enterpriseId: number, userId: number) => {
+    if(enterpriseId === 0) { return null }
+    return await get(`${apiUrl}/api/enterprises/${enterpriseId}/user/${userId}`)
+}
+
+export const getEnterpriseParkingSpotDataAdmin = async (enterpriseId: number, userId: number) => {
+    if(enterpriseId === 0) { return null }
+    return await get(`${apiUrl}/api/enterprises/${enterpriseId}/spot/${userId}`)
+}

@@ -9,8 +9,8 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import React, { FC } from 'react';
-import { User } from '../../../../store/types/userType';
-import UserCarsTableComponent from '../../../profile/userCarsTableComponent';
+import { User } from '../../../../../store/types/userType';
+import UserCarsTableComponent from '../../../../profile/userCarsTableComponent';
   
   const useStyles = makeStyles(() => ({
     root: {},

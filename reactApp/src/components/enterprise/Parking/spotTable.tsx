@@ -10,10 +10,11 @@ import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../common/siteActions';
 type Props = {
   spotData: ParkingSpotListData[],
   reservationData: Reservation[],
-  updateSpotData(): void
+  updateSpotData(): void,
+  isAdmin?: boolean
 }
 
-const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData}) => {
+const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData, isAdmin}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -43,12 +44,12 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData}) => {
               <TableCell>Algus</TableCell>
               <TableCell>Lõpp</TableCell>
               <TableCell>Kasutaja</TableCell>
-              <TableCell>Tegevus</TableCell>
+              {!isAdmin ? <TableCell>Tegevus</TableCell> : ''}
             </TableRow>
           </TableHead>
           <TableBody>
             {spotData !== undefined ? spotData.map((row: ParkingSpotListData) => (
-              <TableRow key={row.id}>
+              <TableRow key={row.id} className={classes.rowHeight}>
                 <TableCell component="th" scope="row">
                   {row.status === "Assigned" && "Laenatud"}
                   {row.status === "Reserved" && "Reserveeritud"}
@@ -58,11 +59,11 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData}) => {
                 <TableCell>{changeDate(row.startDate)}</TableCell>
                 <TableCell>{changeDate(row.endDate)}</TableCell>
                 <TableCell>{row.reserverName}</TableCell>
-                <TableCell>
+                {!isAdmin ? <TableCell>
                   <Tooltip title="TÜHISTA">
                     <Button onClick={() => handleDelete(row)}><Delete color='error' /></Button>
                   </Tooltip>
-                </TableCell>
+                </TableCell> : ''}
               </TableRow>
             )) : null}
           </TableBody>
@@ -80,21 +81,21 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData}) => {
               <TableCell>Algus</TableCell>
               <TableCell>Lõpp</TableCell>
               <TableCell>Kasutaja</TableCell>
-              <TableCell>Tegevus</TableCell>
+              {!isAdmin ? <TableCell>Tegevus</TableCell> : ''}
             </TableRow>
           </TableHead>
           <TableBody>
             {reservationData !== undefined ? reservationData.map((row: Reservation) => (
-              <TableRow key={row.id}>
+              <TableRow key={row.id} className={classes.rowHeight}>
                 <TableCell>Broneering</TableCell>
                 <TableCell>{changeDate(row.startDate)}</TableCell>
                 <TableCell>{changeDate(row.endDate)}</TableCell>
                 <TableCell>{row.reserverName}</TableCell>
-                <TableCell>
+                {!isAdmin ? <TableCell>
                   <Tooltip title="TÜHISTA">
                     <Button onClick={() => handleDeleteReservation(row)}><Delete color='error' /></Button>
                   </Tooltip>
-                </TableCell>
+                </TableCell> : ''}
               </TableRow>
             )) : null}
           </TableBody>
@@ -112,6 +113,9 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData}) => {
 const useStyles = makeStyles({
     table: {
       minWidth: 650,
+    },
+    rowHeight: {
+      height: 44,
     },
   });
 

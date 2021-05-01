@@ -465,6 +465,72 @@ namespace API.Controllers
             return user;
         }
 
+        [HttpGet("{enterpriseId}/user/{userId}")]
+        public ActionResult<EnterpriseUserDataResponse> GetEnterpriseUserDataAdmin(int enterpriseId, int userId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            var reservations = _parkingSpotService.GetUserReservations(enterpriseId, userId);
+            var parkingSpot = _parkingSpotService.GetUserParkingSpot(enterpriseId, userId);
+            var isAdmin = _enterpriseService.GetEnterpriseAdmin(enterpriseId, userId);
+            var canBook = _enterpriseService.GetEnterpriseData(enterpriseId, userId);
+
+            if (parkingSpot != null)
+                parkingSpot.Status = _parkingSpotService.GetParkingSpotStatus(parkingSpot.Id);
+
+            //_logService.AddLog("algatajaId", "secondaryUserId?" "type/enum", "desc", "changes: EMAIL1 -> EMAIL2", "CreatedAt")
+
+            var userData = new EnterpriseUserDataResponse
+            {
+                ParkingSpot = parkingSpot,
+                Reservations = reservations,
+                IsAdmin = isAdmin,
+                CanBook = canBook
+            };
+
+            return userData;
+        }
+
+        [HttpGet("{enterpriseId}/spot/{userId}")]
+        public ActionResult<EnterpriseParkingSpotDataResponse> GetEnterpriseParkingSpotData(int enterpriseId, int userId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            var spotId = _parkingSpotService
+                .GetUserParkingSpot(enterpriseId, userId)?.Id;
+
+            if (spotId == null || spotId == 0)
+            {
+                return Ok();
+            }
+
+            var spotListData =
+                _parkingSpotService.GetParkingSpotListData(spotId.Value);
+
+            var spotData = new EnterpriseParkingSpotDataResponse()
+            {
+                SpotListData = spotListData,
+            };
+
+            return spotData;
+        }
 
         // HELPER METHODS
 

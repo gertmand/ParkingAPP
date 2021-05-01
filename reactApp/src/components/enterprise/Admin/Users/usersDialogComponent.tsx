@@ -2,10 +2,11 @@ import { AppBar, Box, Button, Container, Dialog, DialogActions, DialogContent, D
 import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
-import { getUserDetails } from '../../../../store/queries/enterpriseQueries';
-import { ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
+import { getEnterpriseParkingSpotDataAdmin, getEnterpriseUserDataAdmin, getUserDetails } from '../../../../store/queries/enterpriseQueries';
+import { EnterpriseParkingSpotData, EnterpriseUserData, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser, User } from '../../../../store/types/userType';
-import UsersDetails from './usersDetailsComponent';
+import UsersDetails from './UsersDialogTabComponents/usersDetailsComponent';
+import UsersParkingComponent from './UsersDialogTabComponents/usersParkingComponent';
 
 type Props = {
   open: boolean;
@@ -28,6 +29,8 @@ type Props = {
 
 export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}: any) => {
   const [userData, setUserData] = useState<User>();
+  const [userDataAdmin, setuserDataAdmin] = useState<EnterpriseUserData>();
+  const [parkingSpotData, setparkingSpotData] = useState<EnterpriseParkingSpotData>();
   const [value, setValue] = React.useState(0);
   const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id);
   const [maxWidth,] = React.useState<DialogProps['maxWidth']>('md');
@@ -47,9 +50,23 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
       console.log(result)
     }).catch(err => {
       console.log(err)
+    })
+    getEnterpriseUserDataAdmin(enterpriseId, userIdForDetails)
+    .then((result: any) => {
+      setuserDataAdmin(result);
+      console.log(result)
+    }).catch(err => {
+      console.log(err)
   })
-}
-  }, [userIdForDetails, enterpriseId])
+    getEnterpriseParkingSpotDataAdmin(enterpriseId, userIdForDetails)
+      .then((result: any) => {
+        setparkingSpotData(result);
+        console.log(result)
+      }).catch(err => {
+        console.log(err)
+    })
+  }
+}, [userIdForDetails, enterpriseId])
 
   return (
     <>
@@ -77,7 +94,7 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
                     <UsersDetails userData={userData} className=''/>}
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <Typography>Broneeringud</Typography>
+                    <UsersParkingComponent userData={userDataAdmin} parkingSpotData={parkingSpotData}/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <Typography>Logid</Typography>

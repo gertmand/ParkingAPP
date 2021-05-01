@@ -20,10 +20,11 @@ type SpotProps = {
     reservationList?: Reservation[],
     reservedSpot?: Reservation,
     addReservationButton: boolean,
-    spotButtons: boolean
+    spotButtons: boolean,
+    isAdmin?: boolean
 }
 
-const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservationList, reservedSpot, addReservationButton, spotButtons }) => {
+const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservationList, reservedSpot, addReservationButton, spotButtons, isAdmin }) => {
     const classes = useStyles();
     const [giveSpotModal, setGiveSpotModal] = useState(false);
     const [releaseModal, setReleaseModal] = useState(false);
@@ -85,7 +86,7 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
             </Grid>
             { <Grid item xs={12}>
                 <div style={{margin: 0, marginLeft: 7}}>
-                    <SpotTable spotData={parkingSpotDataList!} reservationData={reservationList!} updateSpotData={updateSpotTable} /> 
+                    <SpotTable isAdmin={isAdmin} spotData={parkingSpotDataList!} reservationData={reservationList!} updateSpotData={updateSpotTable} /> 
                 </div>
             </Grid> }
         </Grid>
