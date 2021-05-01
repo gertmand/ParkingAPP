@@ -21,11 +21,13 @@ import theme from '../../../../style/theme';
 type Props = {
   users: User[];
   handleOpenUserDetailsModal(id: number): any;
+  handleOpenAddUsersModal(): any;
 };
 
 export const UsersTableComponent: FC<Props> = ({
   users,
-  handleOpenUserDetailsModal
+  handleOpenUserDetailsModal,
+  handleOpenAddUsersModal
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -142,8 +144,12 @@ export const UsersTableComponent: FC<Props> = ({
           />
         </Grid>
         <Grid item xs={6}>
-          <Button color="primary" variant="contained" style={{float: "right"}}>
-            Lisa liige
+          <Button
+            onClick={() =>
+              handleOpenAddUsersModal()
+            }
+            color="primary" variant="contained" style={{float: "right"}}>
+            Lisa liikmeid
           </Button>
         </Grid>
       </Grid>
