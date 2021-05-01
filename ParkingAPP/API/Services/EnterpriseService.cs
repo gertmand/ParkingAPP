@@ -34,11 +34,13 @@ namespace API.Services
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogService _logService;
 
-        public EnterpriseService(DataContext context, IMapper mapper)
+        public EnterpriseService(DataContext context, IMapper mapper, ILogService logService)
         {
             _context = context;
             _mapper = mapper;
+            _logService = logService;
         }
 
         public IEnumerable<EnterpriseResponse> GetAll()

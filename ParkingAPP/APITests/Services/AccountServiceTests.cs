@@ -19,6 +19,7 @@ namespace APITests.Services
         public DataContext _context;
         public IMapper _mapper;
         public IEmailService _emailService;
+        public ILogService _LogService;
         private AccountService aService;
 
         public AccountServiceTests()
@@ -49,13 +50,13 @@ namespace APITests.Services
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
-            aService = new AccountService(_context, _mapper, _emailService);
+            aService = new AccountService(_context, _mapper, _emailService, _LogService);
         }
 
         [Test]
         public void CanCreateTest()
         {
-            AccountService aservice = new AccountService(_context,_mapper,_emailService);
+            AccountService aservice = new AccountService(_context,_mapper,_emailService, _LogService);
             Assert.IsNotNull(aservice);
         }
 

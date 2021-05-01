@@ -21,6 +21,7 @@ namespace APITests.Controllers
     {
         private readonly IPAddress fakeIpAddress = IPAddress.Parse("127.168.1.32");
         private readonly IAccountService _accountService;
+        private readonly ILogService _logService;
         private readonly IMapper _mapper;
         private AccountsController aController;
         public DbContextOptions<DataContext> _options;
@@ -61,7 +62,7 @@ namespace APITests.Controllers
             httpContext.Items["Account"] = a;
             httpContext.Connection.RemoteIpAddress = fakeIpAddress;
 
-            aService = new AccountService(_context, _mapper, _emailService);
+            aService = new AccountService(_context, _mapper, _emailService, _logService);
             _accountService = aService;
             aController = new AccountsController(aService, _mapper);
             aController.ControllerContext = new ControllerContext{HttpContext = httpContext};

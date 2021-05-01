@@ -35,7 +35,6 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
         open={openUserDetailsModal}
         userIdForDetails={userIdForDetails} 
         handleClose={handleCloseUserDetailsModal}
-        dialogTitle='Kasutaja info'
         />
 
       {/* Kasutajate lisamise modaal */}
@@ -44,7 +43,7 @@ const UsersTable: React.FC<TableProps> = ({users}) => {
       handleClose={handleCloseAddUsersModal}
       dialogTitle='Kasutajate lisamine'
       confirmButton='Lisa liikmed'
-      dialogContextText='Mitme emaili korraga lisamiseks eraldage meilid tühikuga!'/>
+      />
       
       {/* Kasutajate tabel */}
       <UsersTableComponent handleOpenAddUsersModal={handleOpenAddUsersModal} handleOpenUserDetailsModal={handleOpenUserDetailsModal} users={users} />

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using API.Models.Common;
 
-namespace RIK_parkimise_rakendus.Helpers
+namespace API.Helpers
 {
     public class DateUtil<T>
         where T : ParkingDateEntityData

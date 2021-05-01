@@ -48,6 +48,7 @@ namespace API
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IEnterpriseService, EnterpriseService>();
+            services.AddScoped<ILogService, LogService>();
             services.AddScoped<IParkingSpotService, ParkingSpotService>();
         }
 

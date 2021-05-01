@@ -45,27 +45,18 @@ namespace API.Services
         private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
         private readonly IEmailService _emailService;
+        private readonly ILogService _logService;
 
         public AccountService(
             DataContext context,
             IMapper mapper,
-            IEmailService emailService)
+            IEmailService emailService,
+            ILogService logService)
         {
             _context = context;
             _mapper = mapper;
             _emailService = emailService;
-        }
-
-        public AccountService(
-            DataContext context,
-            IMapper mapper,
-            IOptions<AppSettings> appSettings,
-            IEmailService emailService)
-        {
-            _context = context;
-            _mapper = mapper;
-            _appSettings = appSettings.Value;
-            _emailService = emailService;
+            _logService = logService;
         }
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress)

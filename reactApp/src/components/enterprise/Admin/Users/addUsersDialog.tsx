@@ -1,16 +1,8 @@
-import { AppBar, Box, Button, ButtonGroup, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps, DialogTitle, Grid, makeStyles, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, TextField, Theme, Tooltip, Typography } from '@material-ui/core';
-import { TabPanel } from '@material-ui/lab'
-import React, { FC, FormEventHandler, ReactEventHandler, useEffect, useState } from 'react';
-import { PlusCircle } from 'react-feather';
-import { useSelector } from 'react-redux';
-import UsersDetails from './UsersDialogTabComponents/usersDetailsComponent'
-import UsersParkingComponent from './UsersDialogTabComponents/usersParkingComponent'
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
+import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps, DialogTitle, Grid, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import DirectionsIcon from '@material-ui/icons/Directions';
+import InputBase from '@material-ui/core/InputBase';
+import React, { FC, useState } from 'react';
+import { PlusCircle } from 'react-feather';
 
 type Props = {
     open: boolean;
@@ -48,6 +40,8 @@ const AddUsersDialog: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,in
         e.preventDefault();
     }
     const confirm = () => {
+
+        // API'le meililisti saatmiseks kasutada 'emails'
         
         setEmails([]);
         setEmail('');
@@ -59,7 +53,9 @@ const AddUsersDialog: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,in
             <DialogTitle id="alert-dialog-title">{dialogTitle}</DialogTitle>
             <DialogContent >
             <DialogContentText id="alert-dialog-description" >
-                {dialogContextText}
+                {'Mitme emaili korraga lisamiseks eraldage meilid tühikuga!'}
+                <br/>
+                {'Ladusamaks sisestamiseks kasutage klahvi "ENTER"'}
             </DialogContentText>
 
             <Container maxWidth={maxWidth} >
@@ -149,8 +145,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         color: theme.palette.text.secondary,
     },
     dialogPaper: {
-      minHeight: "75vh",
-      maxHeight: "75vh"
+    //   minHeight: "75vh",
+    //   maxHeight: "75vh"
     },
     input: {
       marginLeft: theme.spacing(1),

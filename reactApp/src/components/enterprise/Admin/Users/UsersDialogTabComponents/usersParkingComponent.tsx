@@ -1,8 +1,8 @@
-import { CardContent, CardHeader } from '@material-ui/core'
-import React, { FC } from 'react'
-import { Card } from 'reactstrap'
+import { CardContent } from '@material-ui/core';
+import React, { FC } from 'react';
+import { Card } from 'reactstrap';
 import { EnterpriseParkingSpotData, EnterpriseUserData } from '../../../../../store/types/enterpriseTypes';
-import ParkingData from '../../../Parking/parkingData'
+import ParkingData from '../../../Parking/parkingData';
 
 type Props = {
 userData?: EnterpriseUserData

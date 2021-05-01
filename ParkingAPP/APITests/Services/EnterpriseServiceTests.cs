@@ -21,6 +21,7 @@ namespace APITests.Services
         public DataContext _context;
         public IMapper _mapper;
         private EnterpriseService eService;
+        private LogService logService;
 
         public EnterpriseServiceTests()
         {
@@ -67,13 +68,13 @@ namespace APITests.Services
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
-            eService = new EnterpriseService(_context, _mapper);
+            eService = new EnterpriseService(_context, _mapper, logService);
         }
 
         [Test]
         public void CanCreateTest()
         {
-            EnterpriseService eservice = new EnterpriseService(_context,_mapper);
+            EnterpriseService eservice = new EnterpriseService(_context,_mapper, logService);
             Assert.IsNotNull(eservice);
         }
         [Test]

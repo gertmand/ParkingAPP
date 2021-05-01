@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using API.DAL;
+using API.Helpers;
+using API.Models.Entities;
+using AutoMapper;
+using Microsoft.Extensions.Options;
+
+namespace API.Services
+{
+    public interface ILogService
+    {
+
+    }
+
+    public class LogService : ILogService
+    {
+        private readonly DataContext _context;
+        private readonly IMapper _mapper;
+
+        public LogService(DataContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+        public void CreateLogAboutEdit<T>(T before, T after, int userId, int? adminId, int? enterpriseId)
+        {
+            Log log = new Log()
+            {
+                CreatedAt = DateTime.UtcNow,
+                AccountId = userId,
+                AdminId = adminId,
+                EnterpriseId = enterpriseId,
+                Type = before.GetType().FullName
+            };
+            var props = before.GetType().GetProperties();
+            foreach (var prop in props)
+            {
+                var valueBefore = prop.GetValue(before);
+                var valueAfter = prop.GetValue(after);
+                if (valueBefore != valueAfter)
+                {
+                    //log.ChangedValues.
+                }
+            }
+        }
+
+        public void CreateLog(int userId, int? ToAccountId, int? adminId, int? enterpriseId)
+        {
+            Log log = new Log()
+            {
+                CreatedAt = DateTime.UtcNow,
+                AccountId = userId,
+                AdminId = adminId,
+                EnterpriseId = enterpriseId
+            };
+
+        }
+    }
+}

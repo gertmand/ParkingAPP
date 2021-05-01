@@ -29,6 +29,7 @@ namespace APITests.Controllers
         private readonly IEnterpriseService eService;
         private readonly IParkingSpotService psService;
         private readonly IAccountService aService;
+        private readonly ILogService _logService;
         private readonly IMapper _mapper;
         public IEmailService _emailService;
         private EnterprisesController eController;
@@ -106,9 +107,10 @@ namespace APITests.Controllers
             var httpContext2 = new DefaultHttpContext();
             httpContext2.Items["Account"] = null;
             httpContext2.Connection.RemoteIpAddress = fakeIpAddress;
-            aService = new AccountService(_context,_mapper,_emailService);
-            psService = new ParkingSpotService(_context, _mapper);
-            eService = new EnterpriseService(_context, _mapper);
+            aService = new AccountService(_context,_mapper,_emailService, _logService);
+            psService = new ParkingSpotService(_context, _mapper, _logService);
+            eService = new EnterpriseService(_context, _mapper, _logService);
+
             eController = new EnterprisesController(eService,  psService, aService, _mapper, hostEnvironment);
             eController2 = new EnterprisesController(eService, psService, aService, _mapper, hostEnvironment);
             eController.ControllerContext = new ControllerContext { HttpContext = httpContext };

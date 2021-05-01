@@ -8,7 +8,7 @@ using API.Models.JoinedEntities;
 using API.Models.ParkingSpotDtos;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using RIK_parkimise_rakendus.Helpers;
+using API.Helpers;
 
 namespace API.Services
 {
@@ -37,12 +37,14 @@ namespace API.Services
         private readonly IMapper _mapper;
         private readonly IAccountService _accountService;
         private readonly IEmailService _emailService;
+        private readonly ILogService _logService;
 
-        public ParkingSpotService(DataContext context, IMapper mapper)
+        public ParkingSpotService(DataContext context, IMapper mapper, ILogService logService)
         {
             _context = context;
             _mapper = mapper;
-            _accountService = new AccountService(_context,_mapper,_emailService);
+            _logService = logService;
+            _accountService = new AccountService(_context,_mapper,_emailService,_logService);
         }
 
         public IEnumerable<ParkingSpotResponse> GetAll(int enterpriseId)

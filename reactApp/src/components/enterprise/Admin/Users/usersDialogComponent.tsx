@@ -17,7 +17,7 @@ type Props = {
   handleClose(): any;
   onSubmit?(): any;
   inputOnChange?: any,
-  dialogTitle: string,
+  dialogTitle?: string,
   dialogContextText?: string,
   confirmButton?: string,
   parkingSpotMainUsers?: ParkingSpotMainUserResponse[];
