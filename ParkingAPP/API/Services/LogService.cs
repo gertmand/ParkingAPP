@@ -7,12 +7,13 @@ using API.Helpers;
 using API.Models.Entities;
 using AutoMapper;
 using Microsoft.Extensions.Options;
+using Type = API.Models.LogDtos.Type;
 
 namespace API.Services
 {
     public interface ILogService
     {
-
+        public void CreateLog(int userId, int? ToAccountId, int? adminId, int? enterpriseId, Type type, string desc);
     }
 
     public class LogService : ILogService
@@ -33,8 +34,7 @@ namespace API.Services
                 CreatedAt = DateTime.UtcNow,
                 AccountId = userId,
                 AdminId = adminId,
-                EnterpriseId = enterpriseId,
-                Type = before.GetType().FullName
+                EnterpriseId = enterpriseId
             };
             var props = before.GetType().GetProperties();
             foreach (var prop in props)
@@ -48,16 +48,19 @@ namespace API.Services
             }
         }
 
-        public void CreateLog(int userId, int? ToAccountId, int? adminId, int? enterpriseId)
+        public void CreateLog(int userId, int? ToAccountId, int? adminId, int? enterpriseId, Type type, string desc)
         {
             Log log = new Log()
             {
                 CreatedAt = DateTime.UtcNow,
                 AccountId = userId,
+                ToAccountId = ToAccountId,
                 AdminId = adminId,
-                EnterpriseId = enterpriseId
+                EnterpriseId = enterpriseId,
+                Type = type,
+                Description = desc
             };
-
+            _context.Logs.Add(log);
         }
     }
 }

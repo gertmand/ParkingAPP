@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using BC = BCrypt.Net.BCrypt;
+using Type = API.Models.LogDtos.Type;
 
 namespace API.Services
 {
@@ -315,13 +316,22 @@ namespace API.Services
                 AccountId = id
             };
             _context.AccountCars.Add(ac);
+
+            string logDescription = "Lisatud uus sõiduk numbrimärgiga " + car.RegNr + ".";
+            _logService.CreateLog(id,null,null,null,Type.CarAdd,logDescription);
+
             _context.SaveChanges();
         }
 
         public void DeleteCar(CarResponse request)
         {
             var car = _context.Cars.Find(request.Id);
+            var userId = _context.AccountCars.Where(x => x.CarId == request.Id).First().AccountId;
             _context.Cars.Remove(car);
+
+            string logDescription = "Kustutatud sõiduk numbrimärgiga " + car.RegNr + ".";
+            _logService.CreateLog(userId, null, null, null, Type.CarDelete, logDescription);
+
             _context.SaveChanges();
         }
 
