@@ -51,6 +51,20 @@ namespace API.Services
         public AccountService(
             DataContext context,
             IMapper mapper,
+            AppSettings appSettings,
+            IEmailService emailService,
+            ILogService logService)
+        {
+            _context = context;
+            _mapper = mapper;
+            _emailService = emailService;
+            _logService = logService;
+            _appSettings = appSettings;
+        }
+
+        public AccountService(
+            DataContext context,
+            IMapper mapper,
             IEmailService emailService,
             ILogService logService)
         {
