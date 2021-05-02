@@ -51,7 +51,7 @@ namespace API.Services
         public AccountService(
             DataContext context,
             IMapper mapper,
-            AppSettings appSettings,
+            IOptions<AppSettings> appSettings,
             IEmailService emailService,
             ILogService logService)
         {
@@ -59,7 +59,7 @@ namespace API.Services
             _mapper = mapper;
             _emailService = emailService;
             _logService = logService;
-            _appSettings = appSettings;
+            _appSettings = appSettings.Value;
         }
 
         public AccountService(
