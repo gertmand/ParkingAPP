@@ -108,7 +108,7 @@ namespace APITests.Controllers
             httpContext2.Items["Account"] = null;
             httpContext2.Connection.RemoteIpAddress = fakeIpAddress;
             aService = new AccountService(_context,_mapper,_emailService, _logService);
-            psService = new ParkingSpotService(_context, _mapper, _logService);
+            psService = new ParkingSpotService(_context, _mapper, _logService, _emailService);
             eService = new EnterpriseService(_context, _mapper, _logService);
 
             eController = new EnterprisesController(eService,  psService, aService, _mapper, hostEnvironment);

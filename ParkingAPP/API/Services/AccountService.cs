@@ -36,7 +36,7 @@ namespace API.Services
         AccountResponse Update(int id, UpdateRequest model);
         void Delete(int id);
         void AddCar(int id,  AddCarRequest request);
-        void DeleteCar(CarResponse request);
+        void DeleteCar(int id, CarResponse request);
         void EditAccount(int id, EditAccountRequest request);
     }
 
@@ -167,6 +167,10 @@ namespace API.Services
             // save account
             _context.Accounts.Add(account);
             _context.SaveChanges();
+
+            var user = _context.Accounts.Where(x => x.Email == model.Email).FirstOrDefault();
+            string logDescription = "Registreeriti uus kasutaja: " + user.Email;
+            _logService.CreateLog(user.Id, null, null, null, Type.UserRegister, logDescription);
 
             // send email
             sendVerificationEmail(account, origin);
@@ -337,14 +341,13 @@ namespace API.Services
             _context.SaveChanges();
         }
 
-        public void DeleteCar(CarResponse request)
+        public void DeleteCar(int id, CarResponse request)
         {
             var car = _context.Cars.Find(request.Id);
-            var userId = _context.AccountCars.Where(x => x.CarId == request.Id).FirstOrDefault().AccountId;
             _context.Cars.Remove(car);
 
             string logDescription = "Kustutatud sõiduk numbrimärgiga " + car.RegNr + ".";
-            _logService.CreateLog(userId, null, null, null, Type.CarDelete, logDescription);
+            _logService.CreateLog(id, null, null, null, Type.CarDelete, logDescription);
 
             _context.SaveChanges();
         }
@@ -352,10 +355,26 @@ namespace API.Services
         public void EditAccount(int id, EditAccountRequest request)
         {
             var user = _context.Accounts.Find(id);
+            string logDescription = "Kasutaja andmete muudatus: ";
+            if (user.FirstName != request.FirstName)
+            {
+                logDescription += user.FirstName + " -> " + request.FirstName + " ";
+            }
             user.FirstName = request.FirstName;
+            if (user.LastName != request.LastName)
+            {
+                logDescription += user.LastName + " -> " + request.LastName + " ";
+            }
             user.LastName = request.LastName;
+            if (user.PhoneNr != request.PhoneNr)
+            {
+                logDescription += user.PhoneNr + " -> " + request.PhoneNr + " ";
+            }
             user.PhoneNr = request.PhoneNr;
             _context.Accounts.Update(user);
+
+            _logService.CreateLog(id, null, null, null, Type.UserEdit, logDescription);
+
             _context.SaveChanges();
         }
 

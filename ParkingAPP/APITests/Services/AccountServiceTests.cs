@@ -170,7 +170,7 @@ namespace APITests.Services
             _context.SaveChanges();
             var countAfterAdd = _context.Cars.Count();
             CarResponse cr = new CarResponse { Id = _context.Cars.LastOrDefault().Id, RegNr = "123est", Temporary = "false" };
-            aService.DeleteCar(cr);
+            aService.DeleteCar(10, cr);
             Assert.AreEqual(countBeforeAdd, countAfterAdd - 1);
         }
 

@@ -8,6 +8,7 @@ using API.Models.Entities;
 using API.Models.JoinedEntities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Type = API.Models.LogDtos.Type;
 
 namespace API.Services
 {
@@ -24,7 +25,7 @@ namespace API.Services
         bool CheckUserEnterprise(int userId, int enterpriseId);
         bool GetEnterpriseAdmin(int enterpriseId, int userId);
         bool GetEnterpriseData(int enterpriseId, int userId);
-        bool ChangeCanBookStatus(int enterpriseId, int accountId);
+        bool ChangeCanBookStatus(int adminId, int enterpriseId, int accountId);
         bool ValidatePhoneNumber(string phoneNumber);
         string ValidateCarNumber(string carNr, int enterpriseId);
     }
@@ -64,7 +65,6 @@ namespace API.Services
 
         public void Create(EnterpriseCreateRequest request)
         {
-           
             var enterprise = _mapper.Map<Enterprise>(request);
             enterprise.Active = true;
             enterprise.Created = DateTime.UtcNow;
@@ -72,6 +72,10 @@ namespace API.Services
             _context.SaveChanges();
             var enterpriseId = _context.Enterprises.OrderByDescending(x=>x.Id).FirstOrDefault().Id;
             EnterpriseAccount ea = new EnterpriseAccount() { AccountId = request.UserId, EnterpriseId = enterpriseId, IsAdmin = true, CanBook = true };
+
+            string logDescription = "Registreeriti uus parkla: Nimi: " + request.Name + " Kirjeldus: " + request.Description + " Tüüp: " + request.type;
+            _logService.CreateLog(request.UserId, null, null, enterpriseId, Type.EnterpriseRegister, logDescription);
+
             _context.EnterpriseAccounts.Add(ea);
             _context.SaveChanges();
         }
@@ -191,10 +195,25 @@ namespace API.Services
 
         // ADMIN METHODS
 
-        public bool ChangeCanBookStatus(int enterpriseId, int accountId)
+        public bool ChangeCanBookStatus(int adminId, int enterpriseId, int accountId)
         {
             var ea = _context.EnterpriseAccounts.Find( accountId, enterpriseId);
+            var admin = _context.Accounts.Where(x => x.Id == adminId).FirstOrDefault();
+            var user = _context.Accounts.Where(x => x.Id == accountId).FirstOrDefault();
+            string logDescription = "Kasutaja " + user.FirstName + " " + user.LastName
+                                    + " broneerimisõigus muudetud " + admin.FirstName + " " + admin.LastName +
+                                    " poolt: ";
+            
+            if (ea.CanBook)
+            {
+                logDescription += "Saab broneerida";
+            }
+            else
+            {
+                logDescription += "Ei saa broneerida";
+            }
             ea.CanBook = !ea.CanBook;
+            _logService.CreateLog(accountId, null, adminId, enterpriseId, Type.UserCanBook, logDescription);
             _context.SaveChanges();
 
             return ea.CanBook;

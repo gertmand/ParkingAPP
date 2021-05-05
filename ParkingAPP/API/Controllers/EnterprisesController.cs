@@ -183,13 +183,13 @@ namespace API.Controllers
                 return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
             }
 
-            return _parkingSpotService.ReleaseParkingSpot(request);
+            return _parkingSpotService.ReleaseParkingSpot(Account.Id, request);
         }
 
         [HttpPost("reservation")]
         public ActionResult<ReservationResponse> PostReservation(ReservationRequest request)
         {
-            var response = _parkingSpotService.ReserveParkingSpot(request);
+            var response = _parkingSpotService.ReserveParkingSpot(Account.Id, request);
 
             return response;
         }
@@ -301,7 +301,7 @@ namespace API.Controllers
                 return Unauthorized();
             }
 
-            return _enterpriseService.ChangeCanBookStatus(enterpriseId,accountId);
+            return _enterpriseService.ChangeCanBookStatus(Account.Id, enterpriseId,accountId);
         }
 
         [HttpPost("{enterpriseId}/admin/parkingspots/add")]
@@ -322,7 +322,7 @@ namespace API.Controllers
             {
                 return Unauthorized();
             }
-            return _parkingSpotService.AddParkingSpot(request, enterpriseId);
+            return _parkingSpotService.AddParkingSpot(Account.Id, request, enterpriseId);
         }
 
         [HttpPost("{enterpriseId}/admin/parkingspots/addcollection")]
@@ -343,7 +343,7 @@ namespace API.Controllers
             {
                 return Unauthorized();
             }
-            _parkingSpotService.AddParkingSpotArray(request, enterpriseId);
+            _parkingSpotService.AddParkingSpotArray(Account.Id, request, enterpriseId);
             return Ok("Kohad lisatud.");
         }
 
@@ -365,7 +365,7 @@ namespace API.Controllers
             {
                 return Unauthorized();
             }
-            return _parkingSpotService.AddParkingSpotMainUser(request);
+            return _parkingSpotService.AddParkingSpotMainUser(Account.Id, request);
         }
         
         [HttpPost("{enterpriseId}/admin/addparkinglotplan")]
@@ -417,7 +417,7 @@ namespace API.Controllers
             {
                 return Unauthorized();
             }
-            _parkingSpotService.DeleteParkingSpot(id);
+            _parkingSpotService.DeleteParkingSpot(Account.Id, id);
             return Ok(_parkingSpotService.GetById(id));
         }
 
@@ -439,7 +439,7 @@ namespace API.Controllers
             {
                 return Unauthorized();
             }
-            _parkingSpotService.DeleteParkingSpotMainUser(accountId,parkingSpotId);
+            _parkingSpotService.DeleteParkingSpotMainUser(Account.Id, accountId, parkingSpotId);
             return Ok();
         }
 

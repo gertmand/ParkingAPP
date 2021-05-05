@@ -52,7 +52,7 @@ namespace API.Services
         {
             Log log = new Log()
             {
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTime.Now,
                 AccountId = userId,
                 ToAccountId = ToAccountId,
                 AdminId = adminId,

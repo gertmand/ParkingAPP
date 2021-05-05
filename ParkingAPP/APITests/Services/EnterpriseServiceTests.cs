@@ -172,9 +172,9 @@ namespace APITests.Services
         [Test]
         public void ChangeCanBookStatusTest()
         {
-            var response = eService.ChangeCanBookStatus(1, 2);
+            var response = eService.ChangeCanBookStatus(1,1, 2);
             Assert.AreEqual(false,response);
-            eService.ChangeCanBookStatus(1, 2);
+            eService.ChangeCanBookStatus(1,1, 2);
         }
 
         [Test]

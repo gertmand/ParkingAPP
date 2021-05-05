@@ -21,6 +21,7 @@ namespace APITests.Services
         public IMapper _mapper;
         private ParkingSpotService pService;
         private LogService logService;
+        private EmailService emailService;
 
         public ParkingSpotServiceTests()
         {
@@ -68,13 +69,13 @@ namespace APITests.Services
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
-            pService = new ParkingSpotService(_context, _mapper, logService);
+            pService = new ParkingSpotService(_context, _mapper, logService, emailService);
         }
 
         [Test]
         public void CanCreateTest()
         {
-            ParkingSpotService pservice = new ParkingSpotService(_context,_mapper, logService);
+            ParkingSpotService pservice = new ParkingSpotService(_context,_mapper, logService, emailService);
             Assert.IsNotNull(pservice);
         }
         [Test]
@@ -123,7 +124,7 @@ namespace APITests.Services
                 EndDate = DateTime.Today,
                 StartDate = DateTime.Today
             };
-            var response = pService.ReleaseParkingSpot(request);
+            var response = pService.ReleaseParkingSpot(1,request);
             Assert.AreEqual(response.StartDate, DateTime.Today.ToUniversalTime());
         }
         [Test]
@@ -136,7 +137,7 @@ namespace APITests.Services
                 EndDate = DateTime.Today.ToUniversalTime(),
                 ReserverAccountId = 2,
             };
-            var response = pService.ReserveParkingSpot(request);
+            var response = pService.ReserveParkingSpot(1,request);
             Assert.AreEqual(response.ReserverAccountId, 2);
         }
         [Test]
@@ -154,7 +155,7 @@ namespace APITests.Services
         public void AddParkingSpotTest()
         {
             ParkingSpotRequest request = new ParkingSpotRequest { Number = 3 };
-            var response = pService.AddParkingSpot(request, 1).Created.Date;
+            var response = pService.AddParkingSpot(1, request, 1).Created.Date;
             Assert.AreEqual(response, DateTime.UtcNow.Date);
         }
         [Test]
@@ -162,14 +163,14 @@ namespace APITests.Services
         {
             var responseBeforeAdd = pService.GetAll(1).Count();
             ParkingSpotRequest[] request = { new ParkingSpotRequest() { Number = 2 }, new ParkingSpotRequest() { Number = 4 }, new ParkingSpotRequest() { Number = 5 } }; 
-            pService.AddParkingSpotArray(request,1);
+            pService.AddParkingSpotArray(1, request, 1);
             var responseAfterAdd = pService.GetAll(1).Count();
             Assert.AreEqual(responseBeforeAdd+2, responseAfterAdd);
         }
         [Test]
         public void DeleteParkingSpotTest()
         {
-            var response = pService.DeleteParkingSpot(5);
+            var response = pService.DeleteParkingSpot(1, 5);
             Assert.AreEqual(response.Id, 5);
         }
         [Test]
@@ -182,13 +183,13 @@ namespace APITests.Services
         public void AddParkingSpotMainUserTest()
         {
             ParkingSpotMainUserRequest request = new ParkingSpotMainUserRequest{AccountId = 3,CanBook = true,ParkingSpotId = 3};
-            var response = pService.AddParkingSpotMainUser(request);
+            var response = pService.AddParkingSpotMainUser(1, request);
             Assert.AreEqual(response.MainUserFullName, "Test Isik3");
         }
         [Test]
         public void DeteleParkingSpotMainUserTest()
         {
-            var response = pService.DeleteParkingSpotMainUser(3, 3);
+            var response = pService.DeleteParkingSpotMainUser(1, 3, 3);
             Assert.AreEqual(response.MainUserFullName, "Test Isik3");
         }
 

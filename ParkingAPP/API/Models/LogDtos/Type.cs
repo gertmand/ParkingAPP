@@ -8,6 +8,14 @@ namespace API.Models.LogDtos
     public enum Type
     {
         CarAdd,
-        CarDelete
+        CarDelete,
+        UserEdit,
+        UserRegister,
+        UserCanBook,
+        EnterpriseRegister,
+        ReleaseParkingSpot,
+        ReserveParkingSpot,
+        AddParkingSpot,
+        DeleteParkingSpot
     }
 }

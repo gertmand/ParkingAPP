@@ -9,6 +9,7 @@ using API.Models.ParkingSpotDtos;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using API.Helpers;
+using Type = API.Models.LogDtos.Type;
 
 namespace API.Services
 {
@@ -16,19 +17,19 @@ namespace API.Services
     {
         ParkingSpotResponse GetById(int id);
         ParkingSpotResponse GetUserParkingSpot(int enterpriseId, int userId);
-        ReleasedResponse ReleaseParkingSpot(ReleaseRequest request);
-        ReservationResponse ReserveParkingSpot(ReservationRequest request);
+        ReleasedResponse ReleaseParkingSpot(int userId, ReleaseRequest request);
+        ReservationResponse ReserveParkingSpot(int userId, ReservationRequest request);
         IEnumerable<ReservationResponse> GetUserReservations(int enterpriseId, int userId);
         IEnumerable<ParkingSpotResponse> GetAll(int enterpriseId);
         IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId);
         List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request, int enterpriseId, int accountId);
         ParkingSpotStatusType GetParkingSpotStatus(int id);
-        ParkingSpotResponse DeleteParkingSpot(int id);
-        ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId);
+        ParkingSpotResponse DeleteParkingSpot(int adminId, int id);
+        ParkingSpotResponse AddParkingSpot(int adminId, ParkingSpotRequest request, int enterpriseId);
         IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers (int enterpriseId);
-        ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request);
-        ParkingSpotMainUserResponse DeleteParkingSpotMainUser(int accountId, int parkingSpotId);
-        void AddParkingSpotArray(ParkingSpotRequest[] request, int enterpriseId);
+        ParkingSpotMainUserResponse AddParkingSpotMainUser(int adminId, ParkingSpotMainUserRequest request);
+        ParkingSpotMainUserResponse DeleteParkingSpotMainUser(int adminId, int accountId, int parkingSpotId);
+        void AddParkingSpotArray(int adminId, ParkingSpotRequest[] request, int enterpriseId);
     }
 
     public class ParkingSpotService : IParkingSpotService
@@ -39,11 +40,12 @@ namespace API.Services
         private readonly IEmailService _emailService;
         private readonly ILogService _logService;
 
-        public ParkingSpotService(DataContext context, IMapper mapper, ILogService logService)
+        public ParkingSpotService(DataContext context, IMapper mapper, ILogService logService, IEmailService emailService)
         {
             _context = context;
             _mapper = mapper;
             _logService = logService;
+            _emailService = emailService;
             _accountService = new AccountService(_context,_mapper,_emailService,_logService);
         }
 
@@ -218,7 +220,7 @@ namespace API.Services
             return requests.OrderBy(x => x.StartDate).ThenByDescending(x => x.Status).ToList();
         }
 
-        public ReleasedResponse ReleaseParkingSpot(ReleaseRequest request)
+        public ReleasedResponse ReleaseParkingSpot(int userId, ReleaseRequest request)
         {
             request.StartDate = request.StartDate.ToUniversalTime();
             request.EndDate = request.EndDate.ToUniversalTime();
@@ -245,14 +247,16 @@ namespace API.Services
             }
 
             ReleasedSpot releasedSpot = new ReleasedSpot() { ParkingSpotId = request.ParkingSpaceId, StartDate = request.StartDate, EndDate = request.EndDate };
-
+            var user = _context.Accounts.Find(userId);
             _context.ReleasedSpots.Add(releasedSpot);
+            string logDescription = "Vabastati parklakoht " + spot.Number + " kasutaja " + user.FirstName + " " + user.LastName + " poolt (" + request.StartDate + " -> " + request.EndDate + ").";
+            _logService.CreateLog(userId, null, null, request.EnterpriseId, Type.ReleaseParkingSpot, logDescription);
             _context.SaveChanges();
 
             return _mapper.Map<ReleasedResponse>(releasedSpot);
         }
 
-        public ReservationResponse ReserveParkingSpot(ReservationRequest request)
+        public ReservationResponse ReserveParkingSpot(int userId, ReservationRequest request)
         {
             var userReservations = _context.Reservations.Where(x => x.ReserverAccountId == request.ReserverAccountId).ToList();
             var spotReservations = _context.Reservations.Where(x => x.ParkingSpotId == request.ParkingSpotId).ToList();
@@ -297,6 +301,10 @@ namespace API.Services
             };
 
             _context.Reservations.Add(reservationDto);
+            var user = _context.Accounts.Find(request.ReserverAccountId);
+            string logDescription = "Kasutaja "  + user.FirstName + " " + user.LastName + " broneeris parklakoha " + requestedSpot.Number  + " (" + request.StartDate + " -> " + request.EndDate + ").";
+            _logService.CreateLog(spotAccount.AccountId, user.Id, null, requestedSpot.EnterpriseId, Type.ReserveParkingSpot, logDescription);
+
             _context.SaveChanges();
 
             var response = new ReservationResponse
@@ -353,7 +361,7 @@ namespace API.Services
         }
 
         // ADMIN METHODS
-        public ParkingSpotResponse AddParkingSpot(ParkingSpotRequest request, int enterpriseId)
+        public ParkingSpotResponse AddParkingSpot(int adminId, ParkingSpotRequest request, int enterpriseId)
         {
             if (!checkExistingParkingSpotNr(request.Number, enterpriseId))
             {
@@ -361,28 +369,39 @@ namespace API.Services
             }
             ParkingSpot ps = new ParkingSpot() {EnterpriseId = enterpriseId, Created = DateTime.UtcNow, Number = request.Number,};
             _context.ParkingSpots.Add(ps);
+            string logDescription = "Lisati parklakoht " + request.Number + ".";
+            _logService.CreateLog(adminId, null, adminId, enterpriseId, Type.AddParkingSpot, logDescription);
+
             _context.SaveChanges();
 
             return _mapper.Map<ParkingSpotResponse>(ps);
         }
 
-        public void AddParkingSpotArray(ParkingSpotRequest[] request, int enterpriseId)
+        public void AddParkingSpotArray(int adminId, ParkingSpotRequest[] request, int enterpriseId)
         {
             List<ParkingSpot> spots = new List<ParkingSpot>();
+            string logDescription = "Lisati parklakohad: ";
             foreach (var spot in request)
             {
                 if (!_context.ParkingSpots.Where(x=>x.EnterpriseId==enterpriseId).Select(x => x.Number).Contains(spot.Number))
                 {
                     spots.Add(new ParkingSpot { EnterpriseId = enterpriseId, Number = spot.Number, Created = DateTime.UtcNow });
+                    logDescription += spot.Number + ", ";
                 }
             }
             _context.ParkingSpots.AddRange(spots);
+            logDescription = logDescription.Remove(logDescription.Length - 2, 2);
+            _logService.CreateLog(adminId, null, adminId, enterpriseId, Type.AddParkingSpot, logDescription);
+
             _context.SaveChanges();
         }
-        public ParkingSpotResponse DeleteParkingSpot(int id)
+        public ParkingSpotResponse DeleteParkingSpot(int adminId, int id)
         {
+            //TODO: @Taavi Parklakoha kustutamisel tuleb arvestada ka seda, millise enterprise parklakoht kustutatakse.
+            var admin = _context.Accounts.Find(adminId);
+            //string logDescription = "Kustutatud parklakoht kasutaja  " + admin.FirstName + " " + admin.LastName + " poolt.";
+            //_logService.CreateLog(id, null, null, null, Type.CarDelete, logDescription);
             return _mapper.Map<ParkingSpotResponse>(deleteParkingSpot(id));
-
         }
 
         public IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers(int enterpriseId)
@@ -416,12 +435,12 @@ namespace API.Services
             return psmu;
         }
 
-        public ParkingSpotMainUserResponse AddParkingSpotMainUser(ParkingSpotMainUserRequest request)
+        public ParkingSpotMainUserResponse AddParkingSpotMainUser(int adminId, ParkingSpotMainUserRequest request)
         {
             return _mapper.Map<ParkingSpotMainUserResponse>(addParkingSpotMainUser(request));
         }
 
-        public ParkingSpotMainUserResponse DeleteParkingSpotMainUser(int accountId, int parkingSpotId)
+        public ParkingSpotMainUserResponse DeleteParkingSpotMainUser(int adminId, int accountId, int parkingSpotId)
         {
             return _mapper.Map<ParkingSpotMainUserResponse>(deleteParkingSpotMainUser(accountId, parkingSpotId));
         }
