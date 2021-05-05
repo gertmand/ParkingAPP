@@ -340,7 +340,7 @@ namespace API.Services
         public void DeleteCar(CarResponse request)
         {
             var car = _context.Cars.Find(request.Id);
-            var userId = _context.AccountCars.Where(x => x.CarId == request.Id).First().AccountId;
+            var userId = _context.AccountCars.Where(x => x.CarId == request.Id).FirstOrDefault().AccountId;
             _context.Cars.Remove(car);
 
             string logDescription = "Kustutatud sõiduk numbrimärgiga " + car.RegNr + ".";

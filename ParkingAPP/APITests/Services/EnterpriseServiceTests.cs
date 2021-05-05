@@ -21,7 +21,8 @@ namespace APITests.Services
         public DataContext _context;
         public IMapper _mapper;
         private EnterpriseService eService;
-        private LogService logService;
+        private ILogService _logService;
+        private LogService lService;
 
         public EnterpriseServiceTests()
         {
@@ -68,13 +69,15 @@ namespace APITests.Services
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
-            eService = new EnterpriseService(_context, _mapper, logService);
+            lService = new LogService(_context, _mapper);
+            _logService = lService;
+            eService = new EnterpriseService(_context, _mapper, _logService);
         }
 
         [Test]
         public void CanCreateTest()
         {
-            EnterpriseService eservice = new EnterpriseService(_context,_mapper, logService);
+            EnterpriseService eservice = new EnterpriseService(_context,_mapper, _logService);
             Assert.IsNotNull(eservice);
         }
         [Test]
@@ -163,7 +166,7 @@ namespace APITests.Services
         public void ValidateCarNumberTest()
         {
             var response = eService.ValidateCarNumber("123est", 1);
-            Assert.AreEqual(response, "Autol numbriga 123est on lubatud selles parklas parkida.");
+            Assert.AreEqual(response, "Autol numbriga 123est ei ole lubatud selles parklas parkida.");
         }
 
         [Test]

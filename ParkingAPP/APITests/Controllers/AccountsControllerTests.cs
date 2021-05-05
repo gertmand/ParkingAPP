@@ -6,6 +6,7 @@ using API.DAL;
 using API.Helpers;
 using API.Models.AccountDtos;
 using API.Models.Entities;
+using API.Models.JoinedEntities;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -21,13 +22,14 @@ namespace APITests.Controllers
     {
         private readonly IPAddress fakeIpAddress = IPAddress.Parse("127.168.1.32");
         private readonly IAccountService _accountService;
+        public IEmailService _emailService;
         private readonly ILogService _logService;
         private readonly IMapper _mapper;
+        private AccountService aService;
+        private LogService lService;
         private AccountsController aController;
         public DbContextOptions<DataContext> _options;
         public DataContext _context;
-        public IEmailService _emailService;
-        private AccountService aService;
 
         public AccountsControllerTests()
         {
@@ -62,8 +64,12 @@ namespace APITests.Controllers
             httpContext.Items["Account"] = a;
             httpContext.Connection.RemoteIpAddress = fakeIpAddress;
 
+            lService = new LogService(_context, _mapper);
+            _logService = lService;
+
             aService = new AccountService(_context, _mapper, _emailService, _logService);
             _accountService = aService;
+            
             aController = new AccountsController(aService, _mapper);
             aController.ControllerContext = new ControllerContext{HttpContext = httpContext};
         }
@@ -109,10 +115,8 @@ namespace APITests.Controllers
         [Test]
         public void GetByIdTest()
         {
-           
             var response = aController.GetById(10);
             Assert.IsNotNull(response);
-            
         }
 
         [Test]
@@ -157,8 +161,6 @@ namespace APITests.Controllers
                 Temporary = true
             };
             Assert.IsNotNull(aController.AddCar(request));
-            int id = _context.Cars.Where(x => x.RegNr == "999xxx").FirstOrDefault().Id;
-            
         }
 
         [Test]
@@ -171,10 +173,10 @@ namespace APITests.Controllers
                 RegNr = "test",
                 Temporary = "true",
             };
-
+            _context.AccountCars.Add(new AccountCars { CarId = 12, AccountId = 10 });
+            _context.SaveChanges();
             var controllerResponse = aController.DeleteCar(response);
             Assert.IsNotNull(controllerResponse);
-            _context.SaveChanges();
         }
 
         [Test]

@@ -5,6 +5,7 @@ using API.DAL;
 using API.Helpers;
 using API.Models.AccountDtos;
 using API.Models.Entities;
+using API.Models.JoinedEntities;
 using API.Services;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ namespace APITests.Services
         public DataContext _context;
         public IMapper _mapper;
         public IEmailService _emailService;
-        public ILogService _LogService;
+        public ILogService _logService;
         private AccountService aService;
 
         public AccountServiceTests()
@@ -50,13 +51,14 @@ namespace APITests.Services
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
-            aService = new AccountService(_context, _mapper, _emailService, _LogService);
+            _logService = new LogService(_context,_mapper);
+            aService = new AccountService(_context, _mapper, _emailService, _logService);
         }
 
         [Test]
         public void CanCreateTest()
         {
-            AccountService aservice = new AccountService(_context,_mapper,_emailService, _LogService);
+            AccountService aservice = new AccountService(_context,_mapper,_emailService, _logService);
             Assert.IsNotNull(aservice);
         }
 
@@ -162,9 +164,12 @@ namespace APITests.Services
                 RegNr = "123test",
                 Temporary = false,
             };
+            
             aService.AddCar(1, request);
+            _context.AccountCars.Add(new AccountCars { CarId = _context.Cars.LastOrDefault().Id, AccountId = 10 });
+            _context.SaveChanges();
             var countAfterAdd = _context.Cars.Count();
-            CarResponse cr = new CarResponse { Id = 2, RegNr = "123est", Temporary = "false" };
+            CarResponse cr = new CarResponse { Id = _context.Cars.LastOrDefault().Id, RegNr = "123est", Temporary = "false" };
             aService.DeleteCar(cr);
             Assert.AreEqual(countBeforeAdd, countAfterAdd - 1);
         }

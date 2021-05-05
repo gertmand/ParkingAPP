@@ -13,7 +13,7 @@ namespace API.Services
 {
     public interface ILogService
     {
-        public void CreateLog(int userId, int? ToAccountId, int? adminId, int? enterpriseId, Type type, string desc);
+        void CreateLog(int userId, int? ToAccountId, int? adminId, int? enterpriseId, Type type, string desc);
     }
 
     public class LogService : ILogService

@@ -34,10 +34,10 @@ namespace APITests.Controllers
         public IEmailService _emailService;
         private EnterprisesController eController;
         private EnterprisesController eController2;
-        private FormFile file;
         [System.Obsolete]
         private readonly IHostingEnvironment hostEnvironment;
 
+        [Obsolete]
         public EnterprisesControllerTests()
         {
             _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "db2").Options;
@@ -194,7 +194,6 @@ namespace APITests.Controllers
             Assert.AreEqual(result.StatusCode, 200);
         }
 
-
         // Validate methods for client
         [Test]
         public void ValidatePhoneNumberTest()
@@ -209,7 +208,6 @@ namespace APITests.Controllers
             var response = eController.ValidateCarNumber("123est",2);
             Assert.AreEqual(response, "Autol numbriga 123est ei ole lubatud selles parklas parkida.");
         }
-
 
         // PARKING METHODS (PARKING, RESERVATION, RELEASE)
 
