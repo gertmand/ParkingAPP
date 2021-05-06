@@ -19,6 +19,7 @@ namespace API.DAL
         public DbSet<ReleasedSpot> ReleasedSpots { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Car> Cars { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
 
         // Joined Entitied
 
@@ -32,6 +33,7 @@ namespace API.DAL
 
             modelBuilder.Entity<Car>().ToTable("Cars").HasKey(x => x.Id);
             modelBuilder.Entity<Log>().ToTable("Logs").HasKey(x => x.Id);
+            modelBuilder.Entity<Invitation>().ToTable("Invitations").HasKey(x => x.Id);
             modelBuilder.Entity<AccountCars>().ToTable("AccountCars").HasKey(key => new { key.AccountId, key.CarId });
             modelBuilder.Entity<EnterpriseAccount>().ToTable("EnterpriseAccounts")
                 .HasKey(key => new {key.AccountId, key.EnterpriseId});
