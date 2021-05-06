@@ -20,7 +20,8 @@ namespace APITests.Services
         public DataContext _context;
         public IMapper _mapper;
         private ParkingSpotService pService;
-        private LogService logService;
+        private LogService lService;
+        private ILogService _logService;
         private EmailService emailService;
 
         public ParkingSpotServiceTests()
@@ -69,13 +70,15 @@ namespace APITests.Services
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
-            pService = new ParkingSpotService(_context, _mapper, logService, emailService);
+            lService = new LogService(_context,_mapper);
+            _logService = lService;
+            pService = new ParkingSpotService(_context, _mapper, _logService, emailService);
         }
 
         [Test]
         public void CanCreateTest()
         {
-            ParkingSpotService pservice = new ParkingSpotService(_context,_mapper, logService, emailService);
+            ParkingSpotService pservice = new ParkingSpotService(_context,_mapper, _logService, emailService);
             Assert.IsNotNull(pservice);
         }
         [Test]

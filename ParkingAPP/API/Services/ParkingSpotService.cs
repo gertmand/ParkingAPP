@@ -303,7 +303,10 @@ namespace API.Services
             _context.Reservations.Add(reservationDto);
             var user = _context.Accounts.Find(request.ReserverAccountId);
             string logDescription = "Kasutaja "  + user.FirstName + " " + user.LastName + " broneeris parklakoha " + requestedSpot.Number  + " (" + request.StartDate + " -> " + request.EndDate + ").";
-            _logService.CreateLog(spotAccount.AccountId, user.Id, null, requestedSpot.EnterpriseId, Type.ReserveParkingSpot, logDescription);
+            if (spotAccount != null)
+            {
+                _logService.CreateLog(spotAccount.AccountId, user.Id, null, requestedSpot.EnterpriseId, Type.ReserveParkingSpot, logDescription);
+            }
 
             _context.SaveChanges();
 
