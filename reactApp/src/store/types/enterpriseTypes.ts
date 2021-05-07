@@ -55,6 +55,9 @@ export type EnterpriseInvitationResponse = {
     //id : number,
     enterpriseId: number,
     email: string,
+    enterpriseType: EnterpriseType,
+    enterpriseName:string
+    
 }
 
 export type EnterpriseAccountRequest = {
@@ -134,9 +137,7 @@ export type AvailableDates = {
     endDate: Date,
 }
 
-const enterpriseType = () => {
 
-}
 
 export enum LogType {
     CarAdd,
@@ -162,4 +163,8 @@ export type Log = {
     enterpriseId?: number
 }
 
+
+const enterpriseType = () => {
+
+}
 export default enterpriseType

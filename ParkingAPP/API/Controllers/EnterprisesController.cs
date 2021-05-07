@@ -151,7 +151,7 @@ namespace API.Controllers
 
             }
 
-            return null; //_enterpriseService.GetUserInvitations(email).ToList();
+            return _enterpriseService.GetUserInvitations(email).ToList();
         }
 
         [HttpPost("add")]

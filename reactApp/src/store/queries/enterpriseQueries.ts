@@ -54,6 +54,10 @@ export const getAvailableSpotsForReservation = async (startDate: Date, endDate: 
     return await post(`${apiUrl}/api/enterprises/${enterpriseId}/available-dates`, {startDate, endDate})
 }
 
+export const getUserInvitations = async (email: string) => {
+    return await get(`${apiUrl}/api/enterprises/invitations/${email}`)
+} 
+
 // ADMIN QUERIES
 
 export const getEnterpriseUsers = async (enterpriseId: number) => {
@@ -124,3 +128,9 @@ export const getUserLogs = async (enterpriseId: number, userId: number) => {
     if(enterpriseId === 0) { return null }
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/userlogs/${userId}`)
 }
+
+
+const enterpriseQueries = () => {
+
+}
+export default enterpriseQueries
