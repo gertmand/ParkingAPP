@@ -51,6 +51,17 @@ export type ReservationRequest = {
     parkingSpotId: number
 }
 
+export type EnterpriseInvitationResponse = {
+    //id : number,
+    enterpriseId: number,
+    email: string,
+}
+
+export type EnterpriseAccountRequest = {
+    enterpriseId:number,
+    userId: number
+}
+
 
 // Enterprise ParkingSpot Data
 
@@ -122,3 +133,9 @@ export type AvailableDates = {
     startDate: Date,
     endDate: Date,
 }
+
+const enterpriseType = () => {
+
+}
+
+export default enterpriseType
