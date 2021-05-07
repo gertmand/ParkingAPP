@@ -54,7 +54,7 @@ namespace API.Services
         {
             Log log = new Log()
             {
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow.AddHours(3),
                 AccountId = userId,
                 ToAccountId = ToAccountId,
                 AdminId = adminId,

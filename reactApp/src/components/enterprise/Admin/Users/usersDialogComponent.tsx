@@ -105,7 +105,7 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
                     <UsersParkingComponent userData={userDataAdmin} parkingSpotData={parkingSpotData}/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    {userLogData !== undefined  && userData !== undefined? <UserLogs userName={userData.firstName + ' ' + userData.lastName} userLogs={userLogData}/> : ''}
+                    {userLogData !== undefined  && userData !== undefined && enterpriseId !== null ? <UserLogs enterpriseId={enterpriseId} userName={userData.firstName + ' ' + userData.lastName} userLogs={userLogData}/> : ''}
                   </TabPanel>
                 </Paper>
               </div>

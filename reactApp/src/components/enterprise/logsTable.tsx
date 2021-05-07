@@ -11,9 +11,10 @@ type Props = {
   logs: Log[],
   userLogsBoolean: boolean,
   enterpriseUsers?: any[]
+  enterpriseId?: number
 };
 
-const LogsTable: FC<Props> = ({searchTerm, logs, userLogsBoolean, enterpriseUsers}) => {
+const LogsTable: FC<Props> = ({searchTerm, logs, userLogsBoolean, enterpriseUsers, enterpriseId}) => {
 
   function getDate(params: GridValueGetterParams) {
     return `${params.getValue('createdAt')}`;
@@ -91,9 +92,29 @@ const LogsTable: FC<Props> = ({searchTerm, logs, userLogsBoolean, enterpriseUser
         }}
         autoHeight
         rows={logs.filter((log) => {
-          if (searchTerm === '') {
-            return log;
-          } else if (log.description.toString().toLowerCase().includes(searchTerm.toLowerCase()) || formatDate(log.createdAt.toString()).includes(searchTerm.toLowerCase())) { return log }
+          if (searchTerm === '') 
+          {
+            if (enterpriseId === undefined)
+            {
+              return log;
+            }
+            else if (enterpriseId !== undefined && enterpriseId === log.enterpriseId)
+            {
+              return log;
+            }
+          } 
+          else if (log.description.toString().toLowerCase().includes(searchTerm.toLowerCase()) || formatDate(log.createdAt.toString()).includes(searchTerm.toLowerCase())) 
+          { 
+            if (enterpriseId === undefined)
+            {
+              return log;
+            }
+            else if (enterpriseId !== undefined && enterpriseId === log.enterpriseId)
+            {
+              return log;
+            }
+          }
+          
           return null;
         })}
         columns={columns}

@@ -8,9 +8,10 @@ import LogsTable from '../../../logsTable';
 type Props = {
     userLogs: Log[]
     userName: string
+    enterpriseId: number
   };
 
-const UserLogs: FC<Props> = ({userLogs, userName}) => {
+const UserLogs: FC<Props> = ({userLogs, userName, enterpriseId}) => {
     const [searchTerm, setSearchTerm] = useState('');
     return (
         <div>
@@ -38,7 +39,7 @@ const UserLogs: FC<Props> = ({userLogs, userName}) => {
                 </Grid>
             </Grid>
             <Grid style={{ padding: theme.spacing(2) }}>
-            <LogsTable logs={userLogs} searchTerm={searchTerm} userLogsBoolean={true}/>
+            <LogsTable enterpriseId={enterpriseId} logs={userLogs} searchTerm={searchTerm} userLogsBoolean={true}/>
             </Grid>
             </Card>
         </div>

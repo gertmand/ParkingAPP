@@ -211,7 +211,7 @@ namespace API.Services
                                     + " broneerimisõigus muudetud " + admin.FirstName + " " + admin.LastName +
                                     " poolt: ";
             
-            if (ea.CanBook)
+            if (!ea.CanBook)
             {
                 logDescription += "Saab broneerida";
             }
