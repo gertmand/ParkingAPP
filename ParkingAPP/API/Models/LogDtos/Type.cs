@@ -16,6 +16,8 @@ namespace API.Models.LogDtos
         ReleaseParkingSpot,
         ReserveParkingSpot,
         AddParkingSpot,
-        DeleteParkingSpot
+        DeleteParkingSpot,
+        AddParkingSpotMainUser,
+        DeleteParkingSpotMainUser
     }
 }

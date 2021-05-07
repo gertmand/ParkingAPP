@@ -399,11 +399,7 @@ namespace API.Services
         }
         public ParkingSpotResponse DeleteParkingSpot(int adminId, int id)
         {
-            //TODO: @Taavi Parklakoha kustutamisel tuleb arvestada ka seda, millise enterprise parklakoht kustutatakse.
-            var admin = _context.Accounts.Find(adminId);
-            //string logDescription = "Kustutatud parklakoht kasutaja  " + admin.FirstName + " " + admin.LastName + " poolt.";
-            //_logService.CreateLog(id, null, null, null, Type.CarDelete, logDescription);
-            return _mapper.Map<ParkingSpotResponse>(deleteParkingSpot(id));
+            return _mapper.Map<ParkingSpotResponse>(deleteParkingSpot(adminId, id));
         }
 
         public IEnumerable<ParkingSpotMainUserResponse> GetParkingSpotsMainUsers(int enterpriseId)
@@ -439,12 +435,12 @@ namespace API.Services
 
         public ParkingSpotMainUserResponse AddParkingSpotMainUser(int adminId, ParkingSpotMainUserRequest request)
         {
-            return _mapper.Map<ParkingSpotMainUserResponse>(addParkingSpotMainUser(request));
+            return _mapper.Map<ParkingSpotMainUserResponse>(addParkingSpotMainUser(adminId, request));
         }
 
         public ParkingSpotMainUserResponse DeleteParkingSpotMainUser(int adminId, int accountId, int parkingSpotId)
         {
-            return _mapper.Map<ParkingSpotMainUserResponse>(deleteParkingSpotMainUser(accountId, parkingSpotId));
+            return _mapper.Map<ParkingSpotMainUserResponse>(deleteParkingSpotMainUser(adminId, accountId, parkingSpotId));
         }
 
         // helper methods
@@ -581,7 +577,7 @@ namespace API.Services
             return releases;
         }
 
-        private ParkingSpot deleteParkingSpot(int id)
+        private ParkingSpot deleteParkingSpot(int adminId, int id)
         {
             List<ParkingSpotAccount> psa = new List<ParkingSpotAccount>();
             psa.AddRange(_context.ParkingSpotAccounts.Where(x=>x.ParkingSpotId==id));
@@ -592,6 +588,10 @@ namespace API.Services
             }
             ParkingSpot ps = _context.ParkingSpots.Find(id);
             ps.DeletionDate = DateTime.UtcNow;
+
+            string logDescription = "Kustutati parklakoht " + ps.Number + ".";
+            _logService.CreateLog(adminId, null, adminId, ps.EnterpriseId, Type.DeleteParkingSpot, logDescription);
+
             _context.SaveChanges();
             return ps;
         }
@@ -602,13 +602,14 @@ namespace API.Services
             return ps;
         }
 
-        private ParkingSpotMainUserResponse addParkingSpotMainUser(ParkingSpotMainUserRequest request)
+        private ParkingSpotMainUserResponse addParkingSpotMainUser(int adminId, ParkingSpotMainUserRequest request)
         {
             ParkingSpotAccount temp = new ParkingSpotAccount()
             {
                 AccountId = request.AccountId,
                 ParkingSpotId = request.ParkingSpotId,
             };
+            var ps = _context.ParkingSpots.Find(request.ParkingSpotId);
             _context.EnterpriseAccounts.FirstOrDefault(x => x.AccountId == request.AccountId).CanBook = request.CanBook;
             _context.ParkingSpotAccounts.Add(temp);
             _context.SaveChanges();
@@ -619,12 +620,17 @@ namespace API.Services
                 MainUserFullName = account.FirstName + " " + account.LastName,
                 CanBook = request.CanBook,
             };
+
+            string logDescription = "Lisati uus peakasutaja (" + account.FirstName + " " + account.LastName + ") parklakohale " + ps.Number + ".";
+            _logService.CreateLog(account.Id, null, adminId, ps.EnterpriseId, Type.AddParkingSpotMainUser, logDescription);
+            _context.SaveChanges();
             return response;
         }
 
-        private ParkingSpotMainUserResponse deleteParkingSpotMainUser(int accountId, int parkingSpotId)
+        private ParkingSpotMainUserResponse deleteParkingSpotMainUser(int adminId, int accountId, int parkingSpotId)
         {
             ParkingSpotAccount psa = _context.ParkingSpotAccounts.Find(accountId,parkingSpotId);
+            var ps = _context.ParkingSpots.Find(parkingSpotId);
             _context.ParkingSpotAccounts.Remove(psa);
             _context.SaveChanges();
             Account account = _context.Accounts.Find(accountId);
@@ -633,6 +639,10 @@ namespace API.Services
                 ParkingSpotId = parkingSpotId,
                 MainUserFullName = account.FirstName + " " + account.LastName,
             };
+
+            string logDescription = "Eemaldati peakasutaja (" + account.FirstName + " " + account.LastName + ") parklakohalt " + ps.Number + ".";
+            _logService.CreateLog(account.Id, null, adminId, ps.EnterpriseId, Type.DeleteParkingSpotMainUser, logDescription);
+            _context.SaveChanges();
             return response;
         }
 
