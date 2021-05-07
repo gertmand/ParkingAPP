@@ -39,9 +39,8 @@ namespace APITests.Controllers
         private readonly IHostingEnvironment hostEnvironment;
 
         [Obsolete]
-        public EnterprisesControllerTests(IHostingEnvironment hostEnvironment)
+        public EnterprisesControllerTests()
         {
-            this.hostEnvironment = hostEnvironment;
             _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "db2").Options;
             _context = new DataContext(_options);
             if (_mapper == null)
@@ -124,10 +123,9 @@ namespace APITests.Controllers
 
         // ENTERPRISE METHODS
         [Test]
-        [Obsolete]
         public void CanCreateTest()
         {
-            EnterprisesController enterprisesController = new EnterprisesController(eService,psService,aService,_mapper,hostEnvironment, _logService);
+            EnterprisesController enterprisesController = new EnterprisesController(eService,psService,aService,_mapper,hostEnvironment, lService);
             Assert.IsNotNull(enterprisesController);
         }
 
@@ -250,6 +248,9 @@ namespace APITests.Controllers
                 StartDate = DateTime.UtcNow.Date,
                 EndDate = DateTime.UtcNow.Date
             };
+            var account = _context.Accounts.Find(11);
+            var ps = _context.ParkingSpots.Find(10);
+            _context.ParkingSpotAccounts.Add(new ParkingSpotAccount() {AccountId = 11, ParkingSpotId = 10, Account = account, ParkingSpot = ps});
             eController.ReleaseSpot(releaseRequest);
             ReservationRequest request = new ReservationRequest{ParkingSpotId = 10,ReserverAccountId = 12,StartDate = DateTime.UtcNow.Date, EndDate = DateTime.UtcNow.Date};
             var response = eController.PostReservation(request);
@@ -331,6 +332,8 @@ namespace APITests.Controllers
                 AccountId = 12,
                 CanBook = true,
             };
+
+            _context.ParkingSpots.Add(new ParkingSpot { Id = 3, Number = 99 });
             Assert.IsNotNull(eController.AddParkingSpotMainUser(request,2));
         }
 
