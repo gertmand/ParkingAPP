@@ -8,7 +8,6 @@ using API.Models.JoinedEntities;
 using API.Models.ParkingSpotDtos;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using API.Helpers;
 using Type = API.Models.LogDtos.Type;
 
 namespace API.Services
