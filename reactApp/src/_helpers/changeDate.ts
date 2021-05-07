@@ -14,7 +14,11 @@ export function changeDate(dateValue: Date, showWeekDay?: boolean) {
 
     var date = dateValue.toString().slice(0, 10).split("-");
 
-    var dayValueMoment = new Date(Moment(dateValue).format())
+    var dayValueMoment = new Date(Moment(dateValue).locale("et").format())
+
+    console.log("DATE: " + dayValueMoment)
+    console.log("DAY: " + dayValueMoment.getUTCDay())
+
 
     //var dayValue = new Date(dateValue);
     //dayValue.getDate()
