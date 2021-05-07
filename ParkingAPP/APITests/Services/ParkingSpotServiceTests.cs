@@ -24,9 +24,8 @@ namespace APITests.Services
         private ILogService _logService;
         private EmailService emailService;
 
-        public ParkingSpotServiceTests(EmailService emailService)
+        public ParkingSpotServiceTests()
         {
-            this.emailService = emailService;
             _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "db").Options;
             _context = new DataContext(_options);
 
