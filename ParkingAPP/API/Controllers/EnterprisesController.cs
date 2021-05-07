@@ -140,6 +140,17 @@ namespace API.Controllers
             return spotData;
         }
 
+        [HttpGet("invitations/{email}")]
+        public ActionResult<IEnumerable<EnterpriseInvitationResponse>> GetUserInvitations(string email)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+            return _enterpriseService.GetUserInvitations(email).ToList();
+        }
+
         [HttpPost("add")]
         public ActionResult Create(EnterpriseCreateRequest request)
         {

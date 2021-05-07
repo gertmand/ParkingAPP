@@ -32,6 +32,7 @@ namespace APITests.Controllers
         private readonly ILogService _logService;
         private readonly IMapper _mapper;
         public IEmailService _emailService;
+        private LogService lService;
         private EnterprisesController eController;
         private EnterprisesController eController2;
         [System.Obsolete]
@@ -107,9 +108,12 @@ namespace APITests.Controllers
             var httpContext2 = new DefaultHttpContext();
             httpContext2.Items["Account"] = null;
             httpContext2.Connection.RemoteIpAddress = fakeIpAddress;
+            lService = new LogService(_context, _mapper);
+            _logService = lService;
             aService = new AccountService(_context,_mapper,_emailService, _logService);
             psService = new ParkingSpotService(_context, _mapper, _logService, _emailService);
             eService = new EnterpriseService(_context, _mapper, _logService);
+            
 
             eController = new EnterprisesController(eService,  psService, aService, _mapper, hostEnvironment);
             eController2 = new EnterprisesController(eService, psService, aService, _mapper, hostEnvironment);

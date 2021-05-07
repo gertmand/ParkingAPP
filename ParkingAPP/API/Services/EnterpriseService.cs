@@ -28,6 +28,7 @@ namespace API.Services
         bool ChangeCanBookStatus(int adminId, int enterpriseId, int accountId);
         bool ValidatePhoneNumber(string phoneNumber);
         string ValidateCarNumber(string carNr, int enterpriseId);
+        IEnumerable<EnterpriseInvitationResponse> GetUserInvitations(string email);
     }
 
 
@@ -137,6 +138,12 @@ namespace API.Services
                 .Where(x => x.AccountId == userId && x.EnterpriseId == enterpriseId).First().CanBook;
 
             return canBook;
+        }
+
+        public IEnumerable<EnterpriseInvitationResponse> GetUserInvitations(string email)
+        {
+            var userInvitations = getUserInvitations(email);
+            return _mapper.Map<IList<EnterpriseInvitationResponse>>(userInvitations);
         }
 
         // Validate methods for client
@@ -257,6 +264,31 @@ namespace API.Services
         {
             var enterprises = _context.Enterprises;
             return enterprises;
+        }
+
+        private IEnumerable<EnterpriseInvitationResponse> getUserInvitations(string email)
+        {
+            var enterprises = _context.Enterprises;
+            var invitations = _context.Invitations.Where(x => x.Email == email).ToList();
+            IList<EnterpriseInvitationResponse> invitationResponses = new List<EnterpriseInvitationResponse>();
+            if (invitations != null)
+            {
+                foreach (var invitation in invitations)
+                {
+                    if(invitation.Approved == false && invitation.DeletionDate == null && invitation.ApprovedAt == null)
+                    invitationResponses.Add(new EnterpriseInvitationResponse
+                    {
+                        EnterpriseId = invitation.EnterpriseId,
+                        Email = invitation.Email,
+                        EnterpriseName = enterprises.Find(invitation.EnterpriseId).Name,
+                        Type = enterprises.Find(invitation.EnterpriseId).Type
+                    });
+                }
+
+                return invitationResponses;
+            }
+
+            return invitationResponses;
         }
     }
 }
