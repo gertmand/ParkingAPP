@@ -203,6 +203,11 @@ namespace API.Controllers
         [HttpPost("reservation")]
         public ActionResult<ReservationResponse> PostReservation(ReservationRequest request)
         {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
             var response = _parkingSpotService.ReserveParkingSpot(Account.Id, request);
 
             return response;
