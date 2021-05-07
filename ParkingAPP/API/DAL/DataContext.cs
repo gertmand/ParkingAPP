@@ -180,7 +180,8 @@ namespace API.DAL
                     });
             }
 
-           
+            modelBuilder.Entity<EnterpriseAccount>().HasData(
+                new EnterpriseAccount {AccountId = 2, EnterpriseId = 2, CanBook = true, IsAdmin = true});
 
             for (var i = 1; i <= 10; i++)
             {
