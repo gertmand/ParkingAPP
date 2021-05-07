@@ -64,7 +64,13 @@ const UserCars = () => {
           })
         );
       }).catch((err: any) => {
-        console.log(err)
+        
+        dispatch(
+          SET_ERROR_ALERT({
+            status: true,
+            message: err
+          })
+        );
       })
     }
 

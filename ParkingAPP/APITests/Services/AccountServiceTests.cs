@@ -161,7 +161,7 @@ namespace APITests.Services
             var countBeforeAdd = _context.Cars.Count();
             AddCarRequest request = new AddCarRequest
             {
-                RegNr = "123test",
+                RegNr = "125test",
                 Temporary = false,
             };
             

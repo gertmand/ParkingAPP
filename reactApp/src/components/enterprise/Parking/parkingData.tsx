@@ -75,7 +75,7 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
 
     return (
         <>
-        <Toolbar addReservationButton={addReservationButton} handleGiveSpot={handleGiveSpot} handleRelease={handleRelease} handleBook={handleBookModal} spotButtons={spotButtons} />
+        {!isAdmin ? <Toolbar addReservationButton={addReservationButton} handleGiveSpot={handleGiveSpot} handleRelease={handleRelease} handleBook={handleBookModal} spotButtons={spotButtons} /> : ''}
         <Grid container spacing={1} className={classes.height}>
             <Grid item xs={12}>
                 <Card className={clsx(classes.card)}>

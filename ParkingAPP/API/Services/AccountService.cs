@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using API.DAL;
 using API.Helpers;
 using API.Models.AccountDtos;
@@ -325,6 +326,17 @@ namespace API.Services
         public void AddCar(int id, AddCarRequest request)
         {
             var car = _mapper.Map<Car>(request);
+            if (_context.Cars.Include(x => x.AccountCars)
+                .Where(x => x.RegNr == car.RegNr.Trim()).Select(x => x.AccountCars.Where(x => x.AccountId == id)).Any())
+            {
+                throw new AppException("Ühte ja sama sõidukit ei ole võimalik mitu korda lisada!");
+            }
+            string pattern = @"^[a-zA-Z0-9]+$";
+            Regex regex = new Regex(pattern);
+            if (!regex.IsMatch(car.RegNr))
+            {
+                throw new AppException("Sisestage korrektne numbrimärk!");
+            }
             _context.Cars.Add(car);
             _context.SaveChanges();
             var carId = _context.Cars.OrderByDescending(x => x.Id).FirstOrDefault().Id;
