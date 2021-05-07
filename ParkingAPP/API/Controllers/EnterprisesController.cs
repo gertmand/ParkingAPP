@@ -18,17 +18,19 @@ namespace API.Controllers
     {
         private readonly IEnterpriseService _enterpriseService;
         private readonly IParkingSpotService _parkingSpotService;
+        private readonly ILogService _logService;
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         [System.Obsolete]
         private readonly IHostingEnvironment hostEnvironment;
 
         [System.Obsolete]
-        public EnterprisesController(IEnterpriseService enterpriseService, IParkingSpotService parkingSpotService, IAccountService accountService, IMapper mapper, IHostingEnvironment environment)
+        public EnterprisesController(IEnterpriseService enterpriseService, IParkingSpotService parkingSpotService, IAccountService accountService, IMapper mapper, IHostingEnvironment environment, ILogService logService)
         {
             _enterpriseService = enterpriseService;
             _parkingSpotService = parkingSpotService;
             _accountService = accountService;
+            _logService = logService;
             _mapper = mapper;
             hostEnvironment = environment;
 
@@ -148,7 +150,8 @@ namespace API.Controllers
                 return Unauthorized();
 
             }
-            return _enterpriseService.GetUserInvitations(email).ToList();
+
+            return null; //_enterpriseService.GetUserInvitations(email).ToList();
         }
 
         [HttpPost("add")]
@@ -497,8 +500,6 @@ namespace API.Controllers
             if (parkingSpot != null)
                 parkingSpot.Status = _parkingSpotService.GetParkingSpotStatus(parkingSpot.Id);
 
-            //_logService.AddLog("algatajaId", "secondaryUserId?" "type/enum", "desc", "changes: EMAIL1 -> EMAIL2", "CreatedAt")
-
             var userData = new EnterpriseUserDataResponse
             {
                 ParkingSpot = parkingSpot,
@@ -541,6 +542,42 @@ namespace API.Controllers
             };
 
             return spotData;
+        }
+
+        // LOGS METHODS
+
+        [HttpGet("{enterpriseId}/logs")]
+        public ActionResult<IEnumerable<Log>> GetEnterpriseLogs(int enterpriseId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            return _logService.GetEnterpriseLogs(enterpriseId).ToList();
+        }
+
+        [HttpGet("{enterpriseId}/userlogs/{userId}")]
+        public ActionResult<IEnumerable<Log>> GetUserLogs(int userId, int enterpriseId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            return _logService.GetUserLogs(userId).ToList();
         }
 
         // HELPER METHODS

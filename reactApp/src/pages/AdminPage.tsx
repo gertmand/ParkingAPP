@@ -8,8 +8,10 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
 import UsersTable from '../components/enterprise/Admin/Users/usersTable';
+import EnterpriseLogs from '../components/enterprise/enterpriseLogs';
 import { AppState } from '../store';
-import { getAccountsWithoutSpot, getEnterpriseParkingSpotData, getEnterpriseParkingSpots, getEnterpriseUserData, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
+import { getAccountsWithoutSpot, getEnterpriseLogs, getEnterpriseParkingSpotData, getEnterpriseParkingSpots, getEnterpriseUserData, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
+import { Enterprise, Log } from '../store/types/enterpriseTypes';
 import Page from '../style/Page';
 
 
@@ -22,7 +24,7 @@ import Page from '../style/Page';
     const [enterpriseParkingSpots, setEnterpriseParkingSpots] = useState([]);
     const [regularUsers, setRegularUsers] = useState([]);
     const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
-
+    const enterpriseData = useSelector<AppState, Enterprise>(state => state.user.enterpriseData)
     const [parkingLoading, setParkingLoading] = useState(true)
   
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -40,6 +42,7 @@ import Page from '../style/Page';
           setParkingSpotMainUsers(result);
         })
         getAccountsWithoutSpot(enterpriseId).then(data => setRegularUsers(data));
+        
       }
       // eslint-disable-next-line
     }, [enterpriseUsers,parkingSpotMainUsers, regularUsers, enterpriseId])
@@ -116,7 +119,7 @@ import Page from '../style/Page';
                     <Typography>Seaded</Typography>
                   </TabPanel>
                   <TabPanel value={value} index={4}>
-                    <Typography>Logid</Typography>
+                    {enterpriseId !== undefined && enterpriseUsers !== undefined? <EnterpriseLogs enterpriseUsers={enterpriseUsers} enterpriseId={enterpriseId} enterpriseName={enterpriseData.name} /> : ''} 
                   </TabPanel>
                 </Paper>
               </div>

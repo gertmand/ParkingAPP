@@ -1,10 +1,11 @@
-import { AppBar, Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps, DialogTitle, Grid, makeStyles, Paper, Tab, Tabs, Theme, Typography } from '@material-ui/core';
+import { AppBar, Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogProps, DialogTitle, Grid, makeStyles, Paper, Tab, Tabs, Theme } from '@material-ui/core';
 import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
-import { getEnterpriseParkingSpotDataAdmin, getEnterpriseUserDataAdmin, getUserDetails } from '../../../../store/queries/enterpriseQueries';
-import { EnterpriseParkingSpotData, EnterpriseUserData, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
+import { getEnterpriseParkingSpotDataAdmin, getEnterpriseUserDataAdmin, getUserDetails, getUserLogs } from '../../../../store/queries/enterpriseQueries';
+import { EnterpriseParkingSpotData, EnterpriseUserData, Log, ParkingSpotMainUserResponse } from '../../../../store/types/enterpriseTypes';
 import { SelectedUser, User } from '../../../../store/types/userType';
+import UserLogs from './UsersDialogTabComponents/userLogs';
 import UsersDetails from './UsersDialogTabComponents/usersDetailsComponent';
 import UsersParkingComponent from './UsersDialogTabComponents/usersParkingComponent';
 
@@ -31,9 +32,10 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
   const [userData, setUserData] = useState<User>();
   const [userDataAdmin, setuserDataAdmin] = useState<EnterpriseUserData>();
   const [parkingSpotData, setparkingSpotData] = useState<EnterpriseParkingSpotData>();
+  const [userLogData, setUserLogData] = useState<Log[]>();
   const [value, setValue] = React.useState(0);
   const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id);
-  const [maxWidth,] = React.useState<DialogProps['maxWidth']>('md');
+  const [maxWidth,] = React.useState<DialogProps['maxWidth']>('lg');
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -62,6 +64,12 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
       .then((result: any) => {
         setparkingSpotData(result);
         console.log(result)
+      }).catch(err => {
+        console.log(err)
+    })
+    getUserLogs(enterpriseId, userIdForDetails)
+      .then((result: any) => {
+        setUserLogData(result);
       }).catch(err => {
         console.log(err)
     })
@@ -97,7 +105,7 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
                     <UsersParkingComponent userData={userDataAdmin} parkingSpotData={parkingSpotData}/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    <Typography>Logid</Typography>
+                    {userLogData !== undefined  && userData !== undefined? <UserLogs userName={userData.firstName + ' ' + userData.lastName} userLogs={userLogData}/> : ''}
                   </TabPanel>
                 </Paper>
               </div>

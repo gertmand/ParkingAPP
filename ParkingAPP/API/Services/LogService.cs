@@ -14,6 +14,8 @@ namespace API.Services
     public interface ILogService
     {
         void CreateLog(int userId, int? ToAccountId, int? adminId, int? enterpriseId, Type type, string desc);
+        IEnumerable<Log> GetUserLogs(int userId);
+        IEnumerable<Log> GetEnterpriseLogs(int enterpriseId);
     }
 
     public class LogService : ILogService
@@ -61,6 +63,18 @@ namespace API.Services
                 Description = desc
             };
             _context.Logs.Add(log);
+        }
+
+        public IEnumerable<Log> GetUserLogs(int userId)
+        {
+            return _context.Logs.Where(x => x.AccountId == userId || x.ToAccountId == userId || x.AdminId == userId)
+                .ToList();
+        }
+
+        public IEnumerable<Log> GetEnterpriseLogs(int enterpriseId)
+        {
+            return _context.Logs.Where(x => x.EnterpriseId == enterpriseId)
+                .ToList();
         }
     }
 }

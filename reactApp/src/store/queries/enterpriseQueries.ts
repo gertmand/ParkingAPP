@@ -112,3 +112,15 @@ export const getEnterpriseParkingSpotDataAdmin = async (enterpriseId: number, us
     if(enterpriseId === 0) { return null }
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/spot/${userId}`)
 }
+
+// LOG QUERIES
+
+export const getEnterpriseLogs = async (enterpriseId: number) => {
+    if(enterpriseId === 0) { return null }
+    return await get(`${apiUrl}/api/enterprises/${enterpriseId}/logs`)
+}
+
+export const getUserLogs = async (enterpriseId: number, userId: number) => {
+    if(enterpriseId === 0) { return null }
+    return await get(`${apiUrl}/api/enterprises/${enterpriseId}/userlogs/${userId}`)
+}

@@ -138,4 +138,28 @@ const enterpriseType = () => {
 
 }
 
+export enum LogType {
+    CarAdd,
+    CarDelete,
+    UserEdit,
+    UserRegister,
+    UserCanBook,
+    EnterpriseRegister,
+    ReleaseParkingSpot,
+    ReserveParkingSpot,
+    AddParkingSpot,
+    DeleteParkingSpot
+  }
+
+export type Log = {
+    id: number,
+    createdAt: Date,
+    description: string,
+    type: LogType,
+    accountId: number,
+    toAccountId?: number,
+    adminId?: number,
+    enterpriseId?: number
+}
+
 export default enterpriseType

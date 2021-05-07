@@ -21,7 +21,7 @@ namespace API.Services
         IEnumerable<Reservation> GetReservations();
         IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccounts(int enterpriseId);
         IEnumerable<EnterpriseAccountsResponse> GetEnterpriseAccountsWithoutParkingspots(int enterpriseId);
-        AccountResponse GetUserData(int userId); //TODO: @KEVIN AccountService meetod GetById, topelt koodi pole vaja
+        AccountResponse GetUserData(int userId);
         bool CheckUserEnterprise(int userId, int enterpriseId);
         bool GetEnterpriseAdmin(int enterpriseId, int userId);
         bool GetEnterpriseData(int enterpriseId, int userId);
