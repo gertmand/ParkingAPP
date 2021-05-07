@@ -56,8 +56,8 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData, isAdmin
                   {row.status === "Released" && "Vabastatud"}
                   {row.status === "Booked" && "Broneering"}
                 </TableCell>
-                <TableCell>{changeDate(row.startDate)}</TableCell>
-                <TableCell>{changeDate(row.endDate)}</TableCell>
+                <TableCell>{changeDate(row.startDate, true)}</TableCell>
+                <TableCell>{changeDate(row.endDate, true)}</TableCell>
                 <TableCell>{row.reserverName}</TableCell>
                 {!isAdmin ? <TableCell>
                   <Tooltip title="TÜHISTA">
@@ -88,8 +88,8 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData, isAdmin
             {reservationData !== undefined ? reservationData.map((row: Reservation) => (
               <TableRow key={row.id} className={classes.rowHeight}>
                 <TableCell>Broneering</TableCell>
-                <TableCell>{changeDate(row.startDate)}</TableCell>
-                <TableCell>{changeDate(row.endDate)}</TableCell>
+                <TableCell>{changeDate(row.startDate, true)}</TableCell>
+                <TableCell>{changeDate(row.endDate, true)}</TableCell>
                 <TableCell>{row.reserverName}</TableCell>
                 {!isAdmin ? <TableCell>
                   <Tooltip title="TÜHISTA">

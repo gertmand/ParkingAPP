@@ -10,8 +10,8 @@ import ParkingTable from '../components/enterprise/Admin/Parking/parkingTable';
 import UsersTable from '../components/enterprise/Admin/Users/usersTable';
 import EnterpriseLogs from '../components/enterprise/enterpriseLogs';
 import { AppState } from '../store';
-import { getAccountsWithoutSpot, getEnterpriseLogs, getEnterpriseParkingSpotData, getEnterpriseParkingSpots, getEnterpriseUserData, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
-import { Enterprise, Log } from '../store/types/enterpriseTypes';
+import { getAccountsWithoutSpot, getEnterpriseParkingSpotData, getEnterpriseParkingSpots, getEnterpriseUserData, getEnterpriseUsers, getParkingSpotMainUsers } from '../store/queries/enterpriseQueries';
+import { Enterprise } from '../store/types/enterpriseTypes';
 import Page from '../style/Page';
 
 

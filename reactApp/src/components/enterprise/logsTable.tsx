@@ -66,7 +66,7 @@ const LogsTable: FC<Props> = ({searchTerm, logs, userLogsBoolean, enterpriseUser
       renderCell: (params: GridValueGetterParams) => {
         return (
           <div style={{ margin: 'auto' }}>
-            {enterpriseUsers?.filter(x => x.id == getAdmin(params)).map(x => x.firstName + ' ' + x.lastName)}
+            {enterpriseUsers?.filter(x => x.id === getAdmin(params)).map(x => x.firstName + ' ' + x.lastName)}
           </div>
         );
       }

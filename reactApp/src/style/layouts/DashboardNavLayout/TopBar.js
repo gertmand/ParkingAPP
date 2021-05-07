@@ -2,25 +2,24 @@ import {
   AppBar,
   Badge,
   Box,
-  Hidden,
-  IconButton,
-  makeStyles,
-  Toolbar,
   Button,
   Dialog,
-  DialogActions, 
-  DialogContent, 
+  DialogActions,
+  DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle, Hidden,
+  IconButton,
+  makeStyles,
+  Toolbar
 } from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../Logo';
-import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -37,7 +36,7 @@ const useStyles = makeStyles(() => ({
 
 const TopBar = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [enterpriseInvitations, setEnterpriseInvitations] = useState([]);
+  const [enterpriseInvitations] = useState([]);
   const email = useSelector(state => state.user.userData.email);
 
   var test = {enterpriseId :1, email : email};

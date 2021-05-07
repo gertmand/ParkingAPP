@@ -29,7 +29,7 @@ export const addReservation = async (reservation: ReservationRequest) => {
 };
 
 const postReservation = (reservation: ReservationRequest) => {
-    return axios.post(`${apiUrl}/api/enterprises/reservation`, JSON.stringify(reservation), {headers: {"Content-Type": "application/json"}});
+    return post(`${apiUrl}/api/enterprises/reservation`, reservation);
 };
 
 export const getAccountsWithoutSpot = async (enterpriseId: number) => {
