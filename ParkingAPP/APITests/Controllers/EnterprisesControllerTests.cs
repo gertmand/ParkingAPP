@@ -39,8 +39,9 @@ namespace APITests.Controllers
         private readonly IHostingEnvironment hostEnvironment;
 
         [Obsolete]
-        public EnterprisesControllerTests()
+        public EnterprisesControllerTests(IHostingEnvironment hostEnvironment)
         {
+            this.hostEnvironment = hostEnvironment;
             _options = new DbContextOptionsBuilder<DataContext>().UseInMemoryDatabase(databaseName: "db2").Options;
             _context = new DataContext(_options);
             if (_mapper == null)
@@ -115,17 +116,18 @@ namespace APITests.Controllers
             eService = new EnterpriseService(_context, _mapper, _logService);
             
 
-            eController = new EnterprisesController(eService,  psService, aService, _mapper, hostEnvironment);
-            eController2 = new EnterprisesController(eService, psService, aService, _mapper, hostEnvironment);
+            eController = new EnterprisesController(eService,  psService, aService, _mapper, hostEnvironment, _logService);
+            eController2 = new EnterprisesController(eService, psService, aService, _mapper, hostEnvironment, _logService);
             eController.ControllerContext = new ControllerContext { HttpContext = httpContext };
             eController2.ControllerContext = new ControllerContext { HttpContext = httpContext2 };
         }
 
         // ENTERPRISE METHODS
         [Test]
+        [Obsolete]
         public void CanCreateTest()
         {
-            EnterprisesController enterprisesController = new EnterprisesController(eService,psService,aService,_mapper,hostEnvironment);
+            EnterprisesController enterprisesController = new EnterprisesController(eService,psService,aService,_mapper,hostEnvironment, _logService);
             Assert.IsNotNull(enterprisesController);
         }
 

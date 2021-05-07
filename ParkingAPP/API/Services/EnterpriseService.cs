@@ -275,14 +275,17 @@ namespace API.Services
             {
                 foreach (var invitation in invitations)
                 {
-                    if(invitation.Approved == false && invitation.DeletionDate == null && invitation.ApprovedAt == null)
-                    invitationResponses.Add(new EnterpriseInvitationResponse
+                    if (invitation.Approved == false && invitation.DeletionDate == null && invitation.ApprovedAt == null)
                     {
-                        EnterpriseId = invitation.EnterpriseId,
-                        Email = invitation.Email,
-                        EnterpriseName = enterprises.Find(invitation.EnterpriseId).Name,
-                        Type = enterprises.Find(invitation.EnterpriseId).Type
-                    });
+                        invitationResponses.Add(new EnterpriseInvitationResponse
+                        {
+                            EnterpriseId = invitation.EnterpriseId,
+                            Email = invitation.Email,
+                            EnterpriseName = enterprises.Find(invitation.EnterpriseId).Name,
+                            Type = enterprises.Find(invitation.EnterpriseId).Type
+                        });
+                    }
+                    
                 }
 
                 return invitationResponses;
