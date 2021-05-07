@@ -14,19 +14,9 @@ export function changeDate(dateValue: Date, showWeekDay?: boolean) {
 
     var date = dateValue.toString().slice(0, 10).split("-");
 
-    var dayValueMoment = new Date(Moment(dateValue).locale("et").format())
-
-    console.log(Moment(dateValue).locale('et'))
-    console.log(Moment(dateValue).locale('et').format('dddd'))
-    console.log(Moment(dateValue).format('dddd'))
-    console.log("")
-
-    //var dayValue = new Date(dateValue);
-    //dayValue.getDate()
-
     if(showWeekDay === true) {
-        return weekday[dayValueMoment.getUTCDay()] + " " + date[2] + "." + date[1] + "." + date[0];
+        return Moment(dateValue).locale('et').format('dddd')[0].toUpperCase() + " " + date[2] + "." + date[1] + "." + date[0];
     }
     
-    return weekday[dayValueMoment.getUTCDay()][0] + " " + date[2] + "." + date[1] + "." + date[0];
+    return date[2] + "." + date[1] + "." + date[0];
 }
