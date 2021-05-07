@@ -248,7 +248,9 @@ namespace API.Services
             ReleasedSpot releasedSpot = new ReleasedSpot() { ParkingSpotId = request.ParkingSpaceId, StartDate = request.StartDate, EndDate = request.EndDate };
             var user = _context.Accounts.Find(userId);
             _context.ReleasedSpots.Add(releasedSpot);
-            string logDescription = "Vabastati parklakoht " + spot.Number + " kasutaja " + user.FirstName + " " + user.LastName + " poolt (" + request.StartDate + " -> " + request.EndDate + ").";
+            string logDescription = "Vabastati parklakoht " + spot.Number + " kasutaja " + user.FirstName + " " + user.LastName 
+                                    + " poolt (" + request.StartDate.Date.ToString().Remove(request.StartDate.Date.ToString().Length - 9) + " -> " 
+                                    + request.EndDate.Date.ToString().Remove(request.EndDate.Date.ToString().Length - 9) + ").";
             _logService.CreateLog(userId, null, null, request.EnterpriseId, Type.ReleaseParkingSpot, logDescription);
             _context.SaveChanges();
 
@@ -301,7 +303,8 @@ namespace API.Services
 
             _context.Reservations.Add(reservationDto);
             var user = _context.Accounts.Find(request.ReserverAccountId);
-            string logDescription = "Kasutaja "  + user.FirstName + " " + user.LastName + " broneeris parklakoha " + requestedSpot.Number  + " (" + request.StartDate + " -> " + request.EndDate + ").";
+            string logDescription = "Parklakoha " + requestedSpot.Number + " (Omanik: " +  requestedSpot.ParkingSpotAccounts.FirstOrDefault().Account.FirstName + " " + requestedSpot.ParkingSpotAccounts.FirstOrDefault().Account.LastName + ") broneering " +
+                                    request.StartDate.Date.ToString().Remove(request.StartDate.Date.ToString().Length-9) + " -> " + request.EndDate.Date.ToString().Remove(request.EndDate.Date.ToString().Length - 9) + " kasutajale " + user.FirstName + " " + user.LastName + ".";
             if (spotAccount != null)
             {
                 _logService.CreateLog(spotAccount.AccountId, user.Id, null, requestedSpot.EnterpriseId, Type.ReserveParkingSpot, logDescription);
