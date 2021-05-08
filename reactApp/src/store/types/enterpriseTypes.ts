@@ -55,7 +55,7 @@ export type EnterpriseInvitationResponse = {
     //id : number,
     enterpriseId: number,
     email: string,
-    enterpriseType: EnterpriseType,
+    type: EnterpriseType,
     enterpriseName:string
     
 }

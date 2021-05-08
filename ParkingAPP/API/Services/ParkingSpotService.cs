@@ -153,6 +153,7 @@ namespace API.Services
 
         public IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId)
         {
+
             List<ParkingSpotDataResponse> requests = new List<ParkingSpotDataResponse>();
             int requestCount = 0;
             DateTime today = DateTime.Today.Date;

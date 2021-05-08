@@ -17,7 +17,8 @@ import {
   TableRow, 
   Tooltip,
   TableContainer,
-  TableHead
+  TableHead,
+  Typography
 } from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
@@ -28,7 +29,7 @@ import { useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../Logo';
 import {getUserInvitations}  from '../../../store/queries/enterpriseQueries';
-import { PlusCircle } from 'react-feather';
+import { PlusCircle, XCircle } from 'react-feather';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -68,8 +69,8 @@ const TopBar = ({ className, ...rest }) => {
         setCheck(true);
         })
     }
-    //TODO: warning tee korda
-  }, [enterpriseInvitations])
+    return () => {setCheck();}
+  }, [enterpriseInvitations, check, email])
 
   return (
     <AppBar className={clsx(classes.root, classes.appBar)} elevation={0} {...rest}>
@@ -97,12 +98,18 @@ const TopBar = ({ className, ...rest }) => {
       <Dialog maxWidth={'lg'} onClose={handleCloseEnterpriseApproveDialog} aria-labelledby="simple-dialog-title" open={openEnterpriseApproveDialog}>
       <DialogTitle id="alert-dialog-title">Kinnita kutsed</DialogTitle>
         <DialogContent >
-          <DialogContentText id="alert-dialog-description" ></DialogContentText>
+          <DialogContentText  id="alert-dialog-description">
+                <Typography component={'a'}>
+                  Allpool on asutused, kes soovivad Teid lisada oma gruppi.<br/>  
+                  Kinnitamiseks vajutage rohelisel nupul.
+                </Typography>
+          </DialogContentText>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Ettevõte</TableCell>
+                  <TableCell>Asutus</TableCell>
+                  <TableCell>Asutuse liik</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -114,9 +121,17 @@ const TopBar = ({ className, ...rest }) => {
                         {row.enterpriseName}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        <Tooltip title="Kinnita">
+                        {row.type}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Tooltip title="Kinnita kutse">
                           <Button>
                           <PlusCircle color="#77d18f" />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip title="Tühista kutse">
+                          <Button >
+                            <XCircle color="#e08d8d" />
                           </Button>
                         </Tooltip>
                       </TableCell>

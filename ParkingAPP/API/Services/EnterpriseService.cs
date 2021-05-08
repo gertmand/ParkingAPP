@@ -282,7 +282,7 @@ namespace API.Services
                             EnterpriseId = invitation.EnterpriseId,
                             Email = invitation.Email,
                             EnterpriseName = enterprises.Find(invitation.EnterpriseId).Name,
-                            Type = enterprises.Find(invitation.EnterpriseId).Type
+                            Type = Enum.GetName(typeof(EnterpriseType), enterprises.Find(invitation.EnterpriseId).Type)
                         });
                     }
                     

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace API.Models.EnterpriseDtos
@@ -9,7 +10,7 @@ namespace API.Models.EnterpriseDtos
     {
         public int EnterpriseId { get; set; }
         public string EnterpriseName { get; set; }
-        public EnterpriseType Type { get; set; }
+        public string Type { get; set; }
         public string Email { get; set; }
     }
 }
