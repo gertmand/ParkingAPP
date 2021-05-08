@@ -72,7 +72,7 @@ export const ParkingSpotTableComponent: FC<Props> = ({enterpriseUsers, searchTer
             <TableBody>
               <TableRow >
               <TableCell style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
-                  {parkingSpotMainUsers.filter(x=>x.parkingSpotId === +getParkingSpotId(params)).map(x=>x.accountCars.map(x=>x.regNr).join(', '))}
+                  {parkingSpotMainUsers.filter(x=>x.parkingSpotId === +getParkingSpotId(params)).map(x=>x.accountCars.map(x=>x.regNr).join(', ')).join(', ')}
               </TableCell>
               </TableRow>
             </TableBody>
