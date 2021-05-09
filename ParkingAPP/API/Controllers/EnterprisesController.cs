@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -601,6 +602,24 @@ namespace API.Controllers
             }
 
             return true;
+        }
+
+        [HttpPost("{enterpriseId}/admin/users/add")]
+        public ActionResult<ReservationResponse> PostUsersAdd(UserInvitationRequest[] emails, int enterpriseId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            _enterpriseService.CreateUserInvitations(Account.Id, enterpriseId, emails);
+
+            return Ok("Users invitations added!");
         }
     }
 }
