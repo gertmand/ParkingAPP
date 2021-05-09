@@ -58,10 +58,6 @@ export const getUserInvitations = async (email: string) => {
     return await get(`${apiUrl}/api/enterprises/invitations/${email}`)
 } 
 
-export const setInvitationApprovedStatus = async (request: EnterpriseInvitationRequest) => {
-    return await post(`${apiUrl}/api/enterprises/invitations/setapprovedstatus`, request)
-}
-
 // ADMIN QUERIES
 
 export const getEnterpriseUsers = async (enterpriseId: number) => {
@@ -138,7 +134,3 @@ export const getUserLogs = async (enterpriseId: number, userId: number) => {
 }
 
 
-const enterpriseQueries = () => {
-
-}
-export default enterpriseQueries
