@@ -47,22 +47,23 @@ const useStyles = makeStyles(() => ({
 
 const TopBar = ({ className, ...rest }) => {
   const classes = useStyles();
-  const [enterpriseInvitations, setEnterpriseInvitations] = useState([]);
-  const email = useSelector(state => state.user.userData.email);
-  const userId = useSelector(state => state.user.userData.id);
-  const dispatch = useDispatch();
+  
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {setOpen(true);};
   const handleClose = () => {setOpen(false);};
-  const [openEnterpriseApproveDialog, setOpenEnterpriseApproveDialog] = React.useState(false);
-  const handleOpenEnterpriseApproveDialog = () => {setOpenEnterpriseApproveDialog(true);};
-  const handleCloseEnterpriseApproveDialog = () => {setOpenEnterpriseApproveDialog(false);};
-  const[check,setCheck] = useState(false);
   const handleLogout = () => {
     localStorage.removeItem('token');
     window.location.reload(false);
   };
 
+  const [enterpriseInvitations, setEnterpriseInvitations] = useState([]);
+  const email = useSelector(state => state.user.userData.email);
+  const userId = useSelector(state => state.user.userData.id);
+  const dispatch = useDispatch();
+  const [openEnterpriseApproveDialog, setOpenEnterpriseApproveDialog] = React.useState(false);
+  const handleOpenEnterpriseApproveDialog = () => {setOpenEnterpriseApproveDialog(true);};
+  const handleCloseEnterpriseApproveDialog = () => {setOpenEnterpriseApproveDialog(false);};
+  const[check,setCheck] = useState(false);
   useEffect(() => {
     if (enterpriseInvitations !== undefined && enterpriseInvitations.length === 0 && check === false)
     {
@@ -72,7 +73,7 @@ const TopBar = ({ className, ...rest }) => {
         })
     }
     return () => {setCheck([]);}
-  }, [enterpriseInvitations,email, check])
+  }, [])
 
 //TODO:Enterprises tuleb viia store alla. 
   const handleInvitationApproval = (approved, enterpriseId) => {
@@ -84,8 +85,6 @@ const TopBar = ({ className, ...rest }) => {
           SET_SUCCESS_ALERT({ status: true, message: 'Valik kinnitatud!' })
         );
       });
-   
-
   }
 
   return (
