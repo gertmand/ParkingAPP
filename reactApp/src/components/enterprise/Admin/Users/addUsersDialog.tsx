@@ -3,6 +3,11 @@ import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import React, { FC, useState } from 'react';
 import { PlusCircle } from 'react-feather';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppState } from '../../../../store';
+import { addUserEmails } from '../../../../store/queries/enterpriseQueries';
+import { UserInvitationRequest } from '../../../../store/types/enterpriseTypes';
+import { SET_SUCCESS_ALERT, SET_ERROR_ALERT } from '../../../common/siteActions';
 
 type Props = {
     open: boolean;
@@ -22,9 +27,11 @@ type Props = {
 
 const AddUsersDialog: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,inputFieldFileBoolean,onFileChange, selectedUserChange,parkingSpotIdForUserAdd, existingUsers, handleClose,onSubmit,inputOnChange, dialogTitle, dialogContextText, confirmButton, parkingSpotMainUsers, regularUsers}: any) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const enterpriseId = useSelector<AppState, number>(state => state.user.enterpriseData.id)
     const [maxWidth,] = React.useState<DialogProps['maxWidth']>('md');
     const [email, setEmail] = useState<string>('');
-    const [emails, setEmails] = useState<string[]>([]);
+    const [emails, setEmails] = useState<UserInvitationRequest[]>([]);
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setEmail(event.target.value as string);
       };
@@ -32,7 +39,7 @@ const AddUsersDialog: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,in
         if (email)
         {
             email.split(' ').forEach(element => {
-               emails.push(element);
+               emails.push({email: element});
             });
             setEmails(emails)
         }
@@ -42,7 +49,22 @@ const AddUsersDialog: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,in
     const confirm = () => {
 
         // API'le meililisti saatmiseks kasutada 'emails'
-        
+        addUserEmails(emails, enterpriseId).then(() => {
+          dispatch(
+              SET_SUCCESS_ALERT({
+                status: true,
+                message: 'Kasutajatele kutsed saadetud!'
+              })
+            );
+          }).catch((err: any) => {
+
+            dispatch(
+              SET_ERROR_ALERT({
+                status: true,
+                message: err
+              })
+            );
+          })
         setEmails([]);
         setEmail('');
         handleClose()

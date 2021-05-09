@@ -71,6 +71,9 @@ export type EnterpriseAccountRequest = {
     userId: number
 }
 
+export type UserInvitationRequest = {
+    email: string
+}
 
 // Enterprise ParkingSpot Data
 

@@ -590,6 +590,24 @@ namespace API.Controllers
             return _logService.GetUserLogs(userId).ToList();
         }
 
+        [HttpPost("{enterpriseId}/admin/users/add")]
+        public ActionResult<ReservationResponse> PostUsersAdd(UserInvitationRequest[] emails, int enterpriseId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            _enterpriseService.CreateUserInvitations(Account.Id, enterpriseId, emails);
+
+            return Ok("Users invitations added!");
+        }
+
         // HELPER METHODS
 
         private ActionResult<bool> CheckUser(int enterpriseId)
