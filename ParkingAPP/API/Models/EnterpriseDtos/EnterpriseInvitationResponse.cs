@@ -8,6 +8,7 @@ namespace API.Models.EnterpriseDtos
 {
     public class EnterpriseInvitationResponse
     {
+        public int InvitationId { get; set; }
         public int EnterpriseId { get; set; }
         public string EnterpriseName { get; set; }
         public string Type { get; set; }

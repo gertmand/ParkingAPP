@@ -8,8 +8,8 @@ namespace API.Models.EnterpriseDtos
     public class EnterpriseInvitationRequest
     {
         public int EnterpriseId { get; set; }
+        public int UserId { get; set; }
         public string Email { get; set; }
         public bool Approved { get; set; }
-        public DateTime ApprovedAt { get; set; }
     }
 }

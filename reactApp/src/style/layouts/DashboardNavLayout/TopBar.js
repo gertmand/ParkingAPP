@@ -28,7 +28,7 @@ import React, {useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../Logo';
-import {getUserInvitations}  from '../../../store/queries/enterpriseQueries';
+import {getUserInvitations, setInvitationApprovedStatus,getUserEnterprises}  from '../../../store/queries/enterpriseQueries';
 import { PlusCircle, XCircle } from 'react-feather';
 
 const useStyles = makeStyles(() => ({
@@ -48,6 +48,7 @@ const TopBar = ({ className, ...rest }) => {
   const classes = useStyles();
   const [enterpriseInvitations, setEnterpriseInvitations] = useState([]);
   const email = useSelector(state => state.user.userData.email);
+  const userId = useSelector(state => state.user.userData.id);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {setOpen(true);};
@@ -64,6 +65,7 @@ const TopBar = ({ className, ...rest }) => {
   useEffect(() => {
     if (enterpriseInvitations !== undefined && enterpriseInvitations.length === 0 && check === false)
     {
+      getEnterprises();
       getUserInvitations(email).then(result => {
         setEnterpriseInvitations(result);
         setCheck(true);
@@ -71,6 +73,21 @@ const TopBar = ({ className, ...rest }) => {
     }
     return () => {setCheck();}
   }, [enterpriseInvitations, check, email])
+
+  const getEnterprises = async () => {
+    await getUserEnterprises();
+  }
+
+  const handleInvitationApproval = (approved, enterpriseId) => {
+      setInvitationApprovedStatus({enterpriseId:enterpriseId, userId : userId, email:email, approved:approved}).then(setCheck(false));
+      getEnterprises();
+      getUserInvitations(email).then(result => {
+        setEnterpriseInvitations(result);
+        })
+      handleCloseEnterpriseApproveDialog();
+      
+
+  }
 
   return (
     <AppBar className={clsx(classes.root, classes.appBar)} elevation={0} {...rest}>
@@ -125,12 +142,12 @@ const TopBar = ({ className, ...rest }) => {
                       </TableCell>
                       <TableCell component="th" scope="row">
                         <Tooltip title="Kinnita kutse">
-                          <Button>
+                          <Button onClick={()=>handleInvitationApproval(true, row.enterpriseId)}>
                           <PlusCircle color="#77d18f" />
                           </Button>
                         </Tooltip>
                         <Tooltip title="Tühista kutse">
-                          <Button >
+                          <Button onClick={()=>handleInvitationApproval(false, row.enterpriseId)}>
                             <XCircle color="#e08d8d" />
                           </Button>
                         </Tooltip>
@@ -142,8 +159,7 @@ const TopBar = ({ className, ...rest }) => {
                   </TableContainer>
         </DialogContent>
         <DialogActions>
-          <Button color="primary">Loobu</Button>
-          <Button color="primary" variant="contained">Kinnita</Button>
+          <Button onClick={handleCloseEnterpriseApproveDialog} color="primary">Sulge</Button>
         </DialogActions>
       </Dialog>
 

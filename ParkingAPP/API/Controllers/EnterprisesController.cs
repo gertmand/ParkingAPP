@@ -148,7 +148,6 @@ namespace API.Controllers
             if (Account == null)
             {
                 return Unauthorized();
-
             }
 
             return _enterpriseService.GetUserInvitations(email).ToList();
@@ -161,6 +160,12 @@ namespace API.Controllers
             return Ok(new { message = "Asutus lisatud, saate nüüd asutust kasutada" });
         }
 
+        [HttpPost("invitations/setapprovedstatus")]
+        public ActionResult SetInvitationApprovedStatus(EnterpriseInvitationRequest request)
+        {
+            _enterpriseService.SetInvitationApprovedStatus(request);
+            return Ok(new { message = "Kutse staatus muudetud" });
+        }
 
         // Validate methods for client
         [HttpGet("{enterpriseId}/validatephonenumber/{phoneNumber}")]
