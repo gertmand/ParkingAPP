@@ -109,7 +109,7 @@ const AddUsersDialog: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,in
                     {emails !== undefined ? emails.map((row) => (
                     <TableRow key={emails.indexOf(row)} className={classes.rowHeight}>
                         <TableCell component="th" scope="row">
-                        {row}
+                        {row.email}
                         </TableCell>
                     </TableRow>
                     )) : null}
