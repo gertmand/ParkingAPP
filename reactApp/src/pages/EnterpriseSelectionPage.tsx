@@ -1,5 +1,7 @@
 import { Container, Fab, Grid, makeStyles } from '@material-ui/core';
 import NavigationIcon from '@material-ui/icons/Navigation';
+import RefreshIcon from '@material-ui/icons/Refresh';
+import AddIcon from '@material-ui/icons/Add';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import EnterpriseAddModal from '../components/enterprise/enterpriseAddModal';
@@ -64,8 +66,14 @@ const EnterpriseSelectionPage = (props: any) => {
                             ))}
                             <Grid item>
                                 <Fab onClick={() => setEnterpriseAddModal(!enterpriseAddModal)} id="addNew" variant="extended" color="secondary" aria-label="add" className={classes.margin}>
-                                    <NavigationIcon className={classes.extendedIcon} />
+                                    <AddIcon className={classes.extendedIcon} />
                                     Lisa uus
+                                </Fab>
+                            </Grid>
+                            <Grid item>
+                                <Fab onClick={() => updateEnterprises()} id="addNew" variant="extended" color="secondary" aria-label="add" className={classes.margin}>
+                                    <RefreshIcon className={classes.extendedIcon} />
+                                    Uuenda asutused
                                 </Fab>
                             </Grid>
                         </Grid>

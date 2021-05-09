@@ -25,11 +25,13 @@ import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../Logo';
 import {getUserInvitations, setInvitationApprovedStatus,getUserEnterprises}  from '../../../store/queries/enterpriseQueries';
 import { PlusCircle, XCircle } from 'react-feather';
+import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../components/common/siteActions';
+import { LaptopWindows } from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -49,7 +51,7 @@ const TopBar = ({ className, ...rest }) => {
   const [enterpriseInvitations, setEnterpriseInvitations] = useState([]);
   const email = useSelector(state => state.user.userData.email);
   const userId = useSelector(state => state.user.userData.id);
-
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {setOpen(true);};
   const handleClose = () => {setOpen(false);};
@@ -63,29 +65,28 @@ const TopBar = ({ className, ...rest }) => {
   };
 
   useEffect(() => {
+    console.log("Test")
     if (enterpriseInvitations !== undefined && enterpriseInvitations.length === 0 && check === false)
     {
-      getEnterprises();
       getUserInvitations(email).then(result => {
         setEnterpriseInvitations(result);
         setCheck(true);
         })
     }
-    return () => {setCheck();}
-  }, [enterpriseInvitations, check, email])
+    return () => {setCheck([]);}
+  }, [])
 
-  const getEnterprises = async () => {
-    await getUserEnterprises();
-  }
-
+//TODO:Enterprises tuleb viia store alla. 
   const handleInvitationApproval = (approved, enterpriseId) => {
-      setInvitationApprovedStatus({enterpriseId:enterpriseId, userId : userId, email:email, approved:approved}).then(setCheck(false));
-      getEnterprises();
-      getUserInvitations(email).then(result => {
-        setEnterpriseInvitations(result);
-        })
-      handleCloseEnterpriseApproveDialog();
-      
+      setInvitationApprovedStatus({enterpriseId:enterpriseId, userId : userId, email:email, approved:approved}).then(()=>{
+        getUserInvitations(email).then(result => {
+          setEnterpriseInvitations(result);
+          })
+        dispatch(
+          SET_SUCCESS_ALERT({ status: true, message: 'Valik kinnitatud!' })
+        );
+      });
+   
 
   }
 

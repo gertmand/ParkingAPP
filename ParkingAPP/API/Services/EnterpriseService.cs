@@ -295,6 +295,29 @@ namespace API.Services
             return _mapper.Map<AccountResponse>(user);
         }
 
+        public void CreateUserInvitations(int adminId, int enterpriseId, UserInvitationRequest[] emails)
+        {
+            var invs = _context.Invitations.AsEnumerable();
+            foreach (var email in emails)
+            {
+                if (!invs.Where(x => x.Email == email.email).Where(x => x.EnterpriseId == enterpriseId).Where(x => x.Approved == false).Any())
+                {
+
+                    _context.Invitations.Add(new Invitation()
+                    {
+                        Approved = false,
+                        Created = DateTime.UtcNow.AddHours(3),
+                        Updated = DateTime.UtcNow.AddHours(3),
+                        Email = email.email,
+                        EnterpriseId = enterpriseId
+                    });
+                }
+            }
+
+            _context.SaveChanges();
+
+        }
+
         // helper methods
 
         private Enterprise getEnterprise(int id)

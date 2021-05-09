@@ -17,6 +17,7 @@ import React, { FC, useState } from 'react';
 import { Info, Search as SearchIcon } from 'react-feather';
 import { User } from '../../../../store/types/userType';
 import theme from '../../../../style/theme';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 type Props = {
   users: User[];
@@ -94,10 +95,12 @@ export const UsersTableComponent: FC<Props> = ({
       field: 'tegevused',
       headerName: 'Tegevused',
       sortable: false,
+      
       width: 150,
       disableClickEventBubbling: true,
       headerAlign: 'center',
       flex: 75,
+      
       valueGetter: getUserId,
       renderCell: (params: GridValueGetterParams) => {
         return (
