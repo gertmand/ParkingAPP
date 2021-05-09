@@ -52,11 +52,12 @@ export type ReservationRequest = {
 }
 
 export type EnterpriseInvitationResponse = {
-    invitationId : number,
+    //id : number,
     enterpriseId: number,
     email: string,
-    type: EnterpriseType,
+    enterpriseType: EnterpriseType,
     enterpriseName:string
+    
 }
 
 export type EnterpriseInvitationRequest = {
@@ -169,7 +170,9 @@ export type Log = {
     enterpriseId?: number
 }
 
-
+export type UserInvitationRequest = {
+    email: string
+}
 const enterpriseType = () => {
 
 }
