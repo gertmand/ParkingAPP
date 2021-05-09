@@ -2,7 +2,7 @@ import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
 import { authHeader, del, get, post } from "../../_helpers/fetch-wrapper"
 import { ADD_ENTERPRISE_DATA, FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
-import { EnterpriseAddRequest, ParkingSpotMainUserRequest, ParkingSpotRequest, ReleaseRequest, ReservationRequest } from "../types/enterpriseTypes"
+import { EnterpriseAddRequest, ParkingSpotMainUserRequest, ParkingSpotRequest, ReleaseRequest, ReservationRequest, UserInvitationRequest } from "../types/enterpriseTypes"
 
 export const addEnterprise = async (request: EnterpriseAddRequest) => {
     return await post(`${apiUrl}/api/enterprises/add`,request)
@@ -117,6 +117,10 @@ export const getEnterpriseParkingSpotDataAdmin = async (enterpriseId: number, us
     return await get(`${apiUrl}/api/enterprises/${enterpriseId}/spot/${userId}`)
 }
 
+export const addUserEmails = (request: UserInvitationRequest[], enterpriseId: number) => {
+    return post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/users/add`,request);
+};
+
 // LOG QUERIES
 
 export const getEnterpriseLogs = async (enterpriseId: number) => {
@@ -130,7 +134,3 @@ export const getUserLogs = async (enterpriseId: number, userId: number) => {
 }
 
 
-const enterpriseQueries = () => {
-
-}
-export default enterpriseQueries

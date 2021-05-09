@@ -17,7 +17,8 @@ import {
   TableRow, 
   Tooltip,
   TableContainer,
-  TableHead
+  TableHead,
+  Typography
 } from '@material-ui/core';
 import InputIcon from '@material-ui/icons/Input';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
@@ -27,8 +28,8 @@ import React, {useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../Logo';
-import {getUserInvitations}  from '../../../store/queries/enterpriseQueries';
-import { PlusCircle } from 'react-feather';
+import {getUserInvitations, setInvitationApprovedStatus,getUserEnterprises}  from '../../../store/queries/enterpriseQueries';
+import { PlusCircle, XCircle } from 'react-feather';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -47,6 +48,7 @@ const TopBar = ({ className, ...rest }) => {
   const classes = useStyles();
   const [enterpriseInvitations, setEnterpriseInvitations] = useState([]);
   const email = useSelector(state => state.user.userData.email);
+  const userId = useSelector(state => state.user.userData.id);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {setOpen(true);};
@@ -63,13 +65,29 @@ const TopBar = ({ className, ...rest }) => {
   useEffect(() => {
     if (enterpriseInvitations !== undefined && enterpriseInvitations.length === 0 && check === false)
     {
+      getEnterprises();
       getUserInvitations(email).then(result => {
         setEnterpriseInvitations(result);
         setCheck(true);
         })
     }
-    //TODO: warning tee korda
-  }, [enterpriseInvitations])
+    return () => {setCheck();}
+  }, [enterpriseInvitations, check, email])
+
+  const getEnterprises = async () => {
+    await getUserEnterprises();
+  }
+
+  const handleInvitationApproval = (approved, enterpriseId) => {
+      setInvitationApprovedStatus({enterpriseId:enterpriseId, userId : userId, email:email, approved:approved}).then(setCheck(false));
+      getEnterprises();
+      getUserInvitations(email).then(result => {
+        setEnterpriseInvitations(result);
+        })
+      handleCloseEnterpriseApproveDialog();
+      
+
+  }
 
   return (
     <AppBar className={clsx(classes.root, classes.appBar)} elevation={0} {...rest}>
@@ -97,12 +115,18 @@ const TopBar = ({ className, ...rest }) => {
       <Dialog maxWidth={'lg'} onClose={handleCloseEnterpriseApproveDialog} aria-labelledby="simple-dialog-title" open={openEnterpriseApproveDialog}>
       <DialogTitle id="alert-dialog-title">Kinnita kutsed</DialogTitle>
         <DialogContent >
-          <DialogContentText id="alert-dialog-description" ></DialogContentText>
+          <DialogContentText  id="alert-dialog-description">
+                <Typography component={'a'}>
+                  Allpool on asutused, kes soovivad Teid lisada oma gruppi.<br/>  
+                  Kinnitamiseks vajutage rohelisel nupul.
+                </Typography>
+          </DialogContentText>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Ettevõte</TableCell>
+                  <TableCell>Asutus</TableCell>
+                  <TableCell>Asutuse liik</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -114,9 +138,17 @@ const TopBar = ({ className, ...rest }) => {
                         {row.enterpriseName}
                       </TableCell>
                       <TableCell component="th" scope="row">
-                        <Tooltip title="Kinnita">
-                          <Button>
+                        {row.type}
+                      </TableCell>
+                      <TableCell component="th" scope="row">
+                        <Tooltip title="Kinnita kutse">
+                          <Button onClick={()=>handleInvitationApproval(true, row.enterpriseId)}>
                           <PlusCircle color="#77d18f" />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip title="Tühista kutse">
+                          <Button onClick={()=>handleInvitationApproval(false, row.enterpriseId)}>
+                            <XCircle color="#e08d8d" />
                           </Button>
                         </Tooltip>
                       </TableCell>
@@ -127,8 +159,7 @@ const TopBar = ({ className, ...rest }) => {
                   </TableContainer>
         </DialogContent>
         <DialogActions>
-          <Button color="primary">Loobu</Button>
-          <Button color="primary" variant="contained">Kinnita</Button>
+          <Button onClick={handleCloseEnterpriseApproveDialog} color="primary">Sulge</Button>
         </DialogActions>
       </Dialog>
 

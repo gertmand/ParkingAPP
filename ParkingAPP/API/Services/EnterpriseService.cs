@@ -29,6 +29,7 @@ namespace API.Services
         bool ValidatePhoneNumber(string phoneNumber);
         string ValidateCarNumber(string carNr, int enterpriseId);
         IEnumerable<EnterpriseInvitationResponse> GetUserInvitations(string email);
+        void SetInvitationApprovedStatus(EnterpriseInvitationRequest request);
         void CreateUserInvitations(int adminId, int enterpriseId, UserInvitationRequest[] emails);
     }
 
@@ -145,6 +146,35 @@ namespace API.Services
         {
             var userInvitations = getUserInvitations(email);
             return _mapper.Map<IList<EnterpriseInvitationResponse>>(userInvitations);
+        }
+
+        public void SetInvitationApprovedStatus(EnterpriseInvitationRequest request)
+        {
+            var invitation = _context.Invitations
+                .Where(x => x.EnterpriseId == request.EnterpriseId && x.Email == request.Email).FirstOrDefault();
+            if (request.Approved == false)
+            {
+                invitation.Approved = false;
+                invitation.ApprovedAt =DateTime.Now;
+                invitation.Updated = DateTime.Now;
+                _context.SaveChanges();
+            }
+            else
+            {
+                invitation.Approved = true;
+                invitation.ApprovedAt = DateTime.Now;
+                invitation.Updated = DateTime.Now;
+
+                _context.EnterpriseAccounts.Add(new EnterpriseAccount
+                {
+                    AccountId = request.UserId,
+                    EnterpriseId = request.EnterpriseId,
+                    CanBook = true,
+                    IsAdmin = false
+                });
+
+                _context.SaveChanges();
+            }
         }
 
         // Validate methods for client
@@ -303,10 +333,11 @@ namespace API.Services
                     {
                         invitationResponses.Add(new EnterpriseInvitationResponse
                         {
+                            InvitationId = invitation.Id,
                             EnterpriseId = invitation.EnterpriseId,
                             Email = invitation.Email,
                             EnterpriseName = enterprises.Find(invitation.EnterpriseId).Name,
-                            Type = enterprises.Find(invitation.EnterpriseId).Type
+                            Type = Enum.GetName(typeof(EnterpriseType), enterprises.Find(invitation.EnterpriseId).Type)
                         });
                     }
                     

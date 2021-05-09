@@ -52,12 +52,18 @@ export type ReservationRequest = {
 }
 
 export type EnterpriseInvitationResponse = {
-    //id : number,
+    invitationId : number,
     enterpriseId: number,
     email: string,
-    enterpriseType: EnterpriseType,
+    type: EnterpriseType,
     enterpriseName:string
-    
+}
+
+export type EnterpriseInvitationRequest = {
+    enterpriseId: number,
+    userId: number,
+    email: string,
+    approved: boolean,
 }
 
 export type EnterpriseAccountRequest = {
