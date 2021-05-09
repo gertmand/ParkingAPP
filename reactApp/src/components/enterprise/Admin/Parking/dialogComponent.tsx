@@ -195,7 +195,7 @@ export const DialogComponent: FC<Props> = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={()=>handleClose()} color="primary">
-            Loobu
+            Sulge
           </Button>
           { redButton ? 
             <Button style={{backgroundColor: "#F40B0B"}} onClick={onSubmit} color="primary" variant="contained">

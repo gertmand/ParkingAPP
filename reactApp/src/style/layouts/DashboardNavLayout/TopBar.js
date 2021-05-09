@@ -28,10 +28,9 @@ import React, {useEffect, useState } from 'react';
 import {useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom';
 import Logo from '../../Logo';
-import {getUserInvitations, setInvitationApprovedStatus,getUserEnterprises}  from '../../../store/queries/enterpriseQueries';
+import {getUserInvitations, setInvitationApprovedStatus}  from '../../../store/queries/enterpriseQueries';
 import { PlusCircle, XCircle } from 'react-feather';
-import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../components/common/siteActions';
-import { LaptopWindows } from '@material-ui/icons';
+import { SET_SUCCESS_ALERT } from '../../../components/common/siteActions';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -65,7 +64,6 @@ const TopBar = ({ className, ...rest }) => {
   };
 
   useEffect(() => {
-    console.log("Test")
     if (enterpriseInvitations !== undefined && enterpriseInvitations.length === 0 && check === false)
     {
       getUserInvitations(email).then(result => {
@@ -74,7 +72,7 @@ const TopBar = ({ className, ...rest }) => {
         })
     }
     return () => {setCheck([]);}
-  }, [])
+  }, [enterpriseInvitations,email, check])
 
 //TODO:Enterprises tuleb viia store alla. 
   const handleInvitationApproval = (approved, enterpriseId) => {
