@@ -52,12 +52,11 @@ export type ReservationRequest = {
 }
 
 export type EnterpriseInvitationResponse = {
-    //id : number,
+    invitationId : number,
     enterpriseId: number,
     email: string,
-    enterpriseType: EnterpriseType,
+    type: EnterpriseType,
     enterpriseName:string
-    
 }
 
 export type EnterpriseInvitationRequest = {
@@ -72,9 +71,6 @@ export type EnterpriseAccountRequest = {
     userId: number
 }
 
-export type UserInvitationRequest = {
-    email: string
-}
 
 // Enterprise ParkingSpot Data
 
