@@ -60,7 +60,7 @@ const UserCars = () => {
         dispatch(
           SET_SUCCESS_ALERT({
             status: true,
-            message: 'Sõiduk lisatud!'
+            message: 'Kasutajatele kutsed saadetud!'
           })
         );
       }).catch((err: any) => {
