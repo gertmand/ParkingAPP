@@ -357,7 +357,9 @@ namespace API.Services
                 // Removing all the dates, which are not between input
                 datesToReserve.RemoveAll(x => x.Date < request.StartDate.Date || x.Date > request.EndDate.Date);
 
-                if (getParkingSpotByUserId(enterpriseId, accountId).Id != releasedSpot.ParkingSpotId)
+                var userSpot = getParkingSpotByUserId(enterpriseId, accountId);
+
+                if (userSpot == null || userSpot.Id != releasedSpot.ParkingSpotId)
                 {
                     availableForReservation.AddRange(GetPossibleDates(datesToReserve, releasedSpot.ParkingSpotId, releasedSpot.Id));
                 }
