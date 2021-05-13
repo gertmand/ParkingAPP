@@ -113,7 +113,7 @@ import Page from '../style/Page';
                     <ParkingTable enterpriseUsers={enterpriseUsers} parkingSpotLoading={parkingLoading} updateSpotTable={updateSpotTable} updateParkingSpotMainUsers={updateParkingSpotMainUsers} parkingSpots = {enterpriseParkingSpots} parkingSpotMainUsers= {parkingSpotMainUsers} regularUsers={regularUsers} updateParkingSpots={updateParkingSpots}/>
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    <UsersTable users = {enterpriseUsers}/>
+                    <UsersTable setEnterpriseUsers={setEnterpriseUsers} users = {enterpriseUsers}/>
                   </TabPanel>
                   <TabPanel value={value} index={3}>
                     <Typography>Seaded</Typography>

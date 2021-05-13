@@ -125,6 +125,12 @@ export const addUserEmails = (request: UserInvitationRequest[], enterpriseId: nu
     return post(`${apiUrl}/api/enterprises/${enterpriseId}/admin/users/add`,request);
 };
 
+export const deleteUser = (userId: number, enterpriseId : number) => {
+    if(userId !== undefined){
+        return del(`${apiUrl}/api/enterprises/${enterpriseId}/admin/users/${userId}/delete`)
+    }
+}
+
 // LOG QUERIES
 
 export const getEnterpriseLogs = async (enterpriseId: number) => {

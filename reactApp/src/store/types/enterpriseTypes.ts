@@ -172,6 +172,7 @@ export type Log = {
 export type UserInvitationRequest = {
     email: string
 }
+
 const enterpriseType = () => {
 
 }

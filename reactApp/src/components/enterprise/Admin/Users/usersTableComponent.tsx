@@ -14,7 +14,7 @@ import {
   GridValueGetterParams
 } from '@material-ui/data-grid';
 import React, { FC, useState } from 'react';
-import { Info, Search as SearchIcon } from 'react-feather';
+import { Info, Search as SearchIcon, XCircle } from 'react-feather';
 import { User } from '../../../../store/types/userType';
 import theme from '../../../../style/theme';
 
@@ -22,22 +22,26 @@ type Props = {
   users: User[];
   handleOpenUserDetailsModal(id: number): any;
   handleOpenAddUsersModal(): any;
+  handleOpenDeleteConfirmationModal(): any;
+  setUserIdForDetails(id: number): any;
 };
 
 export const UsersTableComponent: FC<Props> = ({
   users,
   handleOpenUserDetailsModal,
-  handleOpenAddUsersModal
+  handleOpenAddUsersModal,
+  handleOpenDeleteConfirmationModal,
+  setUserIdForDetails
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   function getUserId(params: GridValueGetterParams) {
     return `${params.getValue('id')}`;
   }
-  //   const handleDeleteButtonClick = (params: GridValueGetterParams) => {
-  //     setParkingSpotId(+getParkingSpotId(params));
-  //     handleOpenDeleteConfirmationModal();
-  //   };
+    const handleDeleteButtonClick = (id: number) => {
+      setUserIdForDetails(id);
+      handleOpenDeleteConfirmationModal();
+    };
 
   const columns: GridColumns = [
     { field: 'id', headerName: '', hide: true },
@@ -111,6 +115,15 @@ export const UsersTableComponent: FC<Props> = ({
                 }
               >
                 <Info color="#C0C0C0" />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Eemalda liige nimekirjast">
+              <Button
+                onClick={() =>
+                  handleDeleteButtonClick(+getUserId(params))
+                }
+              >
+                <XCircle color="#e08d8d" />
               </Button>
             </Tooltip>
             {/* <Tooltip title="Kustuta parkimiskoht">

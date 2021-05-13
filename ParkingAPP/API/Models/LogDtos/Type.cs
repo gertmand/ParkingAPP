@@ -19,6 +19,7 @@ namespace API.Models.LogDtos
         DeleteParkingSpot,
         AddParkingSpotMainUser,
         DeleteParkingSpotMainUser,
-        UserInvitation
+        UserInvitation,
+        UserDeleteFromEnterprise
     }
 }

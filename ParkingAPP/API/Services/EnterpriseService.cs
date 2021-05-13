@@ -31,6 +31,7 @@ namespace API.Services
         IEnumerable<EnterpriseInvitationResponse> GetUserInvitations(string email);
         void SetInvitationApprovedStatus(EnterpriseInvitationRequest request);
         void CreateUserInvitations(int adminId, int enterpriseId, UserInvitationRequest[] emails);
+        void DeleteUser(int adminId, EnterpriseAccountDeleteResponse request);
     }
 
 
@@ -297,6 +298,19 @@ namespace API.Services
                 .First();
 
             return _mapper.Map<AccountResponse>(user);
+        }
+
+        public void DeleteUser(int adminId, EnterpriseAccountDeleteResponse request)
+        {
+            var ea = _context.EnterpriseAccounts.Include(x => x.Account).Include(x => x.Enterprise)
+                .Where(x => x.AccountId == request.Id)
+                .Where(x => x.EnterpriseId == request.EnterpriseId).FirstOrDefault();
+            _context.EnterpriseAccounts.Remove(ea);
+
+            string logDescription = "Eemaldati kasutaja " + ea.Account.FirstName + " " + ea.Account.LastName + " asutuse " + ea.Enterprise.Name + " nimekirjast.";
+            _logService.CreateLog(request.Id, null, adminId, request.EnterpriseId, Type.UserDeleteFromEnterprise, logDescription);
+
+            _context.SaveChanges();
         }
 
         // helper methods

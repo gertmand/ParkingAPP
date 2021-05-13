@@ -609,6 +609,14 @@ namespace API.Controllers
             return Ok("Users invitations added!");
         }
 
+        [HttpPost("{enterpriseId}/admin/users/{userId}/delete")]
+        public ActionResult<CarResponse> DeleteCar(int userId, int enterpriseId)
+        {
+            EnterpriseAccountDeleteResponse response = new EnterpriseAccountDeleteResponse() {EnterpriseId = enterpriseId, Id = userId};
+            _enterpriseService.DeleteUser(Account.Id, response);
+            return Ok(new { message = "Car deleted!" });
+        }
+
         // HELPER METHODS
 
         private ActionResult<bool> CheckUser(int enterpriseId)
