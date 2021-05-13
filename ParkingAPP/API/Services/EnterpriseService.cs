@@ -152,11 +152,14 @@ namespace API.Services
         {
             var invitation = _context.Invitations
                 .Where(x => x.EnterpriseId == request.EnterpriseId && x.Email == request.Email).FirstOrDefault();
+            string logDescription = null;
             if (request.Approved == false)
             {
                 invitation.Approved = false;
-                invitation.ApprovedAt =DateTime.Now;
+                invitation.ApprovedAt = DateTime.Now;
                 invitation.Updated = DateTime.Now;
+                logDescription = "Kasutaja " + request.Email + " ei võtnud liitumiskutset vastu.";
+                _logService.CreateLog(request.UserId, null, null, request.EnterpriseId, Type.UserInvitation, logDescription);
                 _context.SaveChanges();
             }
             else
@@ -172,7 +175,8 @@ namespace API.Services
                     CanBook = true,
                     IsAdmin = false
                 });
-
+                logDescription = "Kasutaja " + request.Email + " võttis liitumiskutse vastu.";
+                _logService.CreateLog(request.UserId, null, null, request.EnterpriseId, Type.UserInvitation, logDescription);
                 _context.SaveChanges();
             }
         }
