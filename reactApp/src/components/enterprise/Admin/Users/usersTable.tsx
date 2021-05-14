@@ -80,7 +80,7 @@ const UsersTable: React.FC<TableProps> = ({users, setEnterpriseUsers}) => {
         onSubmit={confirmDeleteUser}
         dialogTitle="Kas oled kindel?"
         dialogContextText={'Kas olete kindel, et soovite liikme ' + users.find(x => x.id == userIdForDetails)?.firstName + ' ' + users.find(x => x.id == userIdForDetails)?.lastName + ' eemaldada asutuse nimekirjast?'}
-        confirmButton="Kustuta"
+        confirmButton="Eemalda"
       />
 
       {/* Kasutajate tabel */}

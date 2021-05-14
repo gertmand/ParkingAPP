@@ -5,12 +5,13 @@ import {
 } from '@material-ui/data-grid';
 import React, { FC } from 'react';
 import { Log } from '../../store/types/enterpriseTypes';
+import { User } from '../../store/types/userType';
 
 type Props = {
   searchTerm: string,
   logs: Log[],
   userLogsBoolean: boolean,
-  enterpriseUsers?: any[]
+  enterpriseUsers?: User[]
   enterpriseId?: number
 };
 
@@ -67,7 +68,7 @@ const LogsTable: FC<Props> = ({searchTerm, logs, userLogsBoolean, enterpriseUser
       renderCell: (params: GridValueGetterParams) => {
         return (
           <div style={{ margin: 'auto' }}>
-            {enterpriseUsers?.filter(x => x.id === getAdmin(params)).map(x => x.firstName + ' ' + x.lastName)}
+            {enterpriseUsers?.filter(x => x.id.toString()  === getAdmin(params)).map(x => x.firstName + ' ' + x.lastName)}
           </div>
         );
       }
