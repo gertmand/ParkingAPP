@@ -117,7 +117,7 @@ export const UsersTableComponent: FC<Props> = ({
                 <Info color="#C0C0C0" />
               </Button>
             </Tooltip>
-            <Tooltip title="Eemalda liige nimekirjast">
+            <Tooltip title="Eemalda kasutaja nimekirjast">
               <Button
                 onClick={() =>
                   handleDeleteButtonClick(+getUserId(params))
@@ -164,7 +164,7 @@ export const UsersTableComponent: FC<Props> = ({
               handleOpenAddUsersModal()
             }
             color="primary" variant="contained" style={{float: "right"}}>
-            Lisa liikmeid
+            Lisa kasutajaid
           </Button>
         </Grid>
       </Grid>

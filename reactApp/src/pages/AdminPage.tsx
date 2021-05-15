@@ -101,7 +101,7 @@ import Page from '../style/Page';
                     <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="off" aria-label="scrollable prevent tabs example">
                       <Tab label="Uudised" aria-label="news" {...a11yProps(0)} />
                       <Tab label="Parklakohad"  aria-label="spots" {...a11yProps(1)} />
-                      <Tab label="Liikmed" aria-label="members" {...a11yProps(2)} />
+                      <Tab label="Kasutajad" aria-label="members" {...a11yProps(2)} />
                       <Tab label="Seaded" aria-label="settings" {...a11yProps(3)} />
                       <Tab label="Logid" aria-label="logs" {...a11yProps(4)} />
                     </Tabs>
