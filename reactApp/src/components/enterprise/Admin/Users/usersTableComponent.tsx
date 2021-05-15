@@ -164,7 +164,7 @@ export const UsersTableComponent: FC<Props> = ({
               handleOpenAddUsersModal()
             }
             color="primary" variant="contained" style={{float: "right"}}>
-            Lisa liikmeid
+            Lisa kasutajaid
           </Button>
         </Grid>
       </Grid>

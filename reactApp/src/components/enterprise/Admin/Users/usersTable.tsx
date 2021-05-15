@@ -70,7 +70,7 @@ const UsersTable: React.FC<TableProps> = ({users, setEnterpriseUsers}) => {
       open={openAddUsersModal}
       handleClose={handleCloseAddUsersModal}
       dialogTitle='Kasutajate lisamine'
-      confirmButton='Lisa liikmed'
+      confirmButton='Lisa kasutajaid'
       />
 
       {/* Kasutaja kustutamise modaal */}
