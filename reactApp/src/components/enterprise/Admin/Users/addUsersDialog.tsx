@@ -125,7 +125,11 @@ const AddUsersDialog: FC<Props> = ({open,inputFieldNumberBoolean,selectWorker,in
             
             </DialogContent>
             <DialogActions>
-            <Button onClick={confirm} color="primary">
+            <Button onClick={() => {
+              setEmails([]);
+              setEmail('');
+              handleClose()
+            }} color="primary">
                 Loobu
             </Button>
             {confirmButton === undefined ? "" : 
