@@ -12,6 +12,7 @@ type Props = {
 }
 
 type TableData = {
+  id: number,
   spotId?: number,
   reservationId?: number,
   type: string,
@@ -45,14 +46,17 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData, isAdmin
 
     useEffect(() => {
       setTableData([])
+      let idCount = 1;
       if(spotData !== undefined && spotData.length > 0) {
         spotData.forEach(element => {
-          setTableData(prevState => [...prevState, {spotId: element.id, type: element.status, startDate: element.startDate, endDate: element.endDate, user: element.reserverName}])
+          setTableData(prevState => [...prevState, {id: idCount, spotId: element.id, type: element.status, startDate: element.startDate, endDate: element.endDate, user: element.reserverName}])
+          idCount += 1;
         });
       }
       if(reservationData !== undefined && reservationData.length > 0) {
         reservationData.forEach(element => {
-          setTableData(prevState => [...prevState, {reservationId: element.id, type: 'Booked', startDate: element.startDate, endDate: element.endDate, user: element.reserverName!, number: element.parkingSpotNumber!}])
+          setTableData(prevState => [...prevState, {id: idCount, reservationId: element.id, type: 'Booked', startDate: element.startDate, endDate: element.endDate, user: element.reserverName!, number: element.parkingSpotNumber!}])
+          idCount += 1;
         });
       }
     }, [spotData, reservationData])
