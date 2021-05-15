@@ -8,6 +8,8 @@ namespace API.Models.ParkingSpotDtos
     {
         public int Id { get; set; }
         public int ParkingSpotNumber { get; set; }
+        public int ParkingSpotId { get; set; }
+        public int ReleasedSpotId { get; set; }
         public int Days { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

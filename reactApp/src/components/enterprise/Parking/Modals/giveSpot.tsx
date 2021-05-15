@@ -60,7 +60,8 @@ const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData, re
                     updateSpotData();
                 }).catch((err: any) => {
                     setLoading(false);
-                    dispatch(SET_ERROR_ALERT({ status: true, message: err.response.data.message }));
+                    console.log(err)
+                    dispatch(SET_ERROR_ALERT({ status: true, message: err }));
                 })
         }
         else if(startDate != null && endDate != null) {

@@ -73,6 +73,7 @@ const TopBar = ({ className, ...rest }) => {
         })
     }
     return () => {setCheck([]);}
+    // eslint-disable-next-line
   }, [])
 
 //TODO:Enterprises tuleb viia store alla. 

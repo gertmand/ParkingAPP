@@ -88,6 +88,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
         })
     }
     return () => {setCheck([]);}
+    // eslint-disable-next-line
   }, [])
 
 //TODO:Enterprises tuleb viia store alla. 

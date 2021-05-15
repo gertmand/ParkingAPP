@@ -129,6 +129,8 @@ export type ReleaseRequest = {
 export type AvailableDatesResponse = {
     id: number,
     parkingSpotNumber: number,
+    parkingSpotId: number,
+    releasedSpotId: number,
     days: number,
     startDate: Date,
     endDate: Date,
@@ -138,12 +140,21 @@ export type AvailableDatesResponse = {
 export type AvailableDates = {
     id: number,
     parkingSpotNumber: number,
+    parkingSpotId: number,
+    releasedSpotId: number,
     days: number,
     startDate: Date,
     endDate: Date,
 }
 
-
+// export type ParkingTableData = {
+//     spotId?: number,
+//     reservationId?: number,
+//     type: string,
+//     startDate: Date,
+//     endDate: Date,
+//     user: string,
+// }
 
 export enum LogType {
     CarAdd,

@@ -22,6 +22,7 @@ namespace API.Services
         IEnumerable<ParkingSpotResponse> GetAll(int enterpriseId);
         IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId);
         List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request, int enterpriseId, int accountId);
+        List<ReservationResponse> BookReservationFromResponses(AvailableDatesResponse[] responses, int accountId);
         ParkingSpotStatusType GetParkingSpotStatus(int id);
         ParkingSpotResponse DeleteParkingSpot(int adminId, int id);
         ParkingSpotResponse AddParkingSpot(int adminId, ParkingSpotRequest request, int enterpriseId);
@@ -368,6 +369,56 @@ namespace API.Services
             return availableForReservation;
         }
 
+        public List<ReservationResponse> BookReservationFromResponses(AvailableDatesResponse[] responses, int accountId)
+        {
+            List<DateTime> daysToBook = new List<DateTime>();
+            List<DateTime> daysToCheck = new List<DateTime>();
+            List<Reservation> reservations = new List<Reservation>();
+            List<ReservationResponse> reservationsDto = new List<ReservationResponse>();
+
+            foreach (AvailableDatesResponse response in responses)
+            {
+                int daysAdded = 0;
+                for (DateTime i = response.StartDate; i <= response.EndDate; i = i.AddDays(1))
+                {
+                    if (!daysToCheck.Contains(i.Date))
+                    {
+                        daysToBook.Add(i.Date);
+                        daysToCheck.Add(i.Date);
+                        daysAdded += 1;
+                    }
+                }
+
+                if (daysAdded > 0)
+                {
+                    reservations.Add(new Reservation{ParkingSpotId = response.ParkingSpotId, ReserverAccountId = accountId, SpotAccountId = 1, ReleasedSpotId = response.ReleasedSpotId, StartDate = daysToBook[0], EndDate = daysToBook[daysToBook.Count - 1], Created  = DateTime.UtcNow.AddHours(3), Updated = DateTime.UtcNow.AddHours(3) }); //TODO: SpotAccountId
+                }
+
+                daysToBook.Clear();
+            }
+
+            daysToCheck.Clear();
+
+            foreach (var reservation in reservations)
+            {
+                var reservationsToCheck = _context.Reservations.Where(x =>
+                        x.ParkingSpotId == reservation.ParkingSpotId &&
+                        x.ReleasedSpotId == reservation.ReleasedSpotId &&
+                        (x.StartDate.Date <= reservation.StartDate.Date && x.EndDate.Date >= reservation.EndDate.Date))
+                    .ToList();
+
+                if (reservationsToCheck.Count == 0)
+                {
+                    _context.Reservations.Add(reservation);
+                    _context.SaveChanges();
+
+                    reservationsDto.Add(_mapper.Map<ReservationResponse>(reservation));
+                }
+            }
+
+            return reservationsDto;
+        }
+
         // ADMIN METHODS
         public ParkingSpotResponse AddParkingSpot(int adminId, ParkingSpotRequest request, int enterpriseId)
         {
@@ -486,7 +537,7 @@ namespace API.Services
                     }
                     dEndDate = datesToReserve[i].Date;
 
-                    AvailableDatesResponse response = new AvailableDatesResponse { Id = parkingSpotId * daysCount + 15, StartDate = dStartDate, EndDate = dEndDate, ParkingSpotNumber = GetById(parkingSpotId).Number, Days = daysCount };
+                    AvailableDatesResponse response = new AvailableDatesResponse { Id = parkingSpotId * daysCount + 15, StartDate = dStartDate, EndDate = dEndDate, ParkingSpotNumber = GetById(parkingSpotId).Number, ParkingSpotId = parkingSpotId, Days = daysCount, ReleasedSpotId = releasedSpotId};
                     responses.Add(response);
 
                     dStartDate = new DateTime();
@@ -660,6 +711,18 @@ namespace API.Services
             }
 
             return true;
+        }
+
+        private List<DateTime> getDatesBetweenPeriod(DateTime startDate, DateTime endDate)
+        {
+            List<DateTime> dates = new List<DateTime>();
+
+            for (DateTime i = startDate; i <= endDate; i = i.AddDays(1))
+            {
+                dates.Add(i.Date);
+            }
+
+            return dates;
         }
     }
 }

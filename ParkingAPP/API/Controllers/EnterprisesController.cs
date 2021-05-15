@@ -230,6 +230,22 @@ namespace API.Controllers
             return _parkingSpotService.GetAvailableDatesForReservation(request, enterpriseId, Account.Id).OrderBy(x => x.StartDate).ToList();
         }
 
+        [HttpPost("{enterpriseId}/new-reservation")]
+        public ActionResult<IEnumerable<ReservationResponse>> PostNewReservation(AvailableDatesResponse[] responses, int enterpriseId)
+        {
+            if (Account == null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            {
+                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+            }
+
+            return _parkingSpotService.BookReservationFromResponses(responses, Account.Id);
+        }
+
         // ADMIN METHODS
 
         [HttpGet("{enterpriseId}/admin/users")]

@@ -115,7 +115,7 @@ namespace APITests.Services
         public void GetParkingSpotListDataTest()
         {
             var response = pService.GetParkingSpotListData(1);
-            Assert.AreEqual(response.Count(), 3);
+            Assert.AreEqual(response.Count(), 4);
         }
         [Test]
         public void ReleaseParkingSpotTest()
@@ -196,5 +196,23 @@ namespace APITests.Services
             Assert.AreEqual(response.MainUserFullName, "Test Isik3");
         }
 
+        [Test]
+        public void BookReservationTest()
+        {
+            AvailableDatesResponse[] responses = new AvailableDatesResponse[1];
+            responses[0] = new AvailableDatesResponse()
+            {
+                Id = 1,
+                Days = 5,
+                ParkingSpotId = 1,
+                StartDate = new DateTime(2025, 10, 1),
+                EndDate = new DateTime(2025, 10, 15),
+                ParkingSpotNumber = 15,
+                ReleasedSpotId = 1
+            };
+
+            var response = pService.BookReservationFromResponses(responses, 1);
+            Assert.AreEqual(1, response.Count);
+        }
     }
 }

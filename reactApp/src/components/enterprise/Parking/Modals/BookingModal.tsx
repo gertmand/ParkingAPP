@@ -6,7 +6,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import React, { FC, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { bookReservationFromAvailabeSpotsResponse, getEnterpriseParkingSpotData, getEnterpriseUserData } from '../../../../store/queries/enterpriseQueries';
 import { AvailableDatesResponse } from '../../../../store/types/enterpriseTypes';
+import { SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../../common/siteActions';
 import { DialogComponent } from '../../Admin/Parking/dialogComponent';
 import BookingSpotBox from './BookingSpotBox';
 
@@ -20,6 +23,8 @@ type Props = {
 
 const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) => {
     const classes = useStyles();
+    const dispatch = useDispatch()
+
     const [scroll] = React.useState<DialogProps['scroll']>('paper');
     const [maxWidth] = React.useState<DialogProps['maxWidth']>('sm');
     const [parkingData, setParkingData] = useState(availableData)
@@ -72,6 +77,26 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
         setCancelModal(true)
     }
 
+    const handleNewReservation = () => {
+        const enterpriseId = localStorage.getItem('enterprise')
+        if(enterpriseId === undefined || enterpriseId === null) return
+
+        bookReservationFromAvailabeSpotsResponse(activatedSpots, parseInt(enterpriseId)).then((response) => {
+            dispatch(SET_SUCCESS_ALERT({status: true,message: 'Broneering lisatud!'}));
+            getEnterpriseUserData(parseInt(enterpriseId), dispatch, false)
+            getEnterpriseParkingSpotData(parseInt(enterpriseId), dispatch, false)
+            console.table(response)
+            setModal(false)
+            resetData()
+        }).catch((err) => {
+            console.log(err)
+            dispatch(SET_ERROR_ALERT({status: true, message: 'Broneeringuid ei leitud!'}))
+            resetData()
+        }) 
+
+
+    }
+
     useEffect(() => {
         handleDaysCount()
         // eslint-disable-next-line
@@ -113,7 +138,7 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
                 <Button onClick={handleCloseModal} color="primary">
                     Tühista
                  </Button>
-                <Button disabled={uniqueDates.length > 0 ? false : true} onClick={handleClose} color="primary">
+                <Button disabled={uniqueDates.length > 0 ? false : true} onClick={handleNewReservation} color="primary">
                     Broneeri
                 </Button>
             </DialogActions>

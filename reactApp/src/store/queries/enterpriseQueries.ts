@@ -2,7 +2,7 @@ import axios from "axios"
 import { apiUrl } from "../../_helpers/apiUrl"
 import { authHeader, del, get, post } from "../../_helpers/fetch-wrapper"
 import { ADD_ENTERPRISE_DATA, FETCH_ENTERPRISE_PARKINGSPOT_DATA_ERROR, FETCH_ENTERPRISE_PARKINGSPOT_DATA_START, FETCH_ENTERPRISE_PARKINGSPOT_DATA_SUCCESS, FETCH_ENTERPRISE_USER_DATA_ERROR, FETCH_ENTERPRISE_USER_DATA_START, FETCH_ENTERPRISE_USER_DATA_SUCCESS } from "../actions/enterpriseActions"
-import { EnterpriseAddRequest, EnterpriseInvitationRequest, ParkingSpotMainUserRequest, ParkingSpotRequest, ReleaseRequest, ReservationRequest, UserInvitationRequest } from "../types/enterpriseTypes"
+import { AvailableDatesResponse, EnterpriseAddRequest, EnterpriseInvitationRequest, ParkingSpotMainUserRequest, ParkingSpotRequest, ReleaseRequest, ReservationRequest, UserInvitationRequest } from "../types/enterpriseTypes"
 
 export const addEnterprise = async (request: EnterpriseAddRequest) => {
     return await post(`${apiUrl}/api/enterprises/add`,request)
@@ -52,6 +52,10 @@ export const releaseParkingSpot = (request: ReleaseRequest) => {
 
 export const getAvailableSpotsForReservation = async (startDate: Date, endDate: Date, enterpriseId: number) => {
     return await post(`${apiUrl}/api/enterprises/${enterpriseId}/available-dates`, {startDate, endDate})
+}
+
+export const bookReservationFromAvailabeSpotsResponse = (response: AvailableDatesResponse[], enterpriseId: number) => {
+    return post(`${apiUrl}/api/enterprises/${enterpriseId}/new-reservation`, response);
 }
 
 export const getUserInvitations = async (email: string) => {
