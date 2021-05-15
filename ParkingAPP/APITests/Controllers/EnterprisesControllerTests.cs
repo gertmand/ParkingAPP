@@ -159,9 +159,21 @@ namespace APITests.Controllers
         public void GetUsersWithoutParkingSpaceTest()
         {
             var response = eController.GetUsersWithoutParkingSpace(2);
-            var response2 = eController.GetUsersWithoutParkingSpace(1);
             Assert.IsTrue(response.Count()> 0);
-            Assert.IsTrue(response2.Count() == 0);
+        }
+
+        [Test]
+        public void GetUsersWithoutParkingSpaceWrongEnterpriseTest()
+        {
+            try
+            {
+                var response2 = eController.GetUsersWithoutParkingSpace(1);
+                Assert.Fail();
+            }
+            catch (AppException)
+            {
+                Assert.Pass();
+            }
         }
 
         [Test]

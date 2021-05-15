@@ -42,6 +42,12 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
         resetData()
     };
 
+    const handleReset = () => {
+        setActivatedSpots([])
+        setDays(0)
+        resetData()
+    }
+
     useEffect(() => {
         if(availableData.length > 0) {
             setParkingData(availableData)
@@ -87,14 +93,12 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
             getEnterpriseParkingSpotData(parseInt(enterpriseId), dispatch, false)
             console.table(response)
             setModal(false)
-            resetData()
+            handleReset()
         }).catch((err) => {
             console.log(err)
             dispatch(SET_ERROR_ALERT({status: true, message: 'Broneeringuid ei leitud!'}))
-            resetData()
+            handleReset()
         }) 
-
-
     }
 
     useEffect(() => {

@@ -7,6 +7,7 @@ using API.Models.Entities;
 using API.Models.JoinedEntities;
 using API.Models.ParkingSpotDtos;
 using AutoMapper;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.EntityFrameworkCore;
 using Type = API.Models.LogDtos.Type;
 
@@ -18,11 +19,14 @@ namespace API.Services
         ParkingSpotResponse GetUserParkingSpot(int enterpriseId, int userId);
         ReleasedResponse ReleaseParkingSpot(int userId, ReleaseRequest request);
         ReservationResponse ReserveParkingSpot(int userId, ReservationRequest request);
+
         IEnumerable<ReservationResponse> GetUserReservations(int enterpriseId, int userId);
         IEnumerable<ParkingSpotResponse> GetAll(int enterpriseId);
         IEnumerable<ParkingSpotDataResponse> GetParkingSpotListData(int spotId);
         List<AvailableDatesResponse> GetAvailableDatesForReservation(AvailableDatesRequest request, int enterpriseId, int accountId);
         List<ReservationResponse> BookReservationFromResponses(AvailableDatesResponse[] responses, int accountId);
+        ReleasedSpot CancelSpotRelease(ParkingSpotDataResponse response, int accountId);
+        void CancelReservation(ReservationResponse response, int accountId);
         ParkingSpotStatusType GetParkingSpotStatus(int id);
         ParkingSpotResponse DeleteParkingSpot(int adminId, int id);
         ParkingSpotResponse AddParkingSpot(int adminId, ParkingSpotRequest request, int enterpriseId);
@@ -72,7 +76,7 @@ namespace API.Services
                         response.Staatus = "Vabastatud";
                         break;
                     default:
-                        response.Staatus = "katki";
+                        response.Staatus = "Muu";
                         break;
                 }
             }
@@ -103,7 +107,7 @@ namespace API.Services
                     data.Staatus = "Vabastatud";
                     break;
                 default:
-                    data.Staatus = "katki";
+                    data.Staatus = "Muu";
                     break;
             }
 
@@ -115,6 +119,47 @@ namespace API.Services
             var reservations = getReservationsByUserId(enterpriseId, userId);
 
             return _mapper.Map<IList<ReservationResponse>>(reservations);
+        }
+
+        public ReleasedSpot CancelSpotRelease(ParkingSpotDataResponse response, int accountId)
+        {
+            if (response == null)
+            {
+                throw new KeyNotFoundException("Andmed puuduvad!");
+            }
+
+            if (response.ReleasedId != -1)
+            {
+                var releasedSpot = _context.ReleasedSpots.Find(response.ReleasedId);
+
+                releasedSpot.DeletionDate = DateTime.Now.Date.AddDays(-1);
+
+                _context.Update(releasedSpot);
+
+                _context.SaveChanges();
+
+                return releasedSpot;
+            }
+
+            throw new KeyNotFoundException("Andmed puuduvad!");
+        }
+
+        public void CancelReservation(ReservationResponse response, int accountId)
+        {
+            if (response == null)
+            {
+                throw new KeyNotFoundException("Andmed puuduvad!");
+            }
+
+            if (response.ReserverAccountId == accountId)
+            {
+                var reservation = _context.Reservations.Find(response.Id);
+
+                reservation.DeletionDate = DateTime.Now.Date.AddDays(-1);
+
+                _context.Update(reservation);
+                _context.SaveChanges();
+            }
         }
 
         public ParkingSpotResponse GetUserParkingSpot(int enterpriseId, int userId)
@@ -407,6 +452,8 @@ namespace API.Services
                         (x.StartDate.Date <= reservation.StartDate.Date && x.EndDate.Date >= reservation.EndDate.Date))
                     .ToList();
 
+                reservationsToCheck = DateUtil<Reservation>.RemoveDeletedDates(reservationsToCheck);
+
                 if (reservationsToCheck.Count == 0)
                 {
                     _context.Reservations.Add(reservation);
@@ -589,7 +636,7 @@ namespace API.Services
                 .Include(x => x.ReleasedSpot)
                 .Where(x => x.ReserverAccountId == userId && x.ParkingSpot.EnterpriseId == enterpriseId).ToList();
 
-            return reservations;
+            return DateUtil<Reservation>.RemoveDeletedDates(reservations);
         }
 
         private List<ParkingSpot> getAllParkingSpots(int enterpriseId)

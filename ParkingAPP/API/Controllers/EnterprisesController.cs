@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using API.Helpers;
 using API.Models.AccountDtos;
 using API.Models.EnterpriseDtos;
 using API.Models.Entities;
@@ -10,6 +11,7 @@ using API.Models.ParkingSpotDtos;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using MimeKit;
 
 namespace API.Controllers
 {
@@ -69,7 +71,7 @@ namespace API.Controllers
         [HttpGet("{enterpriseId}/users")]
         public List<EnterpriseAccountsResponse> GetUsersWithoutParkingSpace(int enterpriseId)
         {
-            CheckUser(enterpriseId);
+            CheckUser(true, enterpriseId);
 
             var regularUsers = _enterpriseService.GetEnterpriseAccountsWithoutParkingspots(enterpriseId);
 
@@ -190,20 +192,33 @@ namespace API.Controllers
             return Ok(_enterpriseService.GetReservations());
         }
 
+        [HttpPost("cancel-reservation")]
+        public IActionResult CancelReservation(ReservationResponse response)
+        {
+            CheckUser(false, 55);
+
+            _parkingSpotService.CancelReservation(response, Account.Id);
+
+            return Ok(new { message = "Broneering on eemaldatud!"});
+        }
+
         [HttpPost("release")]
         public ActionResult<ReleasedResponse> ReleaseSpot(ReleaseRequest request)
+        {
+            CheckUser(true, request.EnterpriseId);
+
+            return _parkingSpotService.ReleaseParkingSpot(Account.Id, request);
+        }
+
+        [HttpPost("cancel-release")]
+        public ActionResult<ReleasedSpot> CancelReleaseSpot(ParkingSpotDataResponse response)
         {
             if (Account == null)
             {
                 return Unauthorized();
             }
 
-            if (!_enterpriseService.CheckUserEnterprise(Account.Id, request.EnterpriseId))
-            {
-                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
-            }
-
-            return _parkingSpotService.ReleaseParkingSpot(Account.Id, request);
+            return _parkingSpotService.CancelSpotRelease(response, Account.Id);
         }
 
         [HttpPost("reservation")]
@@ -635,21 +650,18 @@ namespace API.Controllers
 
         // HELPER METHODS
 
-        private ActionResult<bool> CheckUser(int enterpriseId)
+        private void CheckUser(bool checkEnterprise, int? enterpriseId)
         {
             if (Account == null)
             {
-                return Unauthorized();
+                throw new KeyNotFoundException("Account not found!");
 
             }
 
-            if (!_enterpriseService.CheckUserEnterprise(Account.Id, enterpriseId))
+            if (checkEnterprise && !_enterpriseService.CheckUserEnterprise(Account.Id, (int)(enterpriseId)))
             {
-                return BadRequest(new { type = "Unauthorized", message = "Enterprise not found" });
+                throw new AppException("Enterprise not found!");
             }
-
-            return true;
         }
-
     }
 }
