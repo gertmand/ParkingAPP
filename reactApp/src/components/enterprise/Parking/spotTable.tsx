@@ -34,7 +34,8 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData, isAdmin
     const [tableData, setTableData] = useState<TableData[]>([])
 
     const handleDelete = (data: ParkingSpotListData) => {
-      if(data.releasedId !== -1) {
+      console.log(data)
+      if(data.status === "Released") {
         cancelSpotRelease(data).then((request: any) => {
           dispatch(SET_SUCCESS_ALERT({status: true, message: "Vabastus on tühistatud!"}));
           updateSpotData();
@@ -42,7 +43,10 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData, isAdmin
           dispatch(SET_ERROR_ALERT({status: true, message: err}));
         })
       }
-      if(data.reservationId !== -1) {
+      if(data.status === "Reserved") {
+        dispatch(SET_ERROR_ALERT({status: true, message: "Reserveeritud kohta pole võimalik tühistada!"}));
+      }
+      if(data.status === "Assigned") {
         dispatch(SET_ERROR_ALERT({status: true, message: "Laenatud kohta pole võimalik tühistada!"}));
       }
     }
@@ -58,18 +62,26 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData, isAdmin
       })
     }
 
+    // useEffect(() => {
+    //   if(tableData.length === 0) return
+
+    //   console.table(tableData)
+    // }, [tableData])
+
     useEffect(() => {
       setTableData([])
       let idCount = 1;
       if(spotData !== undefined && spotData.length > 0) {
         spotData.forEach(element => {
-          setTableData(prevState => [...prevState, {id: idCount, spotId: element.id, type: element.status, startDate: element.startDate, endDate: element.endDate, user: element.reserverName, spotData: element}])
+          var count = parseInt(JSON.parse(JSON.stringify(idCount)))
+          setTableData(prevState => [...prevState, {id: count, spotId: element.id, type: element.status, startDate: element.startDate, endDate: element.endDate, user: element.reserverName, spotData: element}])
           idCount += 1;
         });
       }
       if(reservationData !== undefined && reservationData.length > 0) {
         reservationData.forEach(element => {
-          setTableData(prevState => [...prevState, {id: idCount, reservationId: element.id, type: 'Booked', startDate: element.startDate, endDate: element.endDate, user: element.reserverName!, number: element.parkingSpotNumber!, reservation:element}])
+          var count = parseInt(JSON.parse(JSON.stringify(idCount)))
+          setTableData(prevState => [...prevState, {id: count, reservationId: element.id, type: 'Booked', startDate: element.startDate, endDate: element.endDate, user: element.reserverName!, number: element.parkingSpotNumber!, reservation:element}])
           idCount += 1;
         });
       }

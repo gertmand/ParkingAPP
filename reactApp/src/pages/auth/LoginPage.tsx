@@ -27,6 +27,10 @@ const LoginPage = (props: any) => {
         if (localStorage.getItem('enterprise') === undefined) {
           localStorage.setItem('enterprise', '0');
         }
+        if(localStorage.getItem('email') !== email) {
+          localStorage.setItem('enterprise', '0');
+        }
+        localStorage.setItem('email', email)
         props.history.push('/');
         window.location.reload(false);
         setSubmit(false);

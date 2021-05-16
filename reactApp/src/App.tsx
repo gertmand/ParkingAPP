@@ -26,9 +26,9 @@ const App = (props: any) => {
     //setPageLoading(true);
     getUserData(dispatch).then(async () => {
       if(!isNaN(enterpriseId) && enterpriseId !== 0 && enterpriseId !== "0") {
-        await getEnterpriseUserData(enterpriseId, dispatch, true);
+        await getEnterpriseUserData(enterpriseId, dispatch, true)
         await getEnterpriseParkingSpotData(enterpriseId, dispatch, true);
-        await getEnterprise(enterpriseId, dispatch);
+        await getEnterprise(enterpriseId, dispatch)
         //setPageLoading(false);
       }
     }).catch(() => {
