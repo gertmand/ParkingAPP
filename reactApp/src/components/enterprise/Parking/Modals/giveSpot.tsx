@@ -20,8 +20,9 @@ const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData, re
     const [endDate, setEndDate] = useState<Date | null>(null);
     const [regularUserId, setRegularUserId] = useState<number>(0);
     const [targetUser, setTargetUser] = useState(false);
-    const [, setLoading] = useState(false);
+    const [buttonLoading, setLoading] = useState(false);
     const [, setSuccess] = React.useState(false);
+    
 
     const changeSelectedUser = (event: any, values: any) => {
         if (values) {
@@ -70,12 +71,12 @@ const GiveSpot:FC<Props> = ({giveSpotModal, setGiveSpotModal, updateSpotData, re
         else if(!startDate && !endDate) dispatch(SET_ERROR_ALERT({ status: true, message: "Palun määra periood!"}))
         else if(!startDate) dispatch(SET_ERROR_ALERT({ status: true, message: "Palun määra alguskuupäev!"}))
         else if(!endDate) dispatch(SET_ERROR_ALERT({ status: true, message: "Palun määra lõppkuupäev!"}))
-        else if(!targetUser) dispatch(SET_ERROR_ALERT({ status: true, message: "Palun määra töötaja, kellele koht loovutatakse!"}))
+        else if(!targetUser) dispatch(SET_ERROR_ALERT({ status: true, message: "Palun määra kasutaja, kellele koht loovutatakse!"}))
     }
 
     return (
         <div>
-            {giveSpotModal ? <GiveModal open={giveSpotModal} setModal={handleGiveSpotModal} startDate={startDate} endDate={endDate} setStartDate={handleStartDate} setEndDate={handleEndDate} submit={giveSpot} regularUsers={regularUsers} changeSelectedUser={changeSelectedUser}/> : null}
+            {giveSpotModal ? <GiveModal open={giveSpotModal} setModal={handleGiveSpotModal} startDate={startDate} endDate={endDate} setStartDate={handleStartDate} setEndDate={handleEndDate} submit={giveSpot} regularUsers={regularUsers} changeSelectedUser={changeSelectedUser} buttonDisabled={buttonLoading} /> : null}
         </div>
     )
 }

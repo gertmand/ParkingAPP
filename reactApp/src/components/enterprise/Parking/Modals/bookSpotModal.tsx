@@ -35,6 +35,13 @@ const BookSpotModal:FC<Props> = ({bookModal, setBookModal, setSpotsForReservatio
         setEndDateSet(true);
     }
 
+    const handleDateReset = () => {
+        setStartDate(null)
+        setEndDate(null)
+        setStartDateSet(false);
+        setEndDateSet(false);
+    }
+
     const submitSearch = () => {
         if(startDateSet && endDateSet && startDate && endDate && startDate <= endDate) {
             setButtonDisabled(true)
@@ -45,11 +52,13 @@ const BookSpotModal:FC<Props> = ({bookModal, setBookModal, setSpotsForReservatio
                     setBookModal()
                 } else {
                     setBookModal()
-                    dispatch(SET_ERROR_ALERT({status: true, message: "Antud perioodi vabastatud kohta ei leitud!"}));
+                    dispatch(SET_ERROR_ALERT({status: true, message: "Antud perioodil vabastatud kohta ei leitud!"}));
                 }
+                handleDateReset()
                 setButtonDisabled(false)
             }).catch(err => {
                 setButtonDisabled(false)
+                handleDateReset()
                 if(err.response)
                     dispatch(SET_ERROR_ALERT({ status: true, message: err.response.data.message}));
             }) 

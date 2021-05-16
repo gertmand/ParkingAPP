@@ -152,7 +152,7 @@ namespace API.DAL
                 new Enterprise
                 {
                     Id = 1,
-                    Name = "ERGO Parkimine",
+                    Name = "TalTech Parkimine",
                     Description = "Parkimine",
                     Active = true,
                     Created = new DateTime(2021, 02, 01),
@@ -161,7 +161,7 @@ namespace API.DAL
                 new Enterprise
                 {
                     Id = 2,
-                    Name = "RIK Parkimine",
+                    Name = "TTÜ Parkimine",
                     Description = "Parkimine",
                     Active = true,
                     Created = new DateTime(2021, 02, 01),

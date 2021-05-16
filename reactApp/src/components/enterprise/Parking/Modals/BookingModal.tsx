@@ -31,6 +31,7 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
     const [uniqueDates] = useState<Date[]>([])
     const [activatedSpots, setActivatedSpots] = useState<AvailableDatesResponse[]>([])
     const [, setDays] = useState(0)
+    const [buttonLoading, setButtonLoading] = useState(false)
 
     const [cancelModal, setCancelModal] = useState(false)
 
@@ -43,6 +44,7 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
     };
 
     const handleReset = () => {
+        setButtonLoading(false)
         setActivatedSpots([])
         setDays(0)
         resetData()
@@ -83,15 +85,19 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
         setCancelModal(true)
     }
 
+    useEffect(() => {
+        if(parkingData.length === 0) return
+        console.table(parkingData)
+    }, [parkingData])
+
     const handleNewReservation = () => {
         const enterpriseId = localStorage.getItem('enterprise')
         if(enterpriseId === undefined || enterpriseId === null) return
-
+        setButtonLoading(true)
         bookReservationFromAvailabeSpotsResponse(activatedSpots, parseInt(enterpriseId)).then((response) => {
             dispatch(SET_SUCCESS_ALERT({status: true,message: 'Broneering lisatud!'}));
             getEnterpriseUserData(parseInt(enterpriseId), dispatch, false)
             getEnterpriseParkingSpotData(parseInt(enterpriseId), dispatch, false)
-            console.table(response)
             setModal(false)
             handleReset()
         }).catch((err) => {
@@ -142,7 +148,7 @@ const BookingModal:FC<Props> = ( {availableData, modal, setModal, resetData} ) =
                 <Button onClick={handleCloseModal} color="primary">
                     Tühista
                  </Button>
-                <Button disabled={uniqueDates.length > 0 ? false : true} onClick={handleNewReservation} color="primary">
+                <Button disabled={uniqueDates.length > 0 && buttonLoading === false ? false : true} onClick={handleNewReservation} color="primary">
                     Broneeri
                 </Button>
             </DialogActions>

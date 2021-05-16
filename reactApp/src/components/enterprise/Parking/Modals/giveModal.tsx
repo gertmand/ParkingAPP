@@ -12,10 +12,11 @@ type ModalProps = {
     setEndDate(e: any): any,
     submit(): any,
     regularUsers: any,
-    changeSelectedUser(v: any, e: any): any
+    changeSelectedUser(v: any, e: any): any,
+    buttonDisabled: boolean,
 }
 
-const GiveModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setStartDate, setEndDate, submit, regularUsers, changeSelectedUser}: any) => {
+const GiveModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setStartDate, setEndDate, submit, regularUsers, changeSelectedUser, buttonDisabled}: any) => {
     const handleClose = () => {
         setModal(false);
     };
@@ -38,7 +39,7 @@ const GiveModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setStartD
                 <DialogTitle id="form-dialog-title">Loovuta koht</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Vali töötaja ja periood, kellele koht loovutatakse
+                        Vali kasutaja ja periood, kellele koht loovutatakse
                     </DialogContentText>
                     <Grid container spacing={1} justify={"space-around"}>
                         <Grid item xs={12}>
@@ -56,7 +57,7 @@ const GiveModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setStartD
                     <Button onClick={handleClose} color="primary">
                         Tühista
                     </Button>
-                    <Button onClick={handleSubmit} color="primary">
+                    <Button disabled={buttonDisabled} onClick={handleSubmit} color="primary">
                         Loovuta
                     </Button>
                 </DialogActions>

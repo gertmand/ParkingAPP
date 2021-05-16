@@ -49,21 +49,18 @@ export const UsersDialogComponent: FC<Props> = ({userIdForDetails,open,inputFiel
     getUserDetails(userIdForDetails, enterpriseId)
     .then((result: any) => {
       setUserData(result);
-      console.log(result)
     }).catch(err => {
       console.log(err)
     })
     getEnterpriseUserDataAdmin(enterpriseId, userIdForDetails)
     .then((result: any) => {
       setuserDataAdmin(result);
-      console.log(result)
     }).catch(err => {
       console.log(err)
   })
     getEnterpriseParkingSpotDataAdmin(enterpriseId, userIdForDetails)
       .then((result: any) => {
         setparkingSpotData(result);
-        console.log(result)
       }).catch(err => {
         console.log(err)
     })

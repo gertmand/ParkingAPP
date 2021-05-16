@@ -20,6 +20,7 @@ const ReleaseSpot:FC<Props> = ({releaseModal, setReleaseModal, updateSpotData} :
     const enterprise = useSelector<AppState, Enterprise>(state => state.user.enterpriseData);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
+    const [buttonLoading, setButtonLoading] = useState(false)
 
     const handleReleaseModal = (e: any) => {
         setReleaseModal(e);
@@ -37,15 +38,18 @@ const ReleaseSpot:FC<Props> = ({releaseModal, setReleaseModal, updateSpotData} :
 
     const submitRelease = () => {
         if(startDate != null && endDate != null && startDate <= endDate) {
+            setButtonLoading(true)
             releaseParkingSpot({parkingSpaceId: parkingSpot.id, startDate: startDate, endDate: endDate, enterpriseId: enterprise.id}).then((data: any) => { //TODO: enterpriseId
                 //getSpotStatus(parkingSpot.id, dispatch);
                 setReleaseModal(!releaseModal);
                 setStartDate(null);
                 setEndDate(null);
+                setButtonLoading(false)
                 updateSpotData();
                 dispatch(SET_SUCCESS_ALERT({status: true, message: "Parkimiskoht on vabastatud teistele broneerimiseks!"}));
             }).catch((err: any) => {
                 dispatch(SET_ERROR_ALERT({status: true, message: err}));
+                setButtonLoading(false)
             })
         }
         else if(startDate != null && endDate != null) {
@@ -58,7 +62,7 @@ const ReleaseSpot:FC<Props> = ({releaseModal, setReleaseModal, updateSpotData} :
 
     return (
         <div>
-            {releaseModal ? <ReleaseModal open={releaseModal} setModal={handleReleaseModal} startDate={startDate} endDate={endDate} setStartDate={handleStartDate} setEndDate={handleEndDate} submit={submitRelease}/> : null}
+            {releaseModal ? <ReleaseModal open={releaseModal} setModal={handleReleaseModal} startDate={startDate} endDate={endDate} setStartDate={handleStartDate} setEndDate={handleEndDate} submit={submitRelease} buttonDisabled={buttonLoading} /> : null}
         </div>
     )
 }

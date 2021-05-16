@@ -61,7 +61,7 @@ export const SelectWorker:FC<Workers> = ( { data, onUserChange }) => {
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Valige töötaja"
+          label="Valige kasutaja"
           variant="outlined"
           InputProps={{
             ...params.InputProps,

@@ -51,7 +51,6 @@ type Props = {
     const addParkingSpots = () => {
 
       if(parkingSpotsArray.length > 0){
-        console.log(parkingSpotsArray)
         addParkingSpotArray(parkingSpotsArray, enterpriseId).then(() => {
           setParkingSpotAddModal(false);
           updateParkingSpots();

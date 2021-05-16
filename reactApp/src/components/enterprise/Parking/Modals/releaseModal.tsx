@@ -15,10 +15,11 @@ type ModalProps = {
     endDate: any,
     setStartDate(e: any): any,
     setEndDate(e: any): any,
-    submit(): any
+    submit(): any,
+    buttonDisabled: boolean,
 }
 
-const ReleaseModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setStartDate, setEndDate, submit}: any) => {
+const ReleaseModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setStartDate, setEndDate, submit, buttonDisabled}: any) => {
     const handleClose = () => {
         setModal(false);
     };
@@ -56,7 +57,7 @@ const ReleaseModal:FC<ModalProps> = ({open, setModal, startDate, endDate, setSta
                     <Button onClick={handleClose} color="primary">
                         Tühista
                     </Button>
-                    <Button onClick={handleSubmit} color="primary">
+                    <Button  disabled={buttonDisabled} onClick={handleSubmit} color="primary">
                         Vabasta
                     </Button>
                 </DialogActions>

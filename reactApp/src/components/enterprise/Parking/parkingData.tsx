@@ -68,8 +68,10 @@ const ParkingData: FC<SpotProps> = ({ parkingSpot, parkingSpotDataList, reservat
     }
 
     const handleAvailableReservations = (e: AvailableDates[]) => {
+        let counter = 1;
         e.forEach(aDate => {
-            setAvailableSpots(prevState => [...prevState, {id: aDate.id, parkingSpotId: aDate.parkingSpotId, releasedSpotId: aDate.releasedSpotId, startDate: aDate.startDate, endDate: aDate.endDate, days: aDate.days, parkingSpotNumber: aDate.parkingSpotNumber, checked: false}])
+            setAvailableSpots(prevState => [...prevState, {id: counter, parkingSpotId: aDate.parkingSpotId, releasedSpotId: aDate.releasedSpotId, startDate: aDate.startDate, endDate: aDate.endDate, days: aDate.days, parkingSpotNumber: aDate.parkingSpotNumber, checked: false}])
+            counter += 1;
         });
     }
 

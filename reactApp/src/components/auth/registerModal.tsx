@@ -12,7 +12,7 @@ type Props = {
   
 export const RegisterModal: FC<Props> = ({userAddModal,setUserAddModal}: any) => {
   const dispatch = useDispatch();
-  const [, setLoading] = useState(false);
+  const [buttonLoading, setLoading] = useState(false);
   const [, setSuccess] = React.useState(false);
   const handleClose = () => {
     setTitle('');
@@ -256,7 +256,7 @@ export const RegisterModal: FC<Props> = ({userAddModal,setUserAddModal}: any) =>
           <Button onClick={() => handleClose()} color="primary">
             Loobu
           </Button>
-          <Button onClick={() => {handleUserAdd();}} color="primary">
+          <Button disabled={buttonLoading} onClick={() => {handleUserAdd();}} color="primary">
             Registreeru
           </Button>
         </DialogActions>
