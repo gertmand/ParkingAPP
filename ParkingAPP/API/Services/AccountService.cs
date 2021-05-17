@@ -288,6 +288,10 @@ namespace API.Services
             _context.Accounts.Update(account);
             _context.SaveChanges();
 
+            var user = _context.Accounts.Where(x => x.Email == model.Email).FirstOrDefault();
+            string logDescription = "Registreeriti uus kasutaja: " + user.Email;
+            _logService.CreateLog(user.Id, null, null, null, Type.UserRegister, logDescription);
+
             return _mapper.Map<AccountResponse>(account);
         }
 
