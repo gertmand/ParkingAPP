@@ -319,6 +319,9 @@ namespace API.Services
                 .ThenInclude(x => x.Account)
                 .FirstOrDefault(x => x.Id == request.ParkingSpotId);
 
+            spotReservations = DateUtil<Reservation>.RemoveDeletedDates(spotReservations);
+            userReservations = DateUtil<Reservation>.RemoveDeletedDates(userReservations);
+
             if (!DateUtil<Reservation>.CheckDates(request.StartDate, request.EndDate, userReservations))
             {
                 throw new AppException("Broneeringu kuupäevad kattuvad isikul olemasoleva broneeringuga" );

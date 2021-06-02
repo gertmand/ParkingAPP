@@ -139,7 +139,7 @@ namespace APITests.Controllers
         [Test]
         public void UpdateTest()
         {
-            UpdateRequest request = new UpdateRequest {FirstName = "Test2"};
+            UpdateRequest request = new UpdateRequest {FirstName = "Test2", LastName = "Test2", Title = "mees"};
             var response = aController.Update(10, request);
             Assert.IsNotNull(response);
         }
