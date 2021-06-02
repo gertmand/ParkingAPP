@@ -1,10 +1,7 @@
 import 'date-fns';
 import React, { FC } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import estLocale from 'date-fns/locale/et'
 
 type DateType = {

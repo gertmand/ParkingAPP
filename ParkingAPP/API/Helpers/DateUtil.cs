@@ -35,21 +35,21 @@ namespace API.Helpers
             return true;
         }
 
-        public static List<T> RemoveDeletedDates(List<T> list)
+    public static List<T> RemoveDeletedDates(List<T> list)
+        {
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (list[i].DeletionDate != null)
             {
-            for (int i = list.Count - 1; i >= 0; i--)
-            {
-                if (list[i].DeletionDate != null)
+                if (list[i].DeletionDate.Value < DateTime.Today.Date)
                 {
-                    if (list[i].DeletionDate.Value < DateTime.Today.Date)
-                    {
-                        list.RemoveAll(x => x.Id == list[i].Id);
-                    }
+                    list.RemoveAll(x => x.Id == list[i].Id);
                 }
             }
-
-            return list;
         }
+
+        return list;
+    }
 
         public static List<T> ChangeDateTimeToDate(List<T> list)
         {

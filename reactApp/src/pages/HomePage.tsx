@@ -18,18 +18,17 @@ const HomePage = (props: any) => {
       if (userData.reservations[0] !== undefined) {
         const start = new Date(userData.reservations[0].startDate);
         const now = new Date();
-        if (start <= now) {
+        //console.log("Start:" + start.getDate() + ", Now: " + now.getDate())
+        if (start.getDate() <= now.getDate()) {
           if (userData.reservations[0].parkingSpotNumber !== undefined) {
             setReservationSpot(userData.reservations[0]);
           }
           if (userData.reservations.length > 1) {
             if (userData.reservations[1] !== undefined) {
               setReservationSpot(userData.reservations[1]);
-              //setFirstReservation(userData.reservations[1].startDate);
             }
           }
         } else {
-          //setFirstReservation(userData.reservations[0].startDate);
         }
       }
     }

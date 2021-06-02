@@ -34,7 +34,6 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData, isAdmin
     const [tableData, setTableData] = useState<TableData[]>([])
 
     const handleDelete = (data: ParkingSpotListData) => {
-      console.log(data)
       if(data.status === "Released") {
         cancelSpotRelease(data).then((request: any) => {
           dispatch(SET_SUCCESS_ALERT({status: true, message: "Vabastus on tühistatud!"}));
@@ -81,7 +80,7 @@ const SpotTable:FC<Props> = ({spotData, reservationData, updateSpotData, isAdmin
       if(reservationData !== undefined && reservationData.length > 0) {
         reservationData.forEach(element => {
           var count = parseInt(JSON.parse(JSON.stringify(idCount)))
-          setTableData(prevState => [...prevState, {id: count, reservationId: element.id, type: 'Booked', startDate: element.startDate, endDate: element.endDate, user: element.reserverName!, number: element.parkingSpotNumber!, reservation:element}])
+          setTableData(prevState => [...prevState, {id: count, reservationId: element.id, type: 'Booked', startDate: element.startDate, endDate: element.endDate, user: element.parkingSpotOwner!, number: element.parkingSpotNumber!, reservation:element}])
           idCount += 1;
         });
       }
